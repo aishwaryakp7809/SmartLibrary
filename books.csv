@@ -1,0 +1,9 @@
+book_id,title,author,subject,available_copies,total_copies,rack
+B001,Database Management Systems,Raghu Ramakrishnan,DBMS,3,5,Rack A1
+B002,Computer Networks,Andrew S. Tanenbaum,Networking,2,4,Rack B2
+B003,Operating System Concepts,Abraham Silberschatz,Operating Systems,4,6,Rack C1
+B004,Artificial Intelligence,Alice Smith,AI,2,3,Rack D1
+B005,Machine Learning,Tom Mitchell,Machine Learning,1,3,Rack D2
+B006,Python Programming,Mark Lutz,Programming,5,5,Rack E1
+B007,Data Structures,Reema Thareja,DSA,3,4,Rack E2
+B008,Computer Organization,Carl Hamacher,Computer Architecture,2,3,Rack F1

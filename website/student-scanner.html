@@ -1,0 +1,1224 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>SmartLibrary | Entry & Exit</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    font-family: "Segoe UI", Arial, sans-serif;
+    color: #172033;
+    background:
+        radial-gradient(circle at 10% 10%, rgba(99,102,241,.14), transparent 30%),
+        radial-gradient(circle at 90% 20%, rgba(14,165,233,.12), transparent 30%),
+        #f8fafc;
+}
+
+/* NAVBAR */
+
+.navbar {
+    background: rgba(255,255,255,.94);
+    backdrop-filter: blur(15px);
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.nav-container {
+    max-width: 1180px;
+    height: 76px;
+    margin: auto;
+    padding: 0 24px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+
+    color: #172033;
+    text-decoration: none;
+
+    font-size: 21px;
+    font-weight: 800;
+}
+
+.logo-icon {
+    width: 43px;
+    height: 43px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 13px;
+
+    background: linear-gradient(
+        135deg,
+        #4f46e5,
+        #2563eb
+    );
+
+    color: white;
+    font-size: 22px;
+
+    box-shadow:
+        0 8px 20px rgba(79,70,229,.25);
+}
+
+.back-link {
+    color: #64748b;
+    text-decoration: none;
+
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.back-link:hover {
+    color: #4f46e5;
+}
+
+/* MAIN */
+
+.main {
+    max-width: 900px;
+    margin: auto;
+    padding: 55px 24px 80px;
+}
+
+.heading {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.badge {
+    display: inline-block;
+
+    padding: 8px 14px;
+
+    border-radius: 30px;
+
+    background: #eef2ff;
+    color: #4f46e5;
+
+    font-size: 10px;
+    font-weight: 800;
+
+    letter-spacing: 1px;
+
+    margin-bottom: 13px;
+}
+
+.heading h1 {
+    font-size: clamp(34px, 5vw, 48px);
+    margin-bottom: 10px;
+}
+
+.heading h1 span {
+    background:
+        linear-gradient(
+            135deg,
+            #4f46e5,
+            #0284c7
+        );
+
+    -webkit-background-clip: text;
+    background-clip: text;
+
+    color: transparent;
+}
+
+.heading p {
+    color: #64748b;
+
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+/* SCANNER CARD */
+
+.scanner-card {
+    background: white;
+
+    border: 1px solid #e7ebf1;
+
+    border-radius: 25px;
+
+    padding: 30px;
+
+    box-shadow:
+        0 20px 55px rgba(15,23,42,.08);
+}
+
+.scanner-header {
+    text-align: center;
+    margin-bottom: 22px;
+}
+
+.scanner-header h2 {
+    font-size: 22px;
+    margin-bottom: 6px;
+}
+
+.scanner-header p {
+    color: #94a3b8;
+    font-size: 11px;
+}
+
+/* QR READER */
+
+#reader {
+    width: 100%;
+    max-width: 520px;
+
+    margin: auto;
+
+    overflow: hidden;
+
+    border-radius: 18px;
+
+    border: 1px solid #e2e8f0;
+
+    background: #f8fafc;
+}
+
+/* ZONE */
+
+.zone-section {
+    max-width: 520px;
+
+    margin: 24px auto 0;
+}
+
+.zone-label {
+    display: block;
+
+    color: #475569;
+
+    font-size: 11px;
+
+    font-weight: 800;
+
+    margin-bottom: 8px;
+}
+
+#zoneSelect {
+    width: 100%;
+
+    padding: 13px 14px;
+
+    border-radius: 11px;
+
+    border: 1px solid #dbe2ea;
+
+    background: white;
+
+    color: #334155;
+
+    font-size: 12px;
+
+    outline: none;
+}
+
+#zoneSelect:focus {
+    border-color: #6366f1;
+
+    box-shadow:
+        0 0 0 3px rgba(99,102,241,.1);
+}
+
+/* BUTTONS */
+
+.actions {
+    max-width: 520px;
+
+    margin: 18px auto 0;
+
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 10px;
+}
+
+.btn {
+    border: none;
+
+    padding: 13px 15px;
+
+    border-radius: 11px;
+
+    font-size: 11px;
+
+    font-weight: 800;
+
+    cursor: pointer;
+
+    transition: .2s;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+}
+
+.btn-entry {
+    color: white;
+
+    background:
+        linear-gradient(
+            135deg,
+            #16a34a,
+            #15803d
+        );
+
+    box-shadow:
+        0 8px 18px rgba(22,163,74,.18);
+}
+
+.btn-exit {
+    color: white;
+
+    background:
+        linear-gradient(
+            135deg,
+            #ef4444,
+            #dc2626
+        );
+
+    box-shadow:
+        0 8px 18px rgba(239,68,68,.18);
+}
+
+/* STATUS */
+
+.status {
+    max-width: 520px;
+
+    margin: 18px auto 0;
+
+    padding: 13px 15px;
+
+    border-radius: 11px;
+
+    background: #f8fafc;
+
+    border: 1px solid #e5e7eb;
+
+    color: #64748b;
+
+    font-size: 11px;
+
+    line-height: 1.5;
+
+    text-align: center;
+}
+
+.status.success {
+    background: #f0fdf4;
+    border-color: #bbf7d0;
+    color: #166534;
+}
+
+.status.error {
+    background: #fef2f2;
+    border-color: #fecaca;
+    color: #991b1b;
+}
+
+.status.info {
+    background: #eff6ff;
+    border-color: #bfdbfe;
+    color: #1d4ed8;
+}
+
+/* INFO CARDS */
+
+.info-grid {
+    max-width: 520px;
+
+    margin: 25px auto 0;
+
+    display: grid;
+
+    grid-template-columns: repeat(3, 1fr);
+
+    gap: 10px;
+}
+
+.info-card {
+    padding: 15px 10px;
+
+    text-align: center;
+
+    background: #f8fafc;
+
+    border: 1px solid #e8edf3;
+
+    border-radius: 13px;
+}
+
+.info-icon {
+    font-size: 20px;
+
+    margin-bottom: 7px;
+}
+
+.info-card strong {
+    display: block;
+
+    color: #334155;
+
+    font-size: 10px;
+
+    margin-bottom: 3px;
+}
+
+.info-card span {
+    color: #94a3b8;
+
+    font-size: 9px;
+}
+
+/* FOOTER */
+
+footer {
+    background: #111827;
+
+    color: white;
+}
+
+.footer {
+    max-width: 1180px;
+
+    margin: auto;
+
+    padding: 30px 24px;
+
+    text-align: center;
+}
+
+.footer p {
+    color: #64748b;
+
+    font-size: 10px;
+
+    margin-top: 7px;
+}
+
+/* LOADING */
+
+.loading {
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 1000;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    background: #f8fafc;
+}
+
+.loading-box {
+    text-align: center;
+
+    color: #64748b;
+
+    font-size: 12px;
+}
+
+.spinner {
+    width: 35px;
+    height: 35px;
+
+    margin: 0 auto 12px;
+
+    border: 3px solid #e2e8f0;
+
+    border-top-color: #4f46e5;
+
+    border-radius: 50%;
+
+    animation: spin .8s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* MOBILE */
+
+@media (max-width: 600px) {
+
+    .main {
+        padding: 40px 15px 60px;
+    }
+
+    .scanner-card {
+        padding: 20px 15px;
+    }
+
+    .actions {
+        grid-template-columns: 1fr;
+    }
+
+    .info-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .back-link {
+        display: none;
+    }
+}
+</style>
+
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+
+<nav class="navbar">
+
+```
+<div class="nav-container">
+
+    <a href="user.html" class="logo">
+
+        <div class="logo-icon">
+            📚
+        </div>
+
+        SmartLibrary
+
+    </a>
+
+    <a href="user.html" class="back-link">
+        ← Dashboard
+    </a>
+
+</div>
+```
+
+</nav>
+
+<!-- MAIN -->
+
+<main class="main">
+
+```
+<div class="heading">
+
+    <div class="badge">
+        📷 SMART ENTRY SYSTEM
+    </div>
+
+    <h1>
+        Library <span>Entry & Exit</span>
+    </h1>
+
+    <p>
+        Scan your personal SmartLibrary QR code
+        to record your library visit.
+    </p>
+
+</div>
+
+
+<section class="scanner-card">
+
+    <div class="scanner-header">
+
+        <h2>
+            Scan Your QR Code
+        </h2>
+
+        <p>
+            Position your QR code inside the camera frame
+        </p>
+
+    </div>
+
+
+    <!-- CAMERA -->
+
+    <div id="reader"></div>
+
+
+    <!-- ZONE -->
+
+    <div class="zone-section">
+
+        <label
+            class="zone-label"
+            for="zoneSelect"
+        >
+            📍 Select Study Zone
+        </label>
+
+        <select id="zoneSelect">
+
+            <option value="silent">
+                🤫 Silent Study Zone
+            </option>
+
+            <option value="general">
+                📚 General Study Zone
+            </option>
+
+            <option value="discussion">
+                💬 Discussion Zone
+            </option>
+
+        </select>
+
+    </div>
+
+
+    <!-- ACTIONS -->
+
+    <div class="actions">
+
+        <button
+            class="btn btn-entry"
+            id="entryBtn"
+        >
+            🟢 Record Entry
+        </button>
+
+        <button
+            class="btn btn-exit"
+            id="exitBtn"
+        >
+            🔴 Record Exit
+        </button>
+
+    </div>
+
+
+    <!-- STATUS -->
+
+    <div
+        class="status"
+        id="status"
+    >
+        📷 Camera ready. Scan your SmartLibrary QR code.
+    </div>
+
+
+    <!-- INFO -->
+
+    <div class="info-grid">
+
+        <div class="info-card">
+
+            <div class="info-icon">
+                🔐
+            </div>
+
+            <strong>
+                Secure
+            </strong>
+
+            <span>
+                Firebase verified
+            </span>
+
+        </div>
+
+        <div class="info-card">
+
+            <div class="info-icon">
+                ⚡
+            </div>
+
+            <strong>
+                Live
+            </strong>
+
+            <span>
+                Seat count updates
+            </span>
+
+        </div>
+
+        <div class="info-card">
+
+            <div class="info-icon">
+                📱
+            </div>
+
+            <strong>
+                Easy
+            </strong>
+
+            <span>
+                One QR scan
+            </span>
+
+        </div>
+
+    </div>
+
+</section>
+```
+
+</main>
+
+<!-- FOOTER -->
+
+<footer>
+
+```
+<div class="footer">
+
+    <strong>
+        📚 SmartLibrary
+    </strong>
+
+    <p>
+        AI-powered library management system
+    </p>
+
+</div>
+```
+
+</footer>
+
+<!-- LOADING -->
+
+<div
+    class="loading"
+    id="loading"
+>
+
+```
+<div class="loading-box">
+
+    <div class="spinner"></div>
+
+    Checking your account...
+
+</div>
+```
+
+</div>
+
+<!-- FIREBASE + QR -->
+
+<script type="module">
+
+import {
+    initializeApp
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import {
+    getAuth,
+    onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+
+/* FIREBASE CONFIG */
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBROcAD9m--NuxNOtVUAD5IYWaZghMtLKU",
+  authDomain: "smart-library-assistent.firebaseapp.com",
+  databaseURL: "https://smart-library-assistent-default-rtdb.firebaseio.com",
+  projectId: "smart-library-assistent",
+  storageBucket: "smart-library-assistent.firebasestorage.app",
+  messagingSenderId: "36138964774",
+  appId: "1:36138964774:web:45b338aef03cb7b0ffd3e7",
+  measurementId: "G-DQDPCFDNF2"
+};
+
+
+const app =
+    initializeApp(firebaseConfig);
+
+const auth =
+    getAuth(app);
+
+
+/* ELEMENTS */
+
+const loading =
+    document.getElementById("loading");
+
+const statusBox =
+    document.getElementById("status");
+
+const zoneSelect =
+    document.getElementById("zoneSelect");
+
+const entryBtn =
+    document.getElementById("entryBtn");
+
+const exitBtn =
+    document.getElementById("exitBtn");
+
+
+/* SETTINGS */
+
+const API_URL =
+    "http://127.0.0.1:8000";
+
+
+let currentUser = null;
+
+let scannedQR = null;
+
+let scanner = null;
+
+let scannerStarted = false;
+
+
+/* STATUS */
+
+function setStatus(
+    message,
+    type = ""
+) {
+
+    statusBox.textContent =
+        message;
+
+    statusBox.className =
+        "status " + type;
+}
+
+
+/* LOAD QR SCANNER */
+
+function loadScannerLibrary() {
+
+    return new Promise(
+        (resolve, reject) => {
+
+            if (window.Html5Qrcode) {
+
+                resolve();
+
+                return;
+            }
+
+            const script =
+                document.createElement("script");
+
+            script.src =
+                "https://unpkg.com/html5-qrcode";
+
+            script.onload =
+                resolve;
+
+            script.onerror =
+                reject;
+
+            document.head.appendChild(script);
+
+        }
+    );
+
+}
+
+
+/* START SCANNER */
+
+async function startScanner() {
+
+    if (scannerStarted) {
+        return;
+    }
+
+    await loadScannerLibrary();
+
+    scanner =
+        new Html5Qrcode("reader");
+
+    const config = {
+
+        fps: 10,
+
+        qrbox: {
+            width: 250,
+            height: 250
+        }
+
+    };
+
+
+    await scanner.start(
+
+        {
+            facingMode: "environment"
+        },
+
+        config,
+
+        decodedText => {
+
+            handleQRCode(decodedText);
+
+        },
+
+        () => {}
+
+    );
+
+
+    scannerStarted = true;
+
+    setStatus(
+        "📷 QR scanner is active. Scan your personal QR code.",
+        "info"
+    );
+
+}
+
+
+/* HANDLE QR */
+
+function handleQRCode(decodedText) {
+
+    const prefix =
+        "SMARTLIBRARY-STUDENT-";
+
+
+    if (!decodedText.startsWith(prefix)) {
+
+        scannedQR = null;
+
+        setStatus(
+            "❌ Invalid SmartLibrary QR code.",
+            "error"
+        );
+
+        return;
+    }
+
+
+    scannedQR =
+        decodedText;
+
+
+    setStatus(
+        "✅ QR code detected. Choose Entry or Exit.",
+        "success"
+    );
+
+}
+
+
+/* GET TOKEN */
+
+async function getToken() {
+
+    if (!currentUser) {
+
+        throw new Error(
+            "You are not logged in."
+        );
+
+    }
+
+    return await currentUser.getIdToken();
+
+}
+
+
+/* ENTRY */
+
+entryBtn.addEventListener(
+    "click",
+    async () => {
+
+        if (!scannedQR) {
+
+            setStatus(
+                "⚠️ Please scan your SmartLibrary QR code first.",
+                "error"
+            );
+
+            return;
+        }
+
+
+        const zone =
+            zoneSelect.value;
+
+
+        try {
+
+            entryBtn.disabled =
+                true;
+
+            exitBtn.disabled =
+                true;
+
+
+            setStatus(
+                "⏳ Recording your library entry...",
+                "info"
+            );
+
+
+            const token =
+                await getToken();
+
+
+            const response =
+                await fetch(
+                    `${API_URL}/student/entry?zone_id=${encodeURIComponent(zone)}&qr_student_id=${encodeURIComponent(scannedQR)}`,
+                    {
+                        method: "POST",
+
+                        headers: {
+                            "Authorization":
+                                `Bearer ${token}`
+                        }
+                    }
+                );
+
+
+            const data =
+                await response.json();
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    data.detail ||
+                    "Unable to record entry."
+                );
+
+            }
+
+
+            setStatus(
+                `✅ Entry recorded successfully! ${data.available} seats are now available in this zone.`,
+                "success"
+            );
+
+
+            scannedQR = null;
+
+
+        } catch (error) {
+
+            console.error(error);
+
+            setStatus(
+                "❌ " +
+                error.message,
+                "error"
+            );
+
+        } finally {
+
+            entryBtn.disabled =
+                false;
+
+            exitBtn.disabled =
+                false;
+
+        }
+
+    }
+);
+
+
+/* EXIT */
+
+exitBtn.addEventListener(
+    "click",
+    async () => {
+
+        if (!scannedQR) {
+
+            setStatus(
+                "⚠️ Please scan your SmartLibrary QR code first.",
+                "error"
+            );
+
+            return;
+        }
+
+
+        try {
+
+            entryBtn.disabled =
+                true;
+
+            exitBtn.disabled =
+                true;
+
+
+            setStatus(
+                "⏳ Recording your library exit...",
+                "info"
+            );
+
+
+            const token =
+                await getToken();
+
+
+            const response =
+                await fetch(
+                    `${API_URL}/student/exit?qr_student_id=${encodeURIComponent(scannedQR)}`,
+                    {
+                        method: "POST",
+
+                        headers: {
+                            "Authorization":
+                                `Bearer ${token}`
+                        }
+                    }
+                );
+
+
+            const data =
+                await response.json();
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    data.detail ||
+                    "Unable to record exit."
+                );
+
+            }
+
+
+            setStatus(
+                `✅ Exit recorded successfully! ${data.available} seats are now available in your zone.`,
+                "success"
+            );
+
+
+            scannedQR = null;
+
+
+        } catch (error) {
+
+            console.error(error);
+
+            setStatus(
+                "❌ " +
+                error.message,
+                "error"
+            );
+
+        } finally {
+
+            entryBtn.disabled =
+                false;
+
+            exitBtn.disabled =
+                false;
+
+        }
+
+    }
+);
+
+
+/* AUTH */
+
+onAuthStateChanged(
+    auth,
+    async user => {
+
+        if (!user) {
+
+            window.location.href =
+                "login.html";
+
+            return;
+        }
+
+
+        try {
+
+            const tokenResult =
+                await user.getIdTokenResult(true);
+
+
+            if (
+                tokenResult.claims.admin === true
+            ) {
+
+                window.location.href =
+                    "admin.html";
+
+                return;
+            }
+
+
+            currentUser =
+                user;
+
+
+            loading.style.display =
+                "none";
+
+
+            await startScanner();
+
+        } catch (error) {
+
+            console.error(error);
+
+            loading.innerHTML = `
+
+                <div class="loading-box">
+
+                    ⚠️
+
+                    <br><br>
+
+                    Unable to start the scanner.
+
+                    <br><br>
+
+                    <a
+                        href="user.html"
+                        style="
+                            color:#4f46e5;
+                            text-decoration:none;
+                            font-weight:700;
+                        "
+                    >
+                        Return to Dashboard
+                    </a>
+
+                </div>
+
+            `;
+
+        }
+
+    }
+);
+
+</script>
+
+</body>
+</html>

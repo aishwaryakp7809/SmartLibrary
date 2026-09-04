@@ -1,0 +1,1636 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>SmartLibrary | AI-Powered Library</title>
+
+<style>
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: "Segoe UI", Arial, sans-serif;
+    color: #172033;
+    background: #f8fafc;
+    line-height: 1.6;
+}
+
+/* ================= NAVBAR ================= */
+
+.navbar {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background: rgba(255,255,255,0.94);
+    backdrop-filter: blur(15px);
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.nav-container {
+    max-width: 1180px;
+    margin: auto;
+    height: 76px;
+    padding: 0 24px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+
+    text-decoration: none;
+    color: #172033;
+
+    font-size: 21px;
+    font-weight: 800;
+}
+
+.logo-icon {
+    width: 43px;
+    height: 43px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 13px;
+
+    background: linear-gradient(135deg, #4f46e5, #2563eb);
+    color: white;
+
+    font-size: 22px;
+
+    box-shadow: 0 8px 20px rgba(79,70,229,0.25);
+}
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: #64748b;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    transition: 0.2s;
+}
+
+.nav-links a:hover {
+    color: #4f46e5;
+}
+
+.login-btn {
+    padding: 11px 20px;
+
+    border-radius: 10px;
+
+    background: #eef2ff;
+    color: #4f46e5 !important;
+}
+
+.login-btn:hover {
+    background: #4f46e5;
+    color: white !important;
+}
+
+/* ================= HERO ================= */
+
+.hero {
+    position: relative;
+    overflow: hidden;
+
+    background:
+        radial-gradient(circle at 10% 20%, rgba(99,102,241,0.13), transparent 30%),
+        radial-gradient(circle at 90% 10%, rgba(14,165,233,0.12), transparent 28%),
+        #f8fafc;
+}
+
+.hero-container {
+    max-width: 1180px;
+    margin: auto;
+
+    padding: 90px 24px 65px;
+
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+
+    gap: 60px;
+    align-items: center;
+}
+
+.badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+
+    padding: 8px 13px;
+    margin-bottom: 22px;
+
+    border-radius: 30px;
+
+    background: #eef2ff;
+    color: #4f46e5;
+
+    font-size: 11px;
+    font-weight: 800;
+
+    letter-spacing: 1px;
+}
+
+.hero h1 {
+    font-size: clamp(45px, 6vw, 70px);
+
+    line-height: 1.05;
+    letter-spacing: -2.5px;
+
+    margin-bottom: 24px;
+}
+
+.hero h1 span {
+    background: linear-gradient(135deg, #4f46e5, #0284c7);
+
+    -webkit-background-clip: text;
+    background-clip: text;
+
+    color: transparent;
+}
+
+.hero-description {
+    max-width: 600px;
+
+    color: #64748b;
+
+    font-size: 17px;
+    line-height: 1.8;
+
+    margin-bottom: 30px;
+}
+
+.hero-buttons {
+    display: flex;
+    gap: 14px;
+
+    flex-wrap: wrap;
+}
+
+.primary-btn,
+.secondary-btn,
+.qr-btn,
+.entry-btn {
+
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 8px;
+
+    padding: 14px 21px;
+
+    border-radius: 12px;
+
+    text-decoration: none;
+
+    font-size: 14px;
+    font-weight: 700;
+
+    transition: 0.25s;
+}
+
+.primary-btn {
+
+    color: white;
+
+    background: linear-gradient(135deg, #4f46e5, #2563eb);
+
+    box-shadow: 0 12px 25px rgba(79,70,229,0.22);
+}
+
+.primary-btn:hover {
+    transform: translateY(-3px);
+
+    box-shadow: 0 16px 30px rgba(79,70,229,0.28);
+}
+
+.secondary-btn {
+
+    color: #334155;
+
+    background: white;
+
+    border: 1px solid #e2e8f0;
+}
+
+.secondary-btn:hover {
+    transform: translateY(-3px);
+    border-color: #c7d2fe;
+}
+
+/* ================= STUDENT ACTIONS ================= */
+
+.student-actions {
+
+    max-width: 1180px;
+
+    margin: 0 auto;
+
+    padding: 0 24px 70px;
+}
+
+.student-actions-box {
+
+    background: white;
+
+    border: 1px solid #e7ebf1;
+
+    border-radius: 24px;
+
+    padding: 30px;
+
+    box-shadow: 0 12px 35px rgba(15,23,42,0.05);
+}
+
+.student-actions-header {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    gap: 20px;
+
+    margin-bottom: 22px;
+}
+
+.student-actions-header h2 {
+    font-size: 22px;
+}
+
+.student-actions-header p {
+    color: #64748b;
+
+    font-size: 13px;
+}
+
+.action-grid {
+
+    display: grid;
+
+    grid-template-columns: repeat(3, 1fr);
+
+    gap: 15px;
+}
+
+.action-card {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 15px;
+
+    padding: 20px;
+
+    border-radius: 17px;
+
+    text-decoration: none;
+
+    border: 1px solid #e7ebf1;
+
+    background: #f8fafc;
+
+    transition: 0.25s;
+}
+
+.action-card:hover {
+
+    transform: translateY(-4px);
+
+    background: white;
+
+    border-color: #c7d2fe;
+
+    box-shadow: 0 12px 28px rgba(15,23,42,0.08);
+}
+
+.action-icon {
+
+    width: 52px;
+    height: 52px;
+
+    flex-shrink: 0;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 15px;
+
+    background: #eef2ff;
+
+    font-size: 25px;
+}
+
+.action-text h3 {
+
+    color: #172033;
+
+    font-size: 15px;
+
+    margin-bottom: 3px;
+}
+
+.action-text p {
+
+    color: #64748b;
+
+    font-size: 12px;
+}
+
+/* ================= HERO VISUAL ================= */
+
+.hero-visual {
+
+    position: relative;
+
+    min-height: 390px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+}
+
+.book-card {
+
+    width: 310px;
+
+    padding: 30px;
+
+    border-radius: 25px;
+
+    background: white;
+
+    box-shadow: 0 25px 70px rgba(15,23,42,0.12);
+
+    transform: rotate(3deg);
+
+    position: relative;
+
+    z-index: 2;
+}
+
+.book-cover {
+
+    height: 180px;
+
+    border-radius: 18px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    background: linear-gradient(145deg, #312e81, #4f46e5, #0284c7);
+
+    color: white;
+
+    font-size: 65px;
+
+    margin-bottom: 22px;
+}
+
+.book-card h3 {
+
+    font-size: 20px;
+
+    margin-bottom: 6px;
+}
+
+.book-card p {
+
+    color: #64748b;
+
+    font-size: 13px;
+}
+
+.status-pill {
+
+    display: inline-block;
+
+    margin-top: 15px;
+
+    padding: 6px 10px;
+
+    border-radius: 20px;
+
+    background: #dcfce7;
+
+    color: #15803d;
+
+    font-size: 11px;
+
+    font-weight: 700;
+}
+
+.floating-card {
+
+    position: absolute;
+
+    padding: 16px 18px;
+
+    background: white;
+
+    border-radius: 15px;
+
+    box-shadow: 0 15px 35px rgba(15,23,42,0.1);
+
+    font-size: 12px;
+
+    font-weight: 700;
+
+    z-index: 3;
+}
+
+.floating-card.one {
+
+    top: 25px;
+
+    right: 5px;
+}
+
+.floating-card.two {
+
+    bottom: 35px;
+
+    left: 0;
+}
+
+/* ================= STATS ================= */
+
+.stats {
+
+    max-width: 1100px;
+
+    margin: -5px auto 0;
+
+    padding: 0 24px 70px;
+
+    display: grid;
+
+    grid-template-columns: repeat(3, 1fr);
+
+    gap: 18px;
+}
+
+.stat-card {
+
+    background: white;
+
+    border: 1px solid #e8edf4;
+
+    border-radius: 18px;
+
+    padding: 25px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 18px;
+
+    box-shadow: 0 8px 25px rgba(15,23,42,0.04);
+
+    transition: 0.25s;
+}
+
+.stat-card:hover {
+
+    transform: translateY(-5px);
+
+    box-shadow: 0 15px 35px rgba(15,23,42,0.08);
+}
+
+.stat-icon {
+
+    width: 55px;
+    height: 55px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 15px;
+
+    background: #eef2ff;
+
+    font-size: 25px;
+}
+
+.stat-label {
+
+    color: #64748b;
+
+    font-size: 12px;
+
+    font-weight: 600;
+}
+
+.stat-number {
+
+    font-size: 24px;
+
+    font-weight: 800;
+}
+
+.live {
+
+    color: #16a34a;
+
+    font-size: 13px;
+
+    font-weight: 800;
+}
+
+/* ================= SECTION ================= */
+
+.section {
+
+    max-width: 1180px;
+
+    margin: auto;
+
+    padding: 85px 24px;
+}
+
+.section-heading {
+
+    text-align: center;
+
+    max-width: 650px;
+
+    margin: auto auto 50px;
+}
+
+.section-label {
+
+    color: #4f46e5;
+
+    font-size: 11px;
+
+    font-weight: 800;
+
+    letter-spacing: 1.5px;
+
+    margin-bottom: 12px;
+}
+
+.section-heading h2 {
+
+    font-size: 38px;
+
+    line-height: 1.2;
+
+    margin-bottom: 15px;
+}
+
+.section-heading p {
+
+    color: #64748b;
+
+    font-size: 15px;
+}
+
+/* ================= FEATURES ================= */
+
+.features {
+
+    background: white;
+}
+
+.feature-grid {
+
+    display: grid;
+
+    grid-template-columns: repeat(3, 1fr);
+
+    gap: 22px;
+}
+
+.feature-card {
+
+    padding: 30px;
+
+    border: 1px solid #e7ebf1;
+
+    border-radius: 20px;
+
+    background: #fff;
+
+    transition: 0.25s;
+}
+
+.feature-card:hover {
+
+    transform: translateY(-7px);
+
+    border-color: #c7d2fe;
+
+    box-shadow: 0 20px 40px rgba(15,23,42,0.07);
+}
+
+.feature-icon {
+
+    width: 55px;
+    height: 55px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 15px;
+
+    background: #eef2ff;
+
+    font-size: 27px;
+
+    margin-bottom: 22px;
+}
+
+.feature-card h3 {
+
+    font-size: 19px;
+
+    margin-bottom: 10px;
+}
+
+.feature-card p {
+
+    color: #64748b;
+
+    font-size: 13px;
+
+    line-height: 1.7;
+
+    margin-bottom: 20px;
+}
+
+.feature-link {
+
+    color: #4f46e5;
+
+    text-decoration: none;
+
+    font-size: 13px;
+
+    font-weight: 800;
+}
+
+/* ================= ABOUT ================= */
+
+.about {
+
+    background: #f8fafc;
+}
+
+.about-box {
+
+    display: grid;
+
+    grid-template-columns: 0.9fr 1.1fr;
+
+    gap: 65px;
+
+    align-items: center;
+}
+
+.about-visual {
+
+    min-height: 320px;
+
+    border-radius: 25px;
+
+    background: linear-gradient(145deg, #312e81, #4f46e5, #0284c7);
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    color: white;
+
+    font-size: 100px;
+
+    box-shadow: 0 25px 55px rgba(79,70,229,0.18);
+}
+
+.about-content h2 {
+
+    font-size: 38px;
+
+    line-height: 1.2;
+
+    margin-bottom: 18px;
+}
+
+.about-content p {
+
+    color: #64748b;
+
+    font-size: 15px;
+
+    line-height: 1.8;
+
+    margin-bottom: 25px;
+}
+
+.check-list {
+
+    display: grid;
+
+    gap: 13px;
+}
+
+.check {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    font-size: 14px;
+
+    font-weight: 600;
+}
+
+.check span {
+
+    width: 23px;
+    height: 23px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: #dcfce7;
+
+    color: #16a34a;
+
+    font-size: 12px;
+}
+
+/* ================= CTA ================= */
+
+.cta {
+
+    max-width: 1120px;
+
+    margin: 40px auto 90px;
+
+    padding: 65px 30px;
+
+    text-align: center;
+
+    border-radius: 28px;
+
+    color: white;
+
+    background: linear-gradient(135deg, #312e81, #4f46e5, #0284c7);
+
+    box-shadow: 0 25px 60px rgba(79,70,229,0.18);
+}
+
+.cta h2 {
+
+    font-size: 36px;
+
+    margin-bottom: 12px;
+}
+
+.cta p {
+
+    color: rgba(255,255,255,0.82);
+
+    font-size: 15px;
+
+    margin-bottom: 25px;
+}
+
+.cta .primary-btn {
+
+    background: white;
+
+    color: #4f46e5;
+
+    box-shadow: none;
+}
+
+/* ================= FOOTER ================= */
+
+footer {
+
+    background: #111827;
+
+    color: white;
+}
+
+.footer-container {
+
+    max-width: 1180px;
+
+    margin: auto;
+
+    padding: 50px 24px 25px;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    gap: 30px;
+}
+
+.footer-brand p {
+
+    color: #94a3b8;
+
+    font-size: 13px;
+
+    margin-top: 8px;
+}
+
+.footer-links {
+
+    display: flex;
+
+    gap: 25px;
+}
+
+.footer-links a {
+
+    color: #94a3b8;
+
+    text-decoration: none;
+
+    font-size: 13px;
+}
+
+.footer-links a:hover {
+
+    color: white;
+}
+
+.footer-bottom {
+
+    max-width: 1180px;
+
+    margin: auto;
+
+    border-top: 1px solid #263244;
+
+    padding: 20px 24px;
+
+    color: #64748b;
+
+    font-size: 11px;
+
+    text-align: center;
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media (max-width: 900px) {
+
+    .hero-container {
+
+        grid-template-columns: 1fr;
+
+        text-align: center;
+    }
+
+    .hero-description {
+
+        margin-left: auto;
+
+        margin-right: auto;
+    }
+
+    .hero-buttons {
+
+        justify-content: center;
+    }
+
+    .hero-visual {
+
+        min-height: 350px;
+    }
+
+    .stats,
+    .feature-grid,
+    .action-grid {
+
+        grid-template-columns: 1fr;
+    }
+
+    .about-box {
+
+        grid-template-columns: 1fr;
+    }
+
+    .about-content {
+
+        text-align: center;
+    }
+
+    .check-list {
+
+        max-width: 300px;
+
+        margin: auto;
+
+        text-align: left;
+    }
+}
+
+@media (max-width: 650px) {
+
+    .nav-links a:not(.login-btn) {
+
+        display: none;
+    }
+
+    .nav-container {
+
+        height: 68px;
+    }
+
+    .hero-container {
+
+        padding-top: 65px;
+    }
+
+    .hero h1 {
+
+        font-size: 43px;
+
+        letter-spacing: -1.5px;
+    }
+
+    .hero-description {
+
+        font-size: 15px;
+    }
+
+    .book-card {
+
+        width: 270px;
+    }
+
+    .floating-card.one {
+
+        right: -5px;
+    }
+
+    .section {
+
+        padding: 65px 20px;
+    }
+
+    .section-heading h2,
+    .about-content h2 {
+
+        font-size: 30px;
+    }
+
+    .cta {
+
+        margin: 20px 15px 60px;
+
+        padding: 45px 20px;
+    }
+
+    .cta h2 {
+
+        font-size: 29px;
+    }
+
+    .footer-container {
+
+        flex-direction: column;
+
+        text-align: center;
+    }
+
+    .footer-links {
+
+        justify-content: center;
+
+        flex-wrap: wrap;
+    }
+
+    .student-actions {
+
+        padding-left: 15px;
+
+        padding-right: 15px;
+    }
+
+    .student-actions-box {
+
+        padding: 22px 18px;
+    }
+}
+
+</style>
+
+</head>
+
+<body>
+
+<!-- ================= NAVBAR ================= -->
+
+<nav class="navbar">
+
+```
+<div class="nav-container">
+
+    <a href="index.html" class="logo">
+
+        <div class="logo-icon">📚</div>
+
+        SmartLibrary
+
+    </a>
+
+    <div class="nav-links">
+
+        <a href="#home">Home</a>
+
+        <a href="#features">Features</a>
+
+        <a href="#about">About</a>
+
+        <a href="login.html" class="login-btn">
+            Sign In →
+        </a>
+
+    </div>
+
+</div>
+```
+
+</nav>
+
+<!-- ================= HERO ================= -->
+
+<section class="hero" id="home">
+
+```
+<div class="hero-container">
+
+    <div>
+
+        <div class="badge">
+            ✨ AI-POWERED LIBRARY SYSTEM
+        </div>
+
+        <h1>
+            Your Library,<br>
+            <span>Reimagined.</span>
+        </h1>
+
+        <p class="hero-description">
+
+            Discover books, find your perfect study seat and
+            get instant answers with your intelligent library
+            assistant — all from one smart platform.
+
+        </p>
+
+        <div class="hero-buttons">
+
+            <a href="books.html" class="primary-btn">
+                📚 Explore Library
+            </a>
+
+            <a href="login.html" class="secondary-btn">
+                🤖 Ask AI Assistant
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <div class="hero-visual">
+
+        <div class="floating-card one">
+            🪑 Live Seat Availability
+        </div>
+
+        <div class="book-card">
+
+            <div class="book-cover">
+                📖
+            </div>
+
+            <h3>
+                Smart Book Discovery
+            </h3>
+
+            <p>
+                Search books, authors and subjects instantly.
+            </p>
+
+            <span class="status-pill">
+                ● Available Now
+            </span>
+
+        </div>
+
+        <div class="floating-card two">
+            🤖 AI Assistant Online
+        </div>
+
+    </div>
+
+</div>
+```
+
+</section>
+
+<!-- ================= STUDENT QUICK ACTIONS ================= -->
+
+<section class="student-actions">
+
+```
+<div class="student-actions-box">
+
+    <div class="student-actions-header">
+
+        <div>
+
+            <h2>
+                🎓 Student Quick Access
+            </h2>
+
+            <p>
+                Manage your library visit quickly using your student account.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="action-grid">
+
+        <!-- STUDENT QR -->
+
+        <a
+            href="login.html?redirect=student-qr.html"
+            class="action-card"
+        >
+
+            <div class="action-icon">
+                📱
+            </div>
+
+            <div class="action-text">
+
+                <h3>
+                    My Student QR
+                </h3>
+
+                <p>
+                    View your personal library QR code
+                </p>
+
+            </div>
+
+        </a>
+
+
+        <!-- ENTRY / EXIT -->
+
+        <a
+            href="login.html?redirect=student-scanner.html"
+            class="action-card"
+        >
+
+            <div class="action-icon">
+                📷
+            </div>
+
+            <div class="action-text">
+
+                <h3>
+                    Library Entry / Exit
+                </h3>
+
+                <p>
+                    Scan your QR to enter or leave
+                </p>
+
+            </div>
+
+        </a>
+
+
+        <!-- SEATS -->
+
+        <a
+            href="seats.html"
+            class="action-card"
+        >
+
+            <div class="action-icon">
+                🪑
+            </div>
+
+            <div class="action-text">
+
+                <h3>
+                    Find a Seat
+                </h3>
+
+                <p>
+                    Check live seat availability
+                </p>
+
+            </div>
+
+        </a>
+
+    </div>
+
+</div>
+```
+
+</section>
+
+<!-- ================= STATUS ================= -->
+
+<section class="stats">
+
+```
+<div class="stat-card">
+
+    <div class="stat-icon">
+        📚
+    </div>
+
+    <div>
+
+        <div class="stat-label">
+            BOOKS AVAILABLE
+        </div>
+
+        <div class="stat-number">
+            22
+        </div>
+
+        <div class="stat-label">
+            Across the library
+        </div>
+
+    </div>
+
+</div>
+
+
+<div class="stat-card">
+
+    <div class="stat-icon">
+        🪑
+    </div>
+
+    <div>
+
+        <div class="stat-label">
+            SEATS AVAILABLE
+        </div>
+
+        <div class="stat-number">
+            90
+        </div>
+
+        <div class="stat-label">
+            Across study zones
+        </div>
+
+    </div>
+
+</div>
+
+
+<div class="stat-card">
+
+    <div class="stat-icon">
+        🤖
+    </div>
+
+    <div>
+
+        <div class="stat-label">
+            AI ASSISTANT
+        </div>
+
+        <div class="live">
+            ● ONLINE
+        </div>
+
+        <div class="stat-label">
+            Ready to help
+        </div>
+
+    </div>
+
+</div>
+```
+
+</section>
+
+<!-- ================= FEATURES ================= -->
+
+<section class="features" id="features">
+
+```
+<div class="section">
+
+    <div class="section-heading">
+
+        <div class="section-label">
+            POWERFUL FEATURES
+        </div>
+
+        <h2>
+            Everything your library needs
+        </h2>
+
+        <p>
+            One smart platform for books, seats and
+            intelligent assistance.
+        </p>
+
+    </div>
+
+
+    <div class="feature-grid">
+
+        <div class="feature-card">
+
+            <div class="feature-icon">
+                📚
+            </div>
+
+            <h3>
+                Smart Book Search
+            </h3>
+
+            <p>
+                Search books by title, author or subject
+                and instantly check availability.
+            </p>
+
+            <a href="books.html" class="feature-link">
+                Explore Books →
+            </a>
+
+        </div>
+
+
+        <div class="feature-card">
+
+            <div class="feature-icon">
+                🪑
+            </div>
+
+            <h3>
+                Live Seat Availability
+            </h3>
+
+            <p>
+                Find available seats across Silent,
+                General and Discussion study zones.
+            </p>
+
+            <a href="seats.html" class="feature-link">
+                Find a Seat →
+            </a>
+
+        </div>
+
+
+        <div class="feature-card">
+
+            <div class="feature-icon">
+                🤖
+            </div>
+
+            <h3>
+                AI Library Assistant
+            </h3>
+
+            <p>
+                Ask questions about books, rules,
+                timings and library services.
+            </p>
+
+            <a
+                href="login.html?redirect=user.html"
+                class="feature-link"
+            >
+                Ask AI →
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+```
+
+</section>
+
+<!-- ================= ABOUT ================= -->
+
+<section class="about" id="about">
+
+```
+<div class="section">
+
+    <div class="about-box">
+
+        <div class="about-visual">
+            📚
+        </div>
+
+
+        <div class="about-content">
+
+            <div class="section-label">
+                WHY SMARTLIBRARY?
+            </div>
+
+            <h2>
+                A smarter way to experience your library.
+            </h2>
+
+            <p>
+                SmartLibrary combines real-time library data
+                with artificial intelligence to make finding
+                books, seats and information easier for every
+                student.
+            </p>
+
+
+            <div class="check-list">
+
+                <div class="check">
+                    <span>✓</span>
+                    Real-time availability
+                </div>
+
+                <div class="check">
+                    <span>✓</span>
+                    AI-powered assistance
+                </div>
+
+                <div class="check">
+                    <span>✓</span>
+                    Student QR-based entry and exit
+                </div>
+
+                <div class="check">
+                    <span>✓</span>
+                    Easy library management
+                </div>
+
+                <div class="check">
+                    <span>✓</span>
+                    Student-friendly experience
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+```
+
+</section>
+
+<!-- ================= CTA ================= -->
+
+<section class="cta">
+
+```
+<h2>
+    Ready to explore your library?
+</h2>
+
+<p>
+    Find books, seats and answers — all in one place.
+</p>
+
+<a href="login.html" class="primary-btn">
+    Get Started →
+</a>
+```
+
+</section>
+
+<!-- ================= FOOTER ================= -->
+
+<footer>
+
+```
+<div class="footer-container">
+
+    <div class="footer-brand">
+
+        <a
+            href="index.html"
+            class="logo"
+            style="color:white;"
+        >
+
+            <div class="logo-icon">
+                📚
+            </div>
+
+            SmartLibrary
+
+        </a>
+
+        <p>
+            AI-powered library management system
+        </p>
+
+    </div>
+
+
+    <div class="footer-links">
+
+        <a href="index.html">
+            Home
+        </a>
+
+        <a href="books.html">
+            Books
+        </a>
+
+        <a href="seats.html">
+            Seats
+        </a>
+
+        <a href="login.html">
+            Login
+        </a>
+
+    </div>
+
+</div>
+
+
+<div class="footer-bottom">
+
+    © 2026 SmartLibrary. All rights reserved.
+
+</div>
+```
+
+</footer>
+
+</body>
+</html>

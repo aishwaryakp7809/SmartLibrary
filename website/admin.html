@@ -1,0 +1,1541 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Admin Dashboard | SmartLibrary</title>
+
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Segoe UI", Arial, sans-serif;
+            background: #f8fafc;
+            color: #0f172a;
+        }
+
+        /* NAVBAR */
+
+        .navbar {
+            height: 72px;
+            background: rgba(255,255,255,0.95);
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 5%;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(12px);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 20px;
+            font-weight: 800;
+            color: #0f172a;
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 11px;
+            color: white;
+            background: linear-gradient(135deg,#4f46e5,#0ea5e9);
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .admin-email {
+            color: #64748b;
+            font-size: 13px;
+        }
+
+        .logout-btn {
+            border: none;
+            background: #f1f5f9;
+            color: #334155;
+            padding: 9px 14px;
+            border-radius: 9px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .logout-btn:hover {
+            background: #e2e8f0;
+        }
+
+        /* MAIN */
+
+        .container {
+            width: 92%;
+            max-width: 1250px;
+            margin: auto;
+            padding: 40px 0 70px;
+        }
+
+        .hero {
+            margin-bottom: 30px;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            padding: 7px 12px;
+            border-radius: 20px;
+            background: #eef2ff;
+            color: #4f46e5;
+            font-size: 12px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .hero h1 {
+            font-size: 36px;
+            margin-bottom: 8px;
+        }
+
+        .hero p {
+            color: #64748b;
+            font-size: 15px;
+        }
+
+        /* STATS */
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4,1fr);
+            gap: 18px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 18px;
+            padding: 22px;
+            box-shadow: 0 8px 25px rgba(15,23,42,0.04);
+        }
+
+        .stat-icon {
+            font-size: 22px;
+            margin-bottom: 12px;
+        }
+
+        .stat-number {
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 4px;
+        }
+
+        .stat-label {
+            color: #64748b;
+            font-size: 13px;
+        }
+
+        /* SECTIONS */
+
+        .section {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 20px;
+            padding: 28px;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 25px rgba(15,23,42,0.04);
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 22px;
+        }
+
+        .section-header h2 {
+            font-size: 21px;
+        }
+
+        .section-header p {
+            color: #64748b;
+            font-size: 13px;
+            margin-top: 4px;
+        }
+
+        /* FORM */
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(3,1fr);
+            gap: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 12px;
+            font-weight: 700;
+            color: #475569;
+            margin-bottom: 7px;
+        }
+
+        .form-group input {
+            width: 100%;
+            height: 44px;
+            border: 1px solid #dbe2ea;
+            border-radius: 10px;
+            padding: 0 12px;
+            outline: none;
+            font-size: 14px;
+        }
+
+        .form-group input:focus {
+            border-color: #6366f1;
+            box-shadow: 0 0 0 3px rgba(99,102,241,0.08);
+        }
+
+        .form-actions {
+            margin-top: 18px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .primary-btn,
+        .secondary-btn {
+            border: none;
+            padding: 11px 18px;
+            border-radius: 10px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .primary-btn {
+            background: linear-gradient(135deg,#4f46e5,#2563eb);
+            color: white;
+        }
+
+        .secondary-btn {
+            background: #f1f5f9;
+            color: #334155;
+        }
+
+        .primary-btn:hover {
+            opacity: 0.92;
+        }
+
+        /* TABLE */
+
+        .table-wrap {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 800px;
+        }
+
+        th {
+            text-align: left;
+            padding: 13px;
+            background: #f8fafc;
+            color: #64748b;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        td {
+            padding: 14px 13px;
+            border-bottom: 1px solid #f1f5f9;
+            font-size: 13px;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        .book-id {
+            font-weight: 800;
+            color: #4f46e5;
+        }
+
+        .availability {
+            font-weight: 700;
+        }
+
+        .action-btn {
+            border: none;
+            padding: 7px 10px;
+            border-radius: 7px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 700;
+            margin-right: 5px;
+        }
+
+        .edit-btn {
+            background: #eef2ff;
+            color: #4338ca;
+        }
+
+        .delete-btn {
+            background: #fef2f2;
+            color: #dc2626;
+        }
+
+        /* SEATS */
+
+        .zone-grid {
+            display: grid;
+            grid-template-columns: repeat(3,1fr);
+            gap: 18px;
+        }
+
+        .zone-card {
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 20px;
+            background: #fff;
+        }
+
+        .zone-name {
+            font-weight: 800;
+            margin-bottom: 15px;
+        }
+
+        .zone-number {
+            font-size: 28px;
+            font-weight: 800;
+        }
+
+        .zone-number span {
+            color: #94a3b8;
+            font-size: 17px;
+        }
+
+        .zone-status {
+            color: #64748b;
+            font-size: 12px;
+            margin: 5px 0 15px;
+        }
+
+        .seat-input {
+            width: 100%;
+            height: 40px;
+            border: 1px solid #dbe2ea;
+            border-radius: 9px;
+            padding: 0 10px;
+            margin-bottom: 9px;
+        }
+
+        .update-seat {
+            width: 100%;
+            border: none;
+            padding: 9px;
+            border-radius: 9px;
+            background: #0f172a;
+            color: white;
+            cursor: pointer;
+            font-weight: 700;
+        }
+
+        /* STATUS */
+
+        #status {
+            display: none;
+            padding: 13px 16px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .status-success {
+            display: block !important;
+            background: #f0fdf4;
+            color: #15803d;
+            border: 1px solid #bbf7d0;
+        }
+
+        .status-error {
+            display: block !important;
+            background: #fef2f2;
+            color: #b91c1c;
+            border: 1px solid #fecaca;
+        }
+
+        .empty {
+            text-align: center;
+            color: #94a3b8;
+            padding: 30px;
+        }
+
+        /* RESPONSIVE */
+
+        @media(max-width:900px) {
+
+            .stats {
+                grid-template-columns: repeat(2,1fr);
+            }
+
+            .form-grid {
+                grid-template-columns: repeat(2,1fr);
+            }
+
+            .zone-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media(max-width:600px) {
+
+            .navbar {
+                padding: 0 18px;
+            }
+
+            .admin-email {
+                display: none;
+            }
+
+            .container {
+                width: 94%;
+                padding-top: 25px;
+            }
+
+            .hero h1 {
+                font-size: 29px;
+            }
+
+            .stats {
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+            }
+
+            .stat-card {
+                padding: 16px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .section {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<nav class="navbar">
+
+    <a href="index.html" class="logo">
+        <div class="logo-icon">📚</div>
+        SmartLibrary
+    </a>
+
+    <div class="nav-right">
+
+        <span id="adminEmail" class="admin-email">
+            Checking account...
+        </span>
+
+        <button id="logoutBtn" class="logout-btn">
+            Logout
+        </button>
+
+    </div>
+
+</nav>
+
+
+<main class="container">
+
+    <div class="hero">
+
+        <div class="hero-badge">
+            🛡️ ADMINISTRATOR PANEL
+        </div>
+
+        <h1>Library Management</h1>
+
+        <p>
+            Manage books and monitor live study-zone occupancy.
+        </p>
+
+    </div>
+
+
+    <div id="status"></div>
+
+
+    <!-- STATS -->
+
+    <section class="stats">
+
+        <div class="stat-card">
+            <div class="stat-icon">📚</div>
+            <div id="bookCount" class="stat-number">0</div>
+            <div class="stat-label">Books</div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon">📖</div>
+            <div id="availableCopies" class="stat-number">0</div>
+            <div class="stat-label">Available Copies</div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon">🪑</div>
+            <div id="availableSeats" class="stat-number">0</div>
+            <div class="stat-label">Available Seats</div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon">🟢</div>
+            <div class="stat-number">LIVE</div>
+            <div class="stat-label">System Status</div>
+        </div>
+
+    </section>
+
+
+    <!-- BOOK MANAGEMENT -->
+
+    <section class="section">
+
+        <div class="section-header">
+
+            <div>
+                <h2>📚 Book Management</h2>
+                <p>Add new books or update existing library records.</p>
+            </div>
+
+        </div>
+
+
+        <div class="form-grid">
+
+            <div class="form-group">
+                <label>BOOK ID</label>
+                <input id="bookId" placeholder="Example: B010">
+            </div>
+
+            <div class="form-group">
+                <label>TITLE</label>
+                <input id="title" placeholder="Book title">
+            </div>
+
+            <div class="form-group">
+                <label>AUTHOR</label>
+                <input id="author" placeholder="Author name">
+            </div>
+
+            <div class="form-group">
+                <label>SUBJECT</label>
+                <input id="subject" placeholder="Subject">
+            </div>
+
+            <div class="form-group">
+                <label>AVAILABLE COPIES</label>
+                <input id="available" type="number" min="0" placeholder="0">
+            </div>
+
+            <div class="form-group">
+                <label>TOTAL COPIES</label>
+                <input id="total" type="number" min="1" placeholder="1">
+            </div>
+
+            <div class="form-group">
+                <label>RACK</label>
+                <input id="rack" placeholder="Example: Rack A1">
+            </div>
+
+        </div>
+
+
+        <div class="form-actions">
+
+            <button id="saveBookBtn" class="primary-btn">
+                ➕ Add Book
+            </button>
+
+            <button id="cancelBtn" class="secondary-btn" style="display:none;">
+                Cancel Edit
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- BOOK TABLE -->
+
+    <section class="section">
+
+        <div class="section-header">
+
+            <div>
+                <h2>Current Books</h2>
+                <p>Books currently stored in Firebase.</p>
+            </div>
+
+        </div>
+
+        <div class="table-wrap">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+                        <th>ID</th>
+                        <th>Title</th>
+                        <th>Author</th>
+                        <th>Subject</th>
+                        <th>Available</th>
+                        <th>Total</th>
+                        <th>Rack</th>
+                        <th>Actions</th>
+                    </tr>
+
+                </thead>
+
+                <tbody id="booksTable"></tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
+
+    <!-- SEAT MANAGEMENT -->
+
+    <section class="section">
+
+        <div class="section-header">
+
+            <div>
+                <h2>🪑 Study Zone Management</h2>
+                <p>Monitor and manually correct live seat occupancy.</p>
+            </div>
+
+        </div>
+
+        <div id="zones" class="zone-grid"></div>
+
+    </section>
+
+</main>
+
+
+<script>
+
+ const firebaseConfig = {
+  apiKey: "AIzaSyBROcAD9m--NuxNOtVUAD5IYWaZghMtLKU",
+  authDomain: "smart-library-assistent.firebaseapp.com",
+  databaseURL: "https://smart-library-assistent-default-rtdb.firebaseio.com",
+  projectId: "smart-library-assistent",
+  storageBucket: "smart-library-assistent.firebasestorage.app",
+  messagingSenderId: "36138964774",
+  appId: "1:36138964774:web:45b338aef03cb7b0ffd3e7",
+  measurementId: "G-DQDPCFDNF2"
+};
+
+firebase.initializeApp(firebaseConfig);
+
+const auth = firebase.auth();
+
+const API = "http://127.0.0.1:8000";
+
+
+let books = {};
+
+let editingBookId = null;
+
+
+/* ELEMENTS */
+
+const booksTable =
+    document.getElementById("booksTable");
+
+const zonesContainer =
+    document.getElementById("zones");
+
+const statusBox =
+    document.getElementById("status");
+
+const saveBookBtn =
+    document.getElementById("saveBookBtn");
+
+const cancelBtn =
+    document.getElementById("cancelBtn");
+
+
+/* STATUS */
+
+function showStatus(message, type = "success") {
+
+    statusBox.textContent = message;
+
+    statusBox.className =
+        type === "error"
+        ? "status-error"
+        : "status-success";
+
+    setTimeout(() => {
+        statusBox.className = "";
+        statusBox.style.display = "none";
+    }, 4000);
+}
+
+
+/* ESCAPE HTML */
+
+function escapeHtml(value) {
+
+    return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
+
+/* AUTH */
+
+auth.onAuthStateChanged(async (user) => {
+
+    if (!user) {
+
+        window.location.href = "login.html";
+
+        return;
+    }
+
+    try {
+
+        const tokenResult =
+            await user.getIdTokenResult(true);
+
+        const isAdmin =
+            tokenResult.claims.admin === true;
+
+        if (!isAdmin) {
+
+            await auth.signOut();
+
+            alert(
+                "Administrator access is required."
+            );
+
+            window.location.href = "login.html";
+
+            return;
+        }
+
+        document.getElementById("adminEmail").textContent =
+            user.email || "Administrator";
+
+        await loadAll();
+
+    } catch (error) {
+
+        console.error(error);
+
+        showStatus(
+            "Unable to verify administrator account.",
+            "error"
+        );
+
+    }
+
+});
+
+
+/* GET FRESH TOKEN */
+
+async function getAuthHeaders() {
+
+    const user = auth.currentUser;
+
+    if (!user) {
+
+        throw new Error(
+            "You are not logged in."
+        );
+
+    }
+
+    const token =
+        await user.getIdToken(true);
+
+    return {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + token
+    };
+
+}
+
+
+/* LOAD EVERYTHING */
+
+async function loadAll() {
+
+    await Promise.all([
+        loadBooks(),
+        loadZones()
+    ]);
+
+}
+
+
+/* LOAD BOOKS */
+
+async function loadBooks() {
+
+    try {
+
+        const response =
+            await fetch(`${API}/books`);
+
+        if (!response.ok) {
+
+            throw new Error(
+                `Books request failed: ${response.status}`
+            );
+
+        }
+
+        books =
+            await response.json();
+
+        renderBooks();
+
+        updateBookStats();
+
+    } catch (error) {
+
+        console.error(error);
+
+        showStatus(
+            "Unable to fetch books. Make sure the backend is running.",
+            "error"
+        );
+
+    }
+
+}
+
+
+/* RENDER BOOKS */
+
+function renderBooks() {
+
+    const entries =
+        Object.entries(books || {});
+
+    if (entries.length === 0) {
+
+        booksTable.innerHTML =
+            `<tr>
+                <td colspan="8" class="empty">
+                    No books found.
+                </td>
+             </tr>`;
+
+        return;
+    }
+
+
+    booksTable.innerHTML =
+        entries.map(([id, book]) => {
+
+            return `
+                <tr>
+
+                    <td class="book-id">
+                        ${escapeHtml(id)}
+                    </td>
+
+                    <td>
+                        ${escapeHtml(book.title)}
+                    </td>
+
+                    <td>
+                        ${escapeHtml(book.author)}
+                    </td>
+
+                    <td>
+                        ${escapeHtml(book.subject)}
+                    </td>
+
+                    <td class="availability">
+                        ${escapeHtml(book.available_copies)}
+                    </td>
+
+                    <td>
+                        ${escapeHtml(book.total_copies)}
+                    </td>
+
+                    <td>
+                        ${escapeHtml(book.rack)}
+                    </td>
+
+                    <td>
+
+                        <button
+                            class="action-btn edit-btn"
+                            onclick="editBook('${escapeHtml(id)}')"
+                        >
+                            Edit
+                        </button>
+
+                        <button
+                            class="action-btn delete-btn"
+                            onclick="deleteBook('${escapeHtml(id)}')"
+                        >
+                            Delete
+                        </button>
+
+                    </td>
+
+                </tr>
+            `;
+
+        }).join("");
+
+}
+
+
+/* STATS */
+
+function updateBookStats() {
+
+    const entries =
+        Object.values(books || {});
+
+    document.getElementById("bookCount").textContent =
+        entries.length;
+
+    const available =
+        entries.reduce(
+            (sum, book) =>
+                sum + Number(book.available_copies || 0),
+            0
+        );
+
+    document.getElementById("availableCopies").textContent =
+        available;
+
+}
+
+
+/* ADD / UPDATE BOOK */
+
+saveBookBtn.addEventListener("click", async () => {
+
+    const bookId =
+        document.getElementById("bookId")
+            .value.trim();
+
+    const title =
+        document.getElementById("title")
+            .value.trim();
+
+    const author =
+        document.getElementById("author")
+            .value.trim();
+
+    const subject =
+        document.getElementById("subject")
+            .value.trim();
+
+    const available =
+        Number(
+            document.getElementById("available").value
+        );
+
+    const total =
+        Number(
+            document.getElementById("total").value
+        );
+
+    const rack =
+        document.getElementById("rack")
+            .value.trim();
+
+
+    if (
+        !bookId ||
+        !title ||
+        !author ||
+        !subject ||
+        !rack ||
+        Number.isNaN(available) ||
+        Number.isNaN(total)
+    ) {
+
+        showStatus(
+            "Please fill all book fields.",
+            "error"
+        );
+
+        return;
+    }
+
+
+    if (total < 1) {
+
+        showStatus(
+            "Total copies must be at least 1.",
+            "error"
+        );
+
+        return;
+    }
+
+
+    if (available < 0 || available > total) {
+
+        showStatus(
+            "Available copies must be between 0 and total copies.",
+            "error"
+        );
+
+        return;
+    }
+
+
+    const bookData = {
+
+        title,
+        author,
+        subject,
+        available_copies: available,
+        total_copies: total,
+        rack
+
+    };
+
+
+    saveBookBtn.disabled = true;
+    saveBookBtn.textContent = "Saving...";
+
+
+    try {
+
+        const headers =
+            await getAuthHeaders();
+
+
+        const method =
+            editingBookId
+            ? "PUT"
+            : "POST";
+
+
+        const targetId =
+            editingBookId || bookId;
+
+
+        const response =
+            await fetch(
+                `${API}/books/${encodeURIComponent(targetId)}`,
+                {
+                    method,
+                    headers,
+                    body: JSON.stringify(bookData)
+                }
+            );
+
+
+        const result =
+            await response.json();
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                result.detail ||
+                "Unable to save book."
+            );
+
+        }
+
+
+        showStatus(
+            editingBookId
+            ? "Book updated successfully."
+            : "Book added successfully."
+        );
+
+
+        clearForm();
+
+        await loadBooks();
+
+
+    } catch (error) {
+
+        console.error(error);
+
+        showStatus(
+            error.message ||
+            "Unable to save book.",
+            "error"
+        );
+
+    } finally {
+
+        saveBookBtn.disabled = false;
+
+        saveBookBtn.textContent =
+            editingBookId
+            ? "💾 Update Book"
+            : "➕ Add Book";
+
+    }
+
+});
+
+
+/* EDIT BOOK */
+
+window.editBook = function(id) {
+
+    const book =
+        books[id];
+
+    if (!book) {
+
+        showStatus(
+            "Book not found.",
+            "error"
+        );
+
+        return;
+    }
+
+
+    editingBookId = id;
+
+
+    document.getElementById("bookId").value =
+        id;
+
+    document.getElementById("bookId").disabled =
+        true;
+
+    document.getElementById("title").value =
+        book.title || "";
+
+    document.getElementById("author").value =
+        book.author || "";
+
+    document.getElementById("subject").value =
+        book.subject || "";
+
+    document.getElementById("available").value =
+        book.available_copies ?? 0;
+
+    document.getElementById("total").value =
+        book.total_copies ?? 1;
+
+    document.getElementById("rack").value =
+        book.rack || "";
+
+
+    saveBookBtn.textContent =
+        "💾 Update Book";
+
+    cancelBtn.style.display =
+        "inline-block";
+
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+
+};
+
+
+/* CANCEL EDIT */
+
+cancelBtn.addEventListener("click", () => {
+
+    clearForm();
+
+});
+
+
+function clearForm() {
+
+    editingBookId = null;
+
+    document.getElementById("bookId").disabled =
+        false;
+
+    document.getElementById("bookId").value = "";
+    document.getElementById("title").value = "";
+    document.getElementById("author").value = "";
+    document.getElementById("subject").value = "";
+    document.getElementById("available").value = "";
+    document.getElementById("total").value = "";
+    document.getElementById("rack").value = "";
+
+    saveBookBtn.textContent =
+        "➕ Add Book";
+
+    cancelBtn.style.display =
+        "none";
+
+}
+
+
+/* DELETE BOOK */
+
+window.deleteBook = async function(id) {
+
+    const book =
+        books[id];
+
+    if (!book) return;
+
+
+    const confirmed =
+        confirm(
+            `Delete "${book.title}" (${id})?`
+        );
+
+
+    if (!confirmed) return;
+
+
+    try {
+
+        const headers =
+            await getAuthHeaders();
+
+
+        const response =
+            await fetch(
+                `${API}/books/${encodeURIComponent(id)}`,
+                {
+                    method: "DELETE",
+                    headers
+                }
+            );
+
+
+        const result =
+            await response.json();
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                result.detail ||
+                "Unable to delete book."
+            );
+
+        }
+
+
+        showStatus(
+            "Book deleted successfully."
+        );
+
+
+        await loadBooks();
+
+
+    } catch (error) {
+
+        console.error(error);
+
+        showStatus(
+            error.message ||
+            "Unable to delete book.",
+            "error"
+        );
+
+    }
+
+};
+
+
+/* LOAD ZONES */
+
+async function loadZones() {
+
+    try {
+
+        const response =
+            await fetch(`${API}/seats`);
+
+        if (!response.ok) {
+
+            throw new Error(
+                `Seats request failed: ${response.status}`
+            );
+
+        }
+
+        const zones =
+            await response.json();
+
+        renderZones(zones);
+
+        updateSeatStats(zones);
+
+    } catch (error) {
+
+        console.error(error);
+
+        showStatus(
+            "Unable to fetch seat information.",
+            "error"
+        );
+
+    }
+
+}
+
+
+/* RENDER ZONES */
+
+function renderZones(zones) {
+
+    const entries =
+        Object.entries(zones || {});
+
+
+    if (entries.length === 0) {
+
+        zonesContainer.innerHTML =
+            `<div class="empty">
+                No study zones found.
+             </div>`;
+
+        return;
+    }
+
+
+    zonesContainer.innerHTML =
+        entries.map(([id, zone]) => {
+
+            const occupied =
+                Number(zone.occupied || 0);
+
+            const total =
+                Number(zone.total || 0);
+
+            const available =
+                Math.max(total - occupied, 0);
+
+
+            return `
+
+                <div class="zone-card">
+
+                    <div class="zone-name">
+                        ${escapeHtml(zone.name || id)}
+                    </div>
+
+                    <div class="zone-number">
+                        ${available}
+                        <span>/ ${total} available</span>
+                    </div>
+
+                    <div class="zone-status">
+                        ${occupied} seats currently occupied
+                    </div>
+
+                    <input
+                        id="seat-${escapeHtml(id)}"
+                        class="seat-input"
+                        type="number"
+                        min="0"
+                        max="${total}"
+                        value="${occupied}"
+                    >
+
+                    <button
+                        class="update-seat"
+                        onclick="updateZone('${escapeHtml(id)}', ${total})"
+                    >
+                        Update Occupancy
+                    </button>
+
+                </div>
+
+            `;
+
+        }).join("");
+
+}
+
+
+/* SEAT STATS */
+
+function updateSeatStats(zones) {
+
+    let available = 0;
+
+    Object.values(zones || {}).forEach(zone => {
+
+        const total =
+            Number(zone.total || 0);
+
+        const occupied =
+            Number(zone.occupied || 0);
+
+        available +=
+            Math.max(total - occupied, 0);
+
+    });
+
+
+    document.getElementById("availableSeats")
+        .textContent = available;
+
+}
+
+
+/* UPDATE ZONE */
+
+window.updateZone = async function(id, total) {
+
+    const input =
+        document.getElementById(
+            `seat-${id}`
+        );
+
+
+    const occupied =
+        Number(input.value);
+
+
+    if (
+        Number.isNaN(occupied) ||
+        occupied < 0 ||
+        occupied > total
+    ) {
+
+        showStatus(
+            `Occupied seats must be between 0 and ${total}.`,
+            "error"
+        );
+
+        return;
+    }
+
+
+    try {
+
+        const headers =
+            await getAuthHeaders();
+
+
+        const response =
+            await fetch(
+                `${API}/seats/${encodeURIComponent(id)}`,
+                {
+                    method: "PUT",
+                    headers,
+                    body: JSON.stringify({
+                        occupied
+                    })
+                }
+            );
+
+
+        const result =
+            await response.json();
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                result.detail ||
+                "Unable to update seats."
+            );
+
+        }
+
+
+        showStatus(
+            `${id} zone updated successfully.`
+        );
+
+
+        await loadZones();
+
+
+    } catch (error) {
+
+        console.error(error);
+
+        showStatus(
+            error.message ||
+            "Unable to update seats.",
+            "error"
+        );
+
+    }
+
+};
+
+
+/* LOGOUT */
+
+document.getElementById("logoutBtn")
+    .addEventListener("click", async () => {
+
+        await auth.signOut();
+
+        window.location.href =
+            "login.html";
+
+    });
+
+
+/* AUTO REFRESH */
+
+setInterval(() => {
+
+    if (auth.currentUser) {
+        loadAll();
+    }
+
+}, 10000);
+
+</script>
+
+</body>
+</html>
+```

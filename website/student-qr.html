@@ -1,0 +1,972 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>SmartLibrary | My QR Code</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    font-family: "Segoe UI", Arial, sans-serif;
+
+    background:
+        radial-gradient(circle at 10% 10%, rgba(99,102,241,.14), transparent 30%),
+        radial-gradient(circle at 90% 20%, rgba(14,165,233,.12), transparent 30%),
+        #f8fafc;
+
+    color: #172033;
+}
+
+/* ================= NAVBAR ================= */
+
+.navbar {
+    background: rgba(255,255,255,.94);
+
+    backdrop-filter: blur(15px);
+
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.nav-container {
+    max-width: 1180px;
+
+    height: 76px;
+
+    margin: auto;
+
+    padding: 0 24px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+}
+
+.logo {
+    display: flex;
+
+    align-items: center;
+
+    gap: 11px;
+
+    color: #172033;
+
+    text-decoration: none;
+
+    font-size: 21px;
+
+    font-weight: 800;
+}
+
+.logo-icon {
+    width: 43px;
+    height: 43px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 13px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #4f46e5,
+            #2563eb
+        );
+
+    color: white;
+
+    font-size: 22px;
+
+    box-shadow:
+        0 8px 20px rgba(79,70,229,.25);
+}
+
+.back-link {
+    color: #64748b;
+
+    text-decoration: none;
+
+    font-size: 12px;
+
+    font-weight: 700;
+}
+
+.back-link:hover {
+    color: #4f46e5;
+}
+
+/* ================= MAIN ================= */
+
+.main {
+    max-width: 1000px;
+
+    margin: auto;
+
+    padding: 65px 24px 80px;
+}
+
+.page-heading {
+    text-align: center;
+
+    margin-bottom: 35px;
+}
+
+.label {
+    display: inline-block;
+
+    padding: 8px 13px;
+
+    border-radius: 30px;
+
+    background: #eef2ff;
+
+    color: #4f46e5;
+
+    font-size: 10px;
+
+    font-weight: 800;
+
+    letter-spacing: 1px;
+
+    margin-bottom: 14px;
+}
+
+.page-heading h1 {
+    font-size: clamp(35px,5vw,50px);
+
+    line-height: 1.15;
+
+    margin-bottom: 10px;
+}
+
+.page-heading h1 span {
+    background:
+        linear-gradient(
+            135deg,
+            #4f46e5,
+            #0284c7
+        );
+
+    -webkit-background-clip: text;
+    background-clip: text;
+
+    color: transparent;
+}
+
+.page-heading p {
+    color: #64748b;
+
+    font-size: 13px;
+
+    line-height: 1.6;
+}
+
+/* ================= QR CARD ================= */
+
+.qr-card {
+    max-width: 760px;
+
+    margin: auto;
+
+    background: white;
+
+    border: 1px solid #e7ebf1;
+
+    border-radius: 25px;
+
+    padding: 35px;
+
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 40px;
+
+    align-items: center;
+
+    box-shadow:
+        0 20px 55px rgba(15,23,42,.08);
+}
+
+/* ================= QR SIDE ================= */
+
+.qr-side {
+    text-align: center;
+}
+
+.qr-wrapper {
+    width: 280px;
+    height: 280px;
+
+    margin: auto;
+
+    padding: 18px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    background: white;
+
+    border: 1px solid #e2e8f0;
+
+    border-radius: 20px;
+
+    box-shadow:
+        0 12px 30px rgba(15,23,42,.07);
+}
+
+#qrcode {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+}
+
+#qrcode img,
+#qrcode canvas {
+    max-width: 240px;
+
+    max-height: 240px;
+}
+
+.qr-caption {
+    margin-top: 15px;
+
+    color: #94a3b8;
+
+    font-size: 10px;
+}
+
+/* ================= DETAILS ================= */
+
+.details h2 {
+    font-size: 23px;
+
+    margin-bottom: 7px;
+}
+
+.details > p {
+    color: #64748b;
+
+    font-size: 12px;
+
+    line-height: 1.6;
+
+    margin-bottom: 22px;
+}
+
+.student-info {
+    background: #f8fafc;
+
+    border: 1px solid #e8edf3;
+
+    border-radius: 13px;
+
+    padding: 15px;
+
+    margin-bottom: 20px;
+}
+
+.info-label {
+    color: #94a3b8;
+
+    font-size: 9px;
+
+    font-weight: 700;
+
+    text-transform: uppercase;
+
+    letter-spacing: .5px;
+
+    margin-bottom: 5px;
+}
+
+.info-value {
+    color: #334155;
+
+    font-size: 12px;
+
+    font-weight: 700;
+
+    word-break: break-all;
+}
+
+/* ================= SECURITY ================= */
+
+.security {
+    display: flex;
+
+    gap: 10px;
+
+    align-items: flex-start;
+
+    padding: 13px;
+
+    background: #f0fdf4;
+
+    border: 1px solid #bbf7d0;
+
+    border-radius: 11px;
+
+    color: #166534;
+
+    font-size: 10px;
+
+    line-height: 1.5;
+
+    margin-bottom: 20px;
+}
+
+.security-icon {
+    font-size: 16px;
+}
+
+/* ================= BUTTONS ================= */
+
+.buttons {
+    display: flex;
+
+    gap: 10px;
+
+    flex-wrap: wrap;
+}
+
+.btn {
+    flex: 1;
+
+    min-width: 130px;
+
+    border: none;
+
+    padding: 12px 16px;
+
+    border-radius: 10px;
+
+    font-size: 11px;
+
+    font-weight: 800;
+
+    text-decoration: none;
+
+    text-align: center;
+
+    cursor: pointer;
+
+    transition: .2s;
+}
+
+.btn-primary {
+    background:
+        linear-gradient(
+            135deg,
+            #4f46e5,
+            #2563eb
+        );
+
+    color: white;
+
+    box-shadow:
+        0 9px 20px rgba(79,70,229,.2);
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+}
+
+.btn-secondary {
+    background: #eef2ff;
+
+    color: #4f46e5;
+}
+
+.btn-secondary:hover {
+    background: #e0e7ff;
+}
+
+/* ================= LOADING ================= */
+
+.loading {
+    position: fixed;
+
+    inset: 0;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    background: #f8fafc;
+
+    z-index: 2000;
+}
+
+.loading-box {
+    text-align: center;
+
+    color: #64748b;
+
+    font-size: 12px;
+}
+
+.spinner {
+    width: 35px;
+    height: 35px;
+
+    border: 3px solid #e2e8f0;
+
+    border-top-color: #4f46e5;
+
+    border-radius: 50%;
+
+    animation: spin .8s linear infinite;
+
+    margin: 0 auto 12px;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* ================= FOOTER ================= */
+
+footer {
+    background: #111827;
+
+    color: white;
+}
+
+.footer {
+    max-width: 1180px;
+
+    margin: auto;
+
+    padding: 30px 24px;
+
+    text-align: center;
+}
+
+.footer p {
+    color: #64748b;
+
+    font-size: 10px;
+
+    margin-top: 7px;
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media (max-width: 750px) {
+
+    .qr-card {
+        grid-template-columns: 1fr;
+
+        gap: 30px;
+
+        max-width: 500px;
+
+        padding: 28px;
+    }
+
+    .details {
+        text-align: center;
+    }
+
+    .security {
+        text-align: left;
+    }
+
+}
+
+@media (max-width: 450px) {
+
+    .nav-container {
+        padding: 0 15px;
+    }
+
+    .back-link {
+        display: none;
+    }
+
+    .main {
+        padding: 45px 15px 60px;
+    }
+
+    .qr-card {
+        padding: 20px;
+    }
+
+    .qr-wrapper {
+        width: 240px;
+        height: 240px;
+    }
+
+    #qrcode img,
+    #qrcode canvas {
+        max-width: 205px;
+        max-height: 205px;
+    }
+
+    .buttons {
+        flex-direction: column;
+    }
+
+}
+</style>
+
+</head>
+
+<body>
+
+<!-- ================= NAVBAR ================= -->
+
+<nav class="navbar">
+
+```
+<div class="nav-container">
+
+    <a href="user.html" class="logo">
+
+        <div class="logo-icon">
+            📚
+        </div>
+
+        SmartLibrary
+
+    </a>
+
+    <a href="user.html" class="back-link">
+        ← Dashboard
+    </a>
+
+</div>
+```
+
+</nav>
+
+<!-- ================= MAIN ================= -->
+
+<main class="main">
+
+```
+<div class="page-heading">
+
+    <div class="label">
+        📱 DIGITAL LIBRARY ID
+    </div>
+
+    <h1>
+        My <span>QR Code</span>
+    </h1>
+
+    <p>
+        Use your personal QR code for quick
+        library entry and exit verification.
+    </p>
+
+</div>
+
+
+<section class="qr-card">
+
+    <!-- QR -->
+
+    <div class="qr-side">
+
+        <div class="qr-wrapper">
+
+            <div id="qrcode"></div>
+
+        </div>
+
+        <p class="qr-caption">
+            Keep this QR code ready when entering
+            or leaving the library.
+        </p>
+
+    </div>
+
+
+    <!-- DETAILS -->
+
+    <div class="details">
+
+        <h2>
+            Your Library ID
+        </h2>
+
+        <p>
+            This QR code is uniquely connected to
+            your authenticated SmartLibrary account.
+        </p>
+
+
+        <div class="student-info">
+
+            <div class="info-label">
+                Student Account
+            </div>
+
+            <div
+                class="info-value"
+                id="studentEmail"
+            >
+                Loading...
+            </div>
+
+        </div>
+
+
+        <div class="security">
+
+            <div class="security-icon">
+                🔐
+            </div>
+
+            <div>
+                Your QR code is generated using your
+                Firebase account identity. Do not share
+                your account credentials with anyone.
+            </div>
+
+        </div>
+
+
+        <div class="buttons">
+
+            <button
+                class="btn btn-primary"
+                id="printBtn"
+            >
+                🖨️ Print QR
+            </button>
+
+            <a
+                href="student-scanner.html"
+                class="btn btn-secondary"
+            >
+                📷 Entry / Exit
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+```
+
+</main>
+
+<!-- ================= FOOTER ================= -->
+
+<footer>
+
+```
+<div class="footer">
+
+    <strong>
+        📚 SmartLibrary
+    </strong>
+
+    <p>
+        AI-powered library management system
+    </p>
+
+</div>
+```
+
+</footer>
+
+<!-- ================= LOADING ================= -->
+
+<div class="loading" id="loading">
+
+```
+<div class="loading-box">
+
+    <div class="spinner"></div>
+
+    Checking your account...
+
+</div>
+```
+
+</div>
+
+<!-- ================= FIREBASE ================= -->
+
+<script type="module">
+
+import {
+    initializeApp
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import {
+    getAuth,
+    onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+
+/* FIREBASE CONFIG */
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBROcAD9m--NuxNOtVUAD5IYWaZghMtLKU",
+  authDomain: "smart-library-assistent.firebaseapp.com",
+  databaseURL: "https://smart-library-assistent-default-rtdb.firebaseio.com",
+  projectId: "smart-library-assistent",
+  storageBucket: "smart-library-assistent.firebasestorage.app",
+  messagingSenderId: "36138964774",
+  appId: "1:36138964774:web:45b338aef03cb7b0ffd3e7",
+  measurementId: "G-DQDPCFDNF2"
+};
+
+const app =
+    initializeApp(firebaseConfig);
+
+const auth =
+    getAuth(app);
+
+
+/* ELEMENTS */
+
+const loading =
+    document.getElementById("loading");
+
+const studentEmail =
+    document.getElementById("studentEmail");
+
+const qrCode =
+    document.getElementById("qrcode");
+
+const printBtn =
+    document.getElementById("printBtn");
+
+
+/* QR LIBRARY */
+
+function loadQRCodeLibrary() {
+
+    return new Promise(
+        (resolve, reject) => {
+
+            if (window.QRCode) {
+                resolve();
+                return;
+            }
+
+            const script =
+                document.createElement("script");
+
+            script.src =
+                "https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js";
+
+            script.onload =
+                resolve;
+
+            script.onerror =
+                reject;
+
+            document.head.appendChild(script);
+
+        }
+    );
+
+}
+
+
+/* AUTH */
+
+onAuthStateChanged(
+    auth,
+    async user => {
+
+        if (!user) {
+
+            window.location.href =
+                "login.html";
+
+            return;
+
+        }
+
+
+        try {
+
+            const tokenResult =
+                await user.getIdTokenResult(true);
+
+            const isAdmin =
+                tokenResult.claims.admin === true;
+
+
+            if (isAdmin) {
+
+                window.location.href =
+                    "admin.html";
+
+                return;
+
+            }
+
+
+            studentEmail.textContent =
+                user.email || "Student";
+
+
+            await loadQRCodeLibrary();
+
+
+            const qrValue =
+                "SMARTLIBRARY-STUDENT-" +
+                user.uid;
+
+
+            new QRCode(
+                qrCode,
+                {
+                    text: qrValue,
+
+                    width: 230,
+
+                    height: 230,
+
+                    colorDark: "#172033",
+
+                    colorLight: "#ffffff",
+
+                    correctLevel:
+                        QRCode.CorrectLevel.H
+                }
+            );
+
+
+            loading.style.display =
+                "none";
+
+
+        } catch (error) {
+
+            console.error(error);
+
+            loading.innerHTML = `
+
+                <div class="loading-box">
+
+                    ⚠️
+
+                    <br><br>
+
+                    Unable to generate your QR code.
+
+                    <br><br>
+
+                    <a
+                        href="user.html"
+                        style="
+                            color:#4f46e5;
+                            text-decoration:none;
+                            font-weight:700;
+                        "
+                    >
+                        Return to Dashboard
+                    </a>
+
+                </div>
+
+            `;
+
+        }
+
+    }
+);
+
+
+/* ================= PRINT ================= */
+
+printBtn.addEventListener(
+    "click",
+    () => {
+
+        window.print();
+
+    }
+);
+
+</script>
+
+<style>
+
+@media print {
+
+    body {
+        background: white;
+    }
+
+    .navbar,
+    .page-heading,
+    .details,
+    footer {
+        display: none !important;
+    }
+
+    .main {
+        padding: 0;
+
+        max-width: none;
+    }
+
+    .qr-card {
+        display: block;
+
+        border: none;
+
+        box-shadow: none;
+
+        padding: 0;
+    }
+
+    .qr-side {
+        display: flex;
+
+        flex-direction: column;
+
+        align-items: center;
+
+        justify-content: center;
+
+        min-height: 100vh;
+    }
+
+    .qr-wrapper {
+        border: none;
+
+        box-shadow: none;
+    }
+
+    .qr-caption {
+        color: #334155;
+    }
+
+}
+
+</style>
+
+</body>
+</html>

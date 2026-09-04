@@ -1,0 +1,1353 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>SmartLibrary | Seats</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: #f8fafc;
+    color: #172033;
+}
+
+/* ================= NAVBAR ================= */
+
+.navbar {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+
+    background: rgba(255,255,255,0.94);
+    backdrop-filter: blur(15px);
+
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.nav-container {
+    max-width: 1180px;
+    height: 76px;
+
+    margin: auto;
+    padding: 0 24px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+
+    color: #172033;
+    text-decoration: none;
+
+    font-size: 21px;
+    font-weight: 800;
+}
+
+.logo-icon {
+    width: 43px;
+    height: 43px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 13px;
+
+    background: linear-gradient(135deg,#4f46e5,#2563eb);
+
+    color: white;
+    font-size: 22px;
+
+    box-shadow: 0 8px 20px rgba(79,70,229,0.25);
+}
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+}
+
+.nav-links a {
+    color: #64748b;
+    text-decoration: none;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    transition: 0.2s;
+}
+
+.nav-links a:hover,
+.nav-links a.active {
+    color: #4f46e5;
+}
+
+.nav-login {
+    padding: 11px 18px;
+
+    border-radius: 10px;
+
+    background: #eef2ff;
+
+    color: #4f46e5 !important;
+}
+
+/* ================= HERO ================= */
+
+.hero {
+    background:
+        radial-gradient(
+            circle at 10% 20%,
+            rgba(99,102,241,0.13),
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 90% 10%,
+            rgba(14,165,233,0.12),
+            transparent 30%
+        ),
+        #f8fafc;
+
+    padding: 70px 24px 55px;
+}
+
+.hero-container {
+    max-width: 900px;
+
+    margin: auto;
+
+    text-align: center;
+}
+
+.hero-label {
+    display: inline-block;
+
+    padding: 8px 13px;
+
+    border-radius: 30px;
+
+    background: #eef2ff;
+
+    color: #4f46e5;
+
+    font-size: 11px;
+    font-weight: 800;
+
+    letter-spacing: 1px;
+
+    margin-bottom: 17px;
+}
+
+.hero h1 {
+    font-size: clamp(38px,5vw,55px);
+
+    line-height: 1.15;
+
+    margin-bottom: 15px;
+}
+
+.hero h1 span {
+    background: linear-gradient(135deg,#4f46e5,#0284c7);
+
+    -webkit-background-clip: text;
+    background-clip: text;
+
+    color: transparent;
+}
+
+.hero p {
+    max-width: 620px;
+
+    margin: auto;
+
+    color: #64748b;
+
+    font-size: 15px;
+
+    line-height: 1.7;
+}
+
+/* ================= LIVE STATUS ================= */
+
+.live-bar {
+    max-width: 1180px;
+
+    margin: -5px auto 45px;
+
+    padding: 0 24px;
+}
+
+.live-box {
+    background: white;
+
+    border: 1px solid #e2e8f0;
+
+    border-radius: 17px;
+
+    padding: 17px 22px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    box-shadow: 0 12px 35px rgba(15,23,42,0.06);
+}
+
+.live-left {
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+}
+
+.live-dot {
+    width: 10px;
+    height: 10px;
+
+    border-radius: 50%;
+
+    background: #22c55e;
+
+    box-shadow: 0 0 0 5px #dcfce7;
+}
+
+.live-title {
+    font-size: 13px;
+
+    font-weight: 800;
+}
+
+.live-subtitle {
+    color: #94a3b8;
+
+    font-size: 11px;
+
+    margin-top: 2px;
+}
+
+.updated {
+    color: #94a3b8;
+
+    font-size: 11px;
+}
+
+/* ================= SUMMARY ================= */
+
+.summary {
+    max-width: 1180px;
+
+    margin: auto;
+
+    padding: 0 24px 40px;
+}
+
+.summary-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3,1fr);
+
+    gap: 18px;
+}
+
+.summary-card {
+    background: white;
+
+    border: 1px solid #e7ebf1;
+
+    border-radius: 17px;
+
+    padding: 22px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 16px;
+
+    box-shadow: 0 6px 20px rgba(15,23,42,0.035);
+}
+
+.summary-icon {
+    width: 52px;
+    height: 52px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 14px;
+
+    background: #eef2ff;
+
+    font-size: 25px;
+}
+
+.summary-number {
+    font-size: 26px;
+
+    font-weight: 800;
+
+    color: #172033;
+}
+
+.summary-label {
+    color: #64748b;
+
+    font-size: 11px;
+
+    margin-top: 3px;
+}
+
+/* ================= MAIN ================= */
+
+.main {
+    max-width: 1180px;
+
+    margin: auto;
+
+    padding: 0 24px 90px;
+}
+
+.section-heading {
+    margin-bottom: 24px;
+}
+
+.section-heading h2 {
+    font-size: 26px;
+
+    margin-bottom: 7px;
+}
+
+.section-heading p {
+    color: #64748b;
+
+    font-size: 13px;
+}
+
+/* ================= ZONES ================= */
+
+.zone-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3,1fr);
+
+    gap: 22px;
+}
+
+.zone-card {
+    background: white;
+
+    border: 1px solid #e7ebf1;
+
+    border-radius: 20px;
+
+    padding: 25px;
+
+    box-shadow: 0 7px 24px rgba(15,23,42,0.04);
+
+    transition: 0.25s;
+}
+
+.zone-card:hover {
+    transform: translateY(-5px);
+
+    border-color: #c7d2fe;
+
+    box-shadow: 0 18px 40px rgba(15,23,42,0.08);
+}
+
+.zone-top {
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: flex-start;
+
+    margin-bottom: 22px;
+}
+
+.zone-icon {
+    width: 53px;
+    height: 53px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 15px;
+
+    background: #eef2ff;
+
+    font-size: 25px;
+}
+
+.zone-status {
+    padding: 6px 9px;
+
+    border-radius: 8px;
+
+    font-size: 10px;
+
+    font-weight: 800;
+}
+
+.status-available {
+    background: #dcfce7;
+
+    color: #15803d;
+}
+
+.status-limited {
+    background: #fef3c7;
+
+    color: #b45309;
+}
+
+.status-full {
+    background: #fee2e2;
+
+    color: #b91c1c;
+}
+
+.zone-name {
+    font-size: 19px;
+
+    margin-bottom: 5px;
+}
+
+.zone-description {
+    color: #64748b;
+
+    font-size: 12px;
+
+    line-height: 1.5;
+
+    margin-bottom: 20px;
+}
+
+/* ================= SEAT COUNT ================= */
+
+.seat-count {
+    display: flex;
+
+    align-items: baseline;
+
+    gap: 5px;
+
+    margin-bottom: 12px;
+}
+
+.available-number {
+    font-size: 34px;
+
+    font-weight: 800;
+
+    color: #4f46e5;
+}
+
+.total-number {
+    color: #94a3b8;
+
+    font-size: 13px;
+}
+
+/* ================= PROGRESS ================= */
+
+.progress {
+    height: 9px;
+
+    width: 100%;
+
+    background: #eef2f7;
+
+    border-radius: 20px;
+
+    overflow: hidden;
+
+    margin-bottom: 10px;
+}
+
+.progress-bar {
+    height: 100%;
+
+    border-radius: 20px;
+
+    background: linear-gradient(
+        90deg,
+        #4f46e5,
+        #0284c7
+    );
+
+    transition: width 0.5s ease;
+}
+
+.occupancy-text {
+    display: flex;
+
+    justify-content: space-between;
+
+    color: #94a3b8;
+
+    font-size: 10px;
+}
+
+/* ================= REFRESH ================= */
+
+.refresh-section {
+    margin-top: 40px;
+
+    text-align: center;
+}
+
+.refresh-button {
+    border: none;
+
+    background: #eef2ff;
+
+    color: #4f46e5;
+
+    padding: 11px 18px;
+
+    border-radius: 10px;
+
+    font-size: 12px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+.refresh-button:hover {
+    background: #e0e7ff;
+
+    transform: translateY(-1px);
+}
+
+/* ================= LOADING ================= */
+
+.loading {
+    grid-column: 1 / -1;
+
+    padding: 70px;
+
+    text-align: center;
+
+    color: #64748b;
+}
+
+.spinner {
+    width: 36px;
+    height: 36px;
+
+    border: 3px solid #e2e8f0;
+
+    border-top-color: #4f46e5;
+
+    border-radius: 50%;
+
+    animation: spin 0.8s linear infinite;
+
+    margin: 0 auto 15px;
+}
+
+@keyframes spin {
+
+    to {
+        transform: rotate(360deg);
+    }
+
+}
+
+/* ================= ERROR ================= */
+
+.error-box {
+    background: #fff7ed;
+
+    border: 1px solid #fed7aa;
+
+    color: #c2410c;
+
+    border-radius: 14px;
+
+    padding: 20px;
+
+    text-align: center;
+
+    font-size: 13px;
+}
+
+/* ================= FOOTER ================= */
+
+footer {
+    background: #111827;
+
+    color: white;
+}
+
+.footer-container {
+    max-width: 1180px;
+
+    margin: auto;
+
+    padding: 45px 24px 25px;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    gap: 30px;
+}
+
+.footer-description {
+    color: #94a3b8;
+
+    font-size: 12px;
+
+    margin-top: 8px;
+}
+
+.footer-links {
+    display: flex;
+
+    gap: 22px;
+
+    align-items: center;
+}
+
+.footer-links a {
+    color: #94a3b8;
+
+    text-decoration: none;
+
+    font-size: 12px;
+}
+
+.footer-links a:hover {
+    color: white;
+}
+
+.footer-bottom {
+    max-width: 1180px;
+
+    margin: auto;
+
+    border-top: 1px solid #263244;
+
+    padding: 18px 24px;
+
+    text-align: center;
+
+    color: #64748b;
+
+    font-size: 11px;
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media (max-width: 850px) {
+
+    .zone-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .summary-grid {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+@media (max-width: 650px) {
+
+    .nav-links a:not(.nav-login) {
+        display: none;
+    }
+
+    .zone-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .live-box {
+        align-items: flex-start;
+
+        flex-direction: column;
+
+        gap: 10px;
+    }
+
+    .hero {
+        padding-top: 50px;
+    }
+
+}
+
+@media (max-width: 500px) {
+
+    .main,
+    .summary,
+    .live-bar {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+
+    .footer-container {
+        flex-direction: column;
+
+        text-align: center;
+    }
+
+    .footer-links {
+        justify-content: center;
+
+        flex-wrap: wrap;
+    }
+
+}
+</style>
+
+</head>
+
+<body>
+
+<!-- ================= NAVBAR ================= -->
+
+<nav class="navbar">
+
+```
+<div class="nav-container">
+
+    <a href="index.html" class="logo">
+
+        <div class="logo-icon">
+            📚
+        </div>
+
+        SmartLibrary
+
+    </a>
+
+    <div class="nav-links">
+
+        <a href="index.html">
+            Home
+        </a>
+
+        <a href="books.html">
+            Books
+        </a>
+
+        <a href="seats.html" class="active">
+            Seats
+        </a>
+
+        <a href="login.html" class="nav-login">
+            Sign In →
+        </a>
+
+    </div>
+
+</div>
+```
+
+</nav>
+
+<!-- ================= HERO ================= -->
+
+<section class="hero">
+
+```
+<div class="hero-container">
+
+    <div class="hero-label">
+        🪑 LIVE SEAT AVAILABILITY
+    </div>
+
+    <h1>
+        Find Your Perfect
+        <span>Study Spot.</span>
+    </h1>
+
+    <p>
+        Check real-time seat availability across
+        Silent Study, General Study and Discussion
+        zones before you enter the library.
+    </p>
+
+</div>
+```
+
+</section>
+
+<!-- ================= LIVE BAR ================= -->
+
+<section class="live-bar">
+
+```
+<div class="live-box">
+
+    <div class="live-left">
+
+        <div class="live-dot"></div>
+
+        <div>
+
+            <div class="live-title">
+                LIVE LIBRARY STATUS
+            </div>
+
+            <div class="live-subtitle">
+                Seat information updates automatically
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="updated" id="updatedTime">
+        Updating...
+    </div>
+
+</div>
+```
+
+</section>
+
+<!-- ================= SUMMARY ================= -->
+
+<section class="summary">
+
+```
+<div class="summary-grid">
+
+    <div class="summary-card">
+
+        <div class="summary-icon">
+            🪑
+        </div>
+
+        <div>
+
+            <div
+                class="summary-number"
+                id="totalAvailable"
+            >
+                —
+            </div>
+
+            <div class="summary-label">
+                Seats Available
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="summary-card">
+
+        <div class="summary-icon">
+            👥
+        </div>
+
+        <div>
+
+            <div
+                class="summary-number"
+                id="totalOccupied"
+            >
+                —
+            </div>
+
+            <div class="summary-label">
+                Seats Occupied
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="summary-card">
+
+        <div class="summary-icon">
+            🏛️
+        </div>
+
+        <div>
+
+            <div
+                class="summary-number"
+                id="totalSeats"
+            >
+                —
+            </div>
+
+            <div class="summary-label">
+                Total Library Seats
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+```
+
+</section>
+
+<!-- ================= MAIN ================= -->
+
+<main class="main">
+
+```
+<div class="section-heading">
+
+    <h2>
+        Study Zones
+    </h2>
+
+    <p>
+        Choose a zone based on your preferred
+        study environment.
+    </p>
+
+</div>
+
+
+<div
+    class="zone-grid"
+    id="zoneGrid"
+>
+
+    <div class="loading">
+
+        <div class="spinner"></div>
+
+        Loading live seat availability...
+
+    </div>
+
+</div>
+
+
+<div class="refresh-section">
+
+    <button
+        class="refresh-button"
+        onclick="loadSeats()"
+    >
+        🔄 Refresh Now
+    </button>
+
+</div>
+```
+
+</main>
+
+<!-- ================= FOOTER ================= -->
+
+<footer>
+
+```
+<div class="footer-container">
+
+    <div>
+
+        <a
+            href="index.html"
+            class="logo"
+            style="color:white;"
+        >
+
+            <div class="logo-icon">
+                📚
+            </div>
+
+            SmartLibrary
+
+        </a>
+
+        <p class="footer-description">
+            AI-powered library management system
+        </p>
+
+    </div>
+
+
+    <div class="footer-links">
+
+        <a href="index.html">
+            Home
+        </a>
+
+        <a href="books.html">
+            Books
+        </a>
+
+        <a href="seats.html">
+            Seats
+        </a>
+
+        <a href="login.html">
+            Login
+        </a>
+
+    </div>
+
+</div>
+
+
+<div class="footer-bottom">
+
+    © 2026 SmartLibrary.
+    All rights reserved.
+
+</div>
+```
+
+</footer>
+
+<script>
+
+const API_URL =
+    "http://127.0.0.1:8000";
+
+
+const zoneGrid =
+    document.getElementById("zoneGrid");
+
+const totalAvailable =
+    document.getElementById("totalAvailable");
+
+const totalOccupied =
+    document.getElementById("totalOccupied");
+
+const totalSeats =
+    document.getElementById("totalSeats");
+
+const updatedTime =
+    document.getElementById("updatedTime");
+
+
+/* ================= ZONE DETAILS ================= */
+
+const zoneDetails = {
+
+    silent: {
+        icon: "🤫",
+        description:
+            "A peaceful environment for focused individual study."
+    },
+
+    general: {
+        icon: "📚",
+        description:
+            "A comfortable space for regular study and reading."
+    },
+
+    discussion: {
+        icon: "💬",
+        description:
+            "A collaborative space for group discussions and teamwork."
+    }
+
+};
+
+
+/* ================= LOAD SEATS ================= */
+
+async function loadSeats() {
+
+    try {
+
+        const response =
+            await fetch(`${API_URL}/seats`);
+
+        if (!response.ok) {
+            throw new Error(
+                "Unable to load seat data"
+            );
+        }
+
+        const zones =
+            await response.json();
+
+        displayZones(zones);
+
+        updatedTime.textContent =
+            "Updated just now";
+
+    } catch (error) {
+
+        console.error(error);
+
+        zoneGrid.innerHTML = `
+
+            <div class="error-box">
+
+                ⚠️
+                <strong>
+                    Unable to load seat availability
+                </strong>
+
+                <br><br>
+
+                Please make sure the
+                SmartLibrary backend is running.
+
+            </div>
+
+        `;
+
+        updatedTime.textContent =
+            "Connection unavailable";
+
+    }
+
+}
+
+
+/* ================= DISPLAY ZONES ================= */
+
+function displayZones(zones) {
+
+    let availableTotal = 0;
+
+    let occupiedTotal = 0;
+
+    let seatsTotal = 0;
+
+
+    const zoneOrder = [
+        "silent",
+        "general",
+        "discussion"
+    ];
+
+
+    zoneGrid.innerHTML = "";
+
+
+    zoneOrder.forEach(zoneId => {
+
+        if (!zones[zoneId]) {
+            return;
+        }
+
+
+        const zone =
+            zones[zoneId];
+
+
+        const total =
+            Number(zone.total || 0);
+
+        const occupied =
+            Number(zone.occupied || 0);
+
+        const available =
+            Math.max(total - occupied, 0);
+
+
+        availableTotal += available;
+
+        occupiedTotal += occupied;
+
+        seatsTotal += total;
+
+
+        const percentage =
+            total > 0
+                ? Math.round(
+                    (occupied / total) * 100
+                )
+                : 0;
+
+
+        let statusClass =
+            "status-available";
+
+        let statusText =
+            "Seats Available";
+
+
+        if (available === 0) {
+
+            statusClass =
+                "status-full";
+
+            statusText =
+                "FULL";
+
+        } else if (
+            available <= Math.ceil(total * 0.2)
+        ) {
+
+            statusClass =
+                "status-limited";
+
+            statusText =
+                "Limited Seats";
+
+        }
+
+
+        const details =
+            zoneDetails[zoneId] || {
+                icon: "🪑",
+                description:
+                    "Study zone"
+            };
+
+
+        const card =
+            document.createElement("div");
+
+        card.className =
+            "zone-card";
+
+
+        card.innerHTML = `
+
+            <div class="zone-top">
+
+                <div class="zone-icon">
+                    ${details.icon}
+                </div>
+
+                <div class="zone-status ${statusClass}">
+                    ${statusText}
+                </div>
+
+            </div>
+
+
+            <h3 class="zone-name">
+                ${escapeHtml(
+                    zone.name ||
+                    zoneId
+                )}
+            </h3>
+
+
+            <p class="zone-description">
+                ${details.description}
+            </p>
+
+
+            <div class="seat-count">
+
+                <span class="available-number">
+                    ${available}
+                </span>
+
+                <span class="total-number">
+                    / ${total} available
+                </span>
+
+            </div>
+
+
+            <div class="progress">
+
+                <div
+                    class="progress-bar"
+                    style="width:${percentage}%"
+                ></div>
+
+            </div>
+
+
+            <div class="occupancy-text">
+
+                <span>
+                    ${occupied} occupied
+                </span>
+
+                <span>
+                    ${percentage}% occupied
+                </span>
+
+            </div>
+
+        `;
+
+
+        zoneGrid.appendChild(card);
+
+    });
+
+
+    totalAvailable.textContent =
+        availableTotal;
+
+    totalOccupied.textContent =
+        occupiedTotal;
+
+    totalSeats.textContent =
+        seatsTotal;
+
+}
+
+
+/* ================= SECURITY ================= */
+
+function escapeHtml(value) {
+
+    return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
+}
+
+
+/* ================= AUTO REFRESH ================= */
+
+/*
+   Refresh every 10 seconds so students
+   see updated seat availability.
+*/
+
+setInterval(
+    loadSeats,
+    10000
+);
+
+
+/* ================= START ================= */
+
+loadSeats();
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1605 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>SmartLibrary | Student Dashboard</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: #f8fafc;
+    color: #172033;
+}
+
+.navbar {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background: rgba(255,255,255,.94);
+    backdrop-filter: blur(15px);
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.nav-container {
+    max-width: 1180px;
+    height: 76px;
+    margin: auto;
+    padding: 0 24px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+
+    text-decoration: none;
+    color: #172033;
+
+    font-size: 21px;
+    font-weight: 800;
+}
+
+.logo-icon {
+    width: 43px;
+    height: 43px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 13px;
+
+    background: linear-gradient(135deg,#4f46e5,#2563eb);
+
+    color: white;
+    font-size: 22px;
+
+    box-shadow: 0 8px 20px rgba(79,70,229,.25);
+}
+
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.user-email {
+    color: #64748b;
+    font-size: 12px;
+}
+
+.logout {
+    border: none;
+    background: #fee2e2;
+    color: #b91c1c;
+
+    padding: 10px 15px;
+
+    border-radius: 9px;
+
+    font-size: 11px;
+    font-weight: 700;
+
+    cursor: pointer;
+}
+
+/* HERO */
+
+.hero {
+    padding: 55px 24px 40px;
+
+    background:
+        radial-gradient(circle at 10% 20%,rgba(99,102,241,.13),transparent 30%),
+        radial-gradient(circle at 90% 10%,rgba(14,165,233,.12),transparent 30%);
+}
+
+.hero-container {
+    max-width: 1180px;
+    margin: auto;
+}
+
+.hero-label {
+    display: inline-block;
+
+    padding: 7px 11px;
+
+    border-radius: 20px;
+
+    background: #eef2ff;
+    color: #4f46e5;
+
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1px;
+
+    margin-bottom: 15px;
+}
+
+.hero h1 {
+    font-size: clamp(34px,5vw,48px);
+    line-height: 1.15;
+    margin-bottom: 10px;
+}
+
+.hero h1 span {
+    background: linear-gradient(135deg,#4f46e5,#0284c7);
+
+    -webkit-background-clip: text;
+    background-clip: text;
+
+    color: transparent;
+}
+
+.hero p {
+    color: #64748b;
+    font-size: 14px;
+}
+
+/* MAIN */
+
+.main {
+    max-width: 1180px;
+    margin: auto;
+    padding: 25px 24px 80px;
+}
+
+/* QUICK ACTIONS */
+
+.section-title {
+    margin-bottom: 18px;
+}
+
+.section-title h2 {
+    font-size: 22px;
+    margin-bottom: 5px;
+}
+
+.section-title p {
+    color: #64748b;
+    font-size: 12px;
+}
+
+.actions {
+    display: grid;
+    grid-template-columns: repeat(4,1fr);
+    gap: 16px;
+    margin-bottom: 35px;
+}
+
+.action {
+    background: white;
+
+    border: 1px solid #e7ebf1;
+    border-radius: 17px;
+
+    padding: 20px;
+
+    text-decoration: none;
+    color: #172033;
+
+    transition: .25s;
+
+    box-shadow: 0 6px 20px rgba(15,23,42,.035);
+}
+
+.action:hover {
+    transform: translateY(-5px);
+    border-color: #c7d2fe;
+    box-shadow: 0 16px 35px rgba(15,23,42,.08);
+}
+
+.action-icon {
+    width: 45px;
+    height: 45px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 12px;
+
+    background: #eef2ff;
+
+    font-size: 22px;
+
+    margin-bottom: 13px;
+}
+
+.action h3 {
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+.action p {
+    color: #64748b;
+    font-size: 11px;
+    line-height: 1.5;
+}
+
+/* STATS */
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap: 18px;
+
+    margin-bottom: 38px;
+}
+
+.stat {
+    background: white;
+
+    border: 1px solid #e7ebf1;
+    border-radius: 17px;
+
+    padding: 22px;
+
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.stat-icon {
+    width: 50px;
+    height: 50px;
+
+    border-radius: 14px;
+
+    background: #eef2ff;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 24px;
+}
+
+.stat-number {
+    font-size: 26px;
+    font-weight: 800;
+}
+
+.stat-label {
+    color: #64748b;
+    font-size: 11px;
+    margin-top: 2px;
+}
+
+/* CONTENT */
+
+.content-grid {
+    display: grid;
+    grid-template-columns: 1.35fr .65fr;
+    gap: 22px;
+}
+
+.card {
+    background: white;
+
+    border: 1px solid #e7ebf1;
+    border-radius: 19px;
+
+    padding: 23px;
+
+    box-shadow: 0 6px 20px rgba(15,23,42,.035);
+}
+
+.card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    margin-bottom: 20px;
+}
+
+.card-header h2 {
+    font-size: 18px;
+}
+
+.card-header a {
+    color: #4f46e5;
+    text-decoration: none;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+/* BOOKS */
+
+.search {
+    width: 100%;
+
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+
+    padding: 11px 13px;
+
+    outline: none;
+
+    margin-bottom: 15px;
+
+    font-size: 12px;
+}
+
+.book-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    max-height: 350px;
+    overflow-y: auto;
+}
+
+.book {
+    padding: 13px;
+
+    border: 1px solid #eef2f6;
+    border-radius: 11px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 15px;
+}
+
+.book-title {
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.book-author {
+    color: #94a3b8;
+    font-size: 10px;
+    margin-top: 3px;
+}
+
+.book-status {
+    white-space: nowrap;
+
+    padding: 6px 8px;
+
+    border-radius: 7px;
+
+    font-size: 9px;
+    font-weight: 800;
+}
+
+.book-available {
+    background: #dcfce7;
+    color: #15803d;
+}
+
+.book-unavailable {
+    background: #fee2e2;
+    color: #b91c1c;
+}
+
+/* SEATS */
+
+.seat-list {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.seat {
+    padding-bottom: 14px;
+    border-bottom: 1px solid #eef2f6;
+}
+
+.seat:last-child {
+    border-bottom: none;
+}
+
+.seat-top {
+    display: flex;
+    justify-content: space-between;
+
+    margin-bottom: 8px;
+}
+
+.seat-name {
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.seat-number {
+    font-size: 11px;
+    font-weight: 800;
+    color: #4f46e5;
+}
+
+.progress {
+    height: 7px;
+
+    background: #eef2f7;
+
+    border-radius: 20px;
+
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 100%;
+
+    background: linear-gradient(90deg,#4f46e5,#0284c7);
+
+    border-radius: 20px;
+
+    transition: width .5s;
+}
+
+/* AI */
+
+.ai-card {
+    margin-top: 22px;
+
+    background:
+        linear-gradient(135deg,#312e81,#4f46e5,#0284c7);
+
+    color: white;
+
+    border-radius: 20px;
+
+    padding: 25px;
+
+    box-shadow: 0 15px 35px rgba(79,70,229,.2);
+}
+
+.ai-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    margin-bottom: 8px;
+}
+
+.ai-title-icon {
+    width: 40px;
+    height: 40px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 11px;
+
+    background: rgba(255,255,255,.14);
+
+    font-size: 20px;
+}
+
+.ai-title h2 {
+    font-size: 18px;
+}
+
+.ai-card > p {
+    color: rgba(255,255,255,.75);
+
+    font-size: 11px;
+
+    margin-bottom: 17px;
+}
+
+.chat-box {
+    height: 180px;
+
+    overflow-y: auto;
+
+    background: rgba(255,255,255,.08);
+
+    border: 1px solid rgba(255,255,255,.12);
+
+    border-radius: 12px;
+
+    padding: 13px;
+
+    margin-bottom: 10px;
+}
+
+.chat-message {
+    margin-bottom: 10px;
+
+    padding: 9px 11px;
+
+    border-radius: 9px;
+
+    font-size: 11px;
+
+    line-height: 1.5;
+}
+
+.ai-message {
+    background: rgba(255,255,255,.1);
+}
+
+.user-message {
+    background: rgba(255,255,255,.2);
+
+    text-align: right;
+}
+
+.chat-input {
+    display: flex;
+    gap: 8px;
+}
+
+.chat-input input {
+    flex: 1;
+
+    border: none;
+    outline: none;
+
+    border-radius: 9px;
+
+    padding: 11px;
+
+    font-size: 11px;
+}
+
+.chat-input button {
+    border: none;
+
+    border-radius: 9px;
+
+    padding: 0 16px;
+
+    background: white;
+    color: #4f46e5;
+
+    font-weight: 800;
+
+    cursor: pointer;
+}
+
+/* FOOTER */
+
+footer {
+    background: #111827;
+    color: white;
+}
+
+.footer {
+    max-width: 1180px;
+
+    margin: auto;
+
+    padding: 30px 24px;
+
+    text-align: center;
+}
+
+.footer p {
+    color: #64748b;
+    font-size: 11px;
+    margin-top: 7px;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 900px) {
+
+    .actions {
+        grid-template-columns: repeat(2,1fr);
+    }
+
+    .content-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 600px) {
+
+    .nav-right .user-email {
+        display: none;
+    }
+
+    .stats {
+        grid-template-columns: 1fr;
+    }
+
+    .actions {
+        grid-template-columns: 1fr;
+    }
+
+    .main,
+    .hero {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+}
+</style>
+
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+
+<nav class="navbar">
+
+```
+<div class="nav-container">
+
+    <a href="index.html" class="logo">
+
+        <div class="logo-icon">
+            📚
+        </div>
+
+        SmartLibrary
+
+    </a>
+
+    <div class="nav-right">
+
+        <span class="user-email" id="userEmail">
+            Loading...
+        </span>
+
+        <button class="logout" id="logoutBtn">
+            Logout
+        </button>
+
+    </div>
+
+</div>
+```
+
+</nav>
+
+<!-- HERO -->
+
+<section class="hero">
+
+```
+<div class="hero-container">
+
+    <div class="hero-label">
+        👋 STUDENT DASHBOARD
+    </div>
+
+    <h1>
+        Welcome back,
+        <span id="studentName">Student</span>
+    </h1>
+
+    <p>
+        Everything you need for a smarter library experience,
+        right at your fingertips.
+    </p>
+
+</div>
+```
+
+</section>
+
+<main class="main">
+
+```
+<!-- QUICK ACTIONS -->
+
+<div class="section-title">
+
+    <h2>
+        Quick Actions
+    </h2>
+
+    <p>
+        Access your most important library features.
+    </p>
+
+</div>
+
+
+<div class="actions">
+
+    <a href="books.html" class="action">
+
+        <div class="action-icon">
+            📚
+        </div>
+
+        <h3>
+            Explore Books
+        </h3>
+
+        <p>
+            Search books and check live availability.
+        </p>
+
+    </a>
+
+
+    <a href="seats.html" class="action">
+
+        <div class="action-icon">
+            🪑
+        </div>
+
+        <h3>
+            Find a Seat
+        </h3>
+
+        <p>
+            Check available study seats in real time.
+        </p>
+
+    </a>
+
+
+    <a href="student-qr.html" class="action">
+
+        <div class="action-icon">
+            📱
+        </div>
+
+        <h3>
+            My QR Code
+        </h3>
+
+        <p>
+            View your personal library entry QR code.
+        </p>
+
+    </a>
+
+
+    <a href="student-scanner.html" class="action">
+
+        <div class="action-icon">
+            📷
+        </div>
+
+        <h3>
+            Entry / Exit
+        </h3>
+
+        <p>
+            Scan your QR code to record library entry or exit.
+        </p>
+
+    </a>
+
+</div>
+
+
+<!-- LIVE STATS -->
+
+<div class="stats">
+
+    <div class="stat">
+
+        <div class="stat-icon">
+            📚
+        </div>
+
+        <div>
+
+            <div
+                class="stat-number"
+                id="bookCount"
+            >
+                —
+            </div>
+
+            <div class="stat-label">
+                Books in Library
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="stat">
+
+        <div class="stat-icon">
+            🪑
+        </div>
+
+        <div>
+
+            <div
+                class="stat-number"
+                id="seatCount"
+            >
+                —
+            </div>
+
+            <div class="stat-label">
+                Seats Available
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="stat">
+
+        <div class="stat-icon">
+            🤖
+        </div>
+
+        <div>
+
+            <div class="stat-number">
+                ONLINE
+            </div>
+
+            <div class="stat-label">
+                AI Assistant
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- BOOKS + SEATS -->
+
+<div class="content-grid">
+
+    <section class="card">
+
+        <div class="card-header">
+
+            <h2>
+                📚 Available Books
+            </h2>
+
+            <a href="books.html">
+                View All →
+            </a>
+
+        </div>
+
+
+        <input
+            type="text"
+            class="search"
+            id="bookSearch"
+            placeholder="Search books..."
+        >
+
+
+        <div
+            class="book-list"
+            id="bookList"
+        >
+            Loading books...
+        </div>
+
+    </section>
+
+
+    <section class="card">
+
+        <div class="card-header">
+
+            <h2>
+                🪑 Live Seats
+            </h2>
+
+            <a href="seats.html">
+                View All →
+            </a>
+
+        </div>
+
+
+        <div
+            class="seat-list"
+            id="seatList"
+        >
+            Loading seats...
+        </div>
+
+    </section>
+
+</div>
+
+
+<!-- AI -->
+
+<section class="ai-card">
+
+    <div class="ai-title">
+
+        <div class="ai-title-icon">
+            🤖
+        </div>
+
+        <h2>
+            SmartLibrary AI Assistant
+        </h2>
+
+    </div>
+
+    <p>
+        Ask about books, library rules, timings,
+        seats or anything related to your library.
+    </p>
+
+
+    <div
+        class="chat-box"
+        id="chatBox"
+    >
+
+        <div class="chat-message ai-message">
+            👋 Hi! I'm your SmartLibrary Assistant.
+            How can I help you today?
+        </div>
+
+    </div>
+
+
+    <div class="chat-input">
+
+        <input
+            type="text"
+            id="questionInput"
+            placeholder="Ask something about the library..."
+        >
+
+        <button id="askButton">
+            Ask
+        </button>
+
+    </div>
+
+</section>
+```
+
+</main>
+
+<footer>
+
+```
+<div class="footer">
+
+    <strong>
+        📚 SmartLibrary
+    </strong>
+
+    <p>
+        AI-powered library management system
+    </p>
+
+</div>
+```
+
+</footer>
+
+<!-- FIREBASE -->
+
+<script type="module">
+
+import {
+    initializeApp
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import {
+    getAuth,
+    onAuthStateChanged,
+    signOut
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+
+/* FIREBASE CONFIG */
+
+const firebaseConfig = {
+
+    apiKey:
+        "AIzaSyBROcAD9m--NuxNOtVUAD5IYWaZghMtLKU",
+
+    authDomain:
+        "smart-library-assistent.firebaseapp.com",
+
+    databaseURL:
+        "https://smart-library-assistent-default-rtdb.firebaseio.com",
+
+    projectId:
+        "smart-library-assistent",
+
+    storageBucket:
+        "smart-library-assistent.firebasestorage.app",
+
+    messagingSenderId:
+        "36138964774",
+
+    appId:
+        "1:36138964774:web:45b338aef03cb7b0ffd3e7",
+
+    measurementId:
+        "G-DQDPCFDNF2"
+
+};
+
+
+const app =
+    initializeApp(firebaseConfig);
+
+const auth =
+    getAuth(app);
+
+
+/* API */
+
+const API_URL =
+    "http://127.0.0.1:8000";
+
+
+/* ELEMENTS */
+
+const userEmail =
+    document.getElementById("userEmail");
+
+const studentName =
+    document.getElementById("studentName");
+
+const logoutBtn =
+    document.getElementById("logoutBtn");
+
+const bookList =
+    document.getElementById("bookList");
+
+const seatList =
+    document.getElementById("seatList");
+
+const bookSearch =
+    document.getElementById("bookSearch");
+
+const bookCount =
+    document.getElementById("bookCount");
+
+const seatCount =
+    document.getElementById("seatCount");
+
+const chatBox =
+    document.getElementById("chatBox");
+
+const questionInput =
+    document.getElementById("questionInput");
+
+const askButton =
+    document.getElementById("askButton");
+
+
+let books = {};
+let conversationHistory = [];
+
+
+/* AUTH */
+
+onAuthStateChanged(auth, async user => {
+
+    if (!user) {
+
+        window.location.href =
+            "login.html";
+
+        return;
+
+    }
+
+
+    try {
+
+        const tokenResult =
+            await user.getIdTokenResult(true);
+
+        const isAdmin =
+            tokenResult.claims.admin === true;
+
+
+        if (isAdmin) {
+
+            window.location.href =
+                "admin.html";
+
+            return;
+
+        }
+
+
+        const email =
+            user.email || "Student";
+
+
+        userEmail.textContent =
+            email;
+
+
+        studentName.textContent =
+            email.split("@")[0];
+
+
+        loadBooks();
+
+        loadSeats();
+
+    } catch (error) {
+
+        console.error(error);
+
+        window.location.href =
+            "login.html";
+
+    }
+
+});
+
+
+/* LOGOUT */
+
+logoutBtn.addEventListener(
+    "click",
+    async () => {
+
+        await signOut(auth);
+
+        window.location.href =
+            "login.html";
+
+    }
+);
+
+
+/* LOAD BOOKS */
+
+async function loadBooks() {
+
+    try {
+
+        const response =
+            await fetch(
+                `${API_URL}/books`
+            );
+
+        if (!response.ok) {
+            throw new Error(
+                "Book API failed"
+            );
+        }
+
+        books =
+            await response.json();
+
+        bookCount.textContent =
+            Object.keys(books).length;
+
+        displayBooks();
+
+    } catch (error) {
+
+        console.error(error);
+
+        bookList.innerHTML =
+            "⚠️ Unable to load books.";
+
+    }
+
+}
+
+
+/* DISPLAY BOOKS */
+
+function displayBooks() {
+
+    const search =
+        bookSearch.value
+            .trim()
+            .toLowerCase();
+
+
+    const filtered =
+        Object.entries(books)
+        .filter(([id, book]) => {
+
+            const text = [
+
+                id,
+                book.title,
+                book.author,
+                book.subject
+
+            ]
+            .join(" ")
+            .toLowerCase();
+
+            return text.includes(search);
+
+        })
+        .slice(0, 10);
+
+
+    if (!filtered.length) {
+
+        bookList.innerHTML =
+            "No matching books found.";
+
+        return;
+
+    }
+
+
+    bookList.innerHTML =
+        filtered.map(([id, book]) => {
+
+            const available =
+                Number(
+                    book.available_copies || 0
+                );
+
+
+            const statusClass =
+                available > 0
+                    ? "book-available"
+                    : "book-unavailable";
+
+
+            const statusText =
+                available > 0
+                    ? `${available} available`
+                    : "Unavailable";
+
+
+            return `
+
+                <div class="book">
+
+                    <div>
+
+                        <div class="book-title">
+                            ${escapeHtml(
+                                book.title || "Untitled"
+                            )}
+                        </div>
+
+                        <div class="book-author">
+                            ${escapeHtml(
+                                book.author || "Unknown author"
+                            )}
+                        </div>
+
+                    </div>
+
+                    <span class="book-status ${statusClass}">
+                        ${statusText}
+                    </span>
+
+                </div>
+
+            `;
+
+        }).join("");
+
+}
+
+
+bookSearch.addEventListener(
+    "input",
+    displayBooks
+);
+
+
+/* LOAD SEATS */
+
+async function loadSeats() {
+
+    try {
+
+        const response =
+            await fetch(
+                `${API_URL}/seats`
+            );
+
+        if (!response.ok) {
+            throw new Error(
+                "Seat API failed"
+            );
+        }
+
+        const zones =
+            await response.json();
+
+
+        let totalAvailable = 0;
+
+        seatList.innerHTML = "";
+
+
+        const order = [
+            "silent",
+            "general",
+            "discussion"
+        ];
+
+
+        order.forEach(zoneId => {
+
+            if (!zones[zoneId]) {
+                return;
+            }
+
+
+            const zone =
+                zones[zoneId];
+
+
+            const total =
+                Number(zone.total || 0);
+
+            const occupied =
+                Number(zone.occupied || 0);
+
+            const available =
+                Math.max(
+                    total - occupied,
+                    0
+                );
+
+
+            totalAvailable +=
+                available;
+
+
+            const percentage =
+                total > 0
+                    ? Math.round(
+                        occupied / total * 100
+                    )
+                    : 0;
+
+
+            seatList.innerHTML += `
+
+                <div class="seat">
+
+                    <div class="seat-top">
+
+                        <span class="seat-name">
+                            ${escapeHtml(
+                                zone.name || zoneId
+                            )}
+                        </span>
+
+                        <span class="seat-number">
+                            ${available}/${total}
+                        </span>
+
+                    </div>
+
+                    <div class="progress">
+
+                        <div
+                            class="progress-bar"
+                            style="width:${percentage}%"
+                        ></div>
+
+                    </div>
+
+                </div>
+
+            `;
+
+        });
+
+
+        seatCount.textContent =
+            totalAvailable;
+
+    } catch (error) {
+
+        console.error(error);
+
+        seatList.innerHTML =
+            "⚠️ Unable to load seats.";
+
+    }
+
+}
+
+
+/* AUTO REFRESH */
+
+setInterval(
+    loadSeats,
+    10000
+);
+
+
+/* AI CHAT */
+
+async function askAI() {
+
+    const question =
+        questionInput.value.trim();
+
+
+    if (!question) {
+        return;
+    }
+
+
+    addMessage(
+        question,
+        "user-message"
+    );
+
+
+    questionInput.value = "";
+
+    askButton.disabled = true;
+
+    askButton.textContent =
+        "Thinking...";
+
+
+    try {
+
+        const response =
+            await fetch(
+                `${API_URL}/ask-ai`,
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body: JSON.stringify({
+
+                        question:
+                            question,
+
+                        conversation_history:
+                            conversationHistory
+
+                    })
+
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if (!response.ok) {
+            throw new Error(
+                data.detail ||
+                "AI request failed"
+            );
+        }
+
+
+        const answer =
+            data.answer ||
+            "Sorry, I couldn't answer that.";
+
+
+        addMessage(
+            answer,
+            "ai-message"
+        );
+
+
+        conversationHistory.push(
+            {
+                role: "user",
+                content: question
+            },
+            {
+                role: "assistant",
+                content: answer
+            }
+        );
+
+
+        if (
+            conversationHistory.length >
+            20
+        ) {
+
+            conversationHistory =
+                conversationHistory.slice(-20);
+
+        }
+
+    } catch (error) {
+
+        console.error(error);
+
+        addMessage(
+            "⚠️ Sorry, the AI assistant is currently unavailable.",
+            "ai-message"
+        );
+
+    }
+
+
+    askButton.disabled = false;
+
+    askButton.textContent =
+        "Ask";
+
+}
+
+
+function addMessage(
+    text,
+    className
+) {
+
+    const div =
+        document.createElement("div");
+
+    div.className =
+        `chat-message ${className}`;
+
+    div.textContent =
+        text;
+
+    chatBox.appendChild(div);
+
+    chatBox.scrollTop =
+        chatBox.scrollHeight;
+
+}
+
+
+askButton.addEventListener(
+    "click",
+    askAI
+);
+
+
+questionInput.addEventListener(
+    "keydown",
+    event => {
+
+        if (event.key === "Enter") {
+            askAI();
+        }
+
+    }
+);
+
+
+/* SECURITY */
+
+function escapeHtml(value) {
+
+    return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
+}
+
+</script>
+
+</body>
+</html>

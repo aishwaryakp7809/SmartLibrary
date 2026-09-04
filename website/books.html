@@ -1,0 +1,1149 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>SmartLibrary | Books</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: #f8fafc;
+    color: #172033;
+}
+
+/* ================= NAVBAR ================= */
+
+.navbar {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+
+    background: rgba(255,255,255,0.94);
+    backdrop-filter: blur(15px);
+
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.nav-container {
+    max-width: 1180px;
+    height: 76px;
+
+    margin: auto;
+    padding: 0 24px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+
+    color: #172033;
+    text-decoration: none;
+
+    font-size: 21px;
+    font-weight: 800;
+}
+
+.logo-icon {
+    width: 43px;
+    height: 43px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 13px;
+
+    background: linear-gradient(135deg,#4f46e5,#2563eb);
+    color: white;
+
+    font-size: 22px;
+
+    box-shadow: 0 8px 20px rgba(79,70,229,0.25);
+}
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+}
+
+.nav-links a {
+    color: #64748b;
+    text-decoration: none;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    transition: 0.2s;
+}
+
+.nav-links a:hover,
+.nav-links a.active {
+    color: #4f46e5;
+}
+
+.nav-login {
+    padding: 11px 18px;
+
+    border-radius: 10px;
+
+    background: #eef2ff;
+    color: #4f46e5 !important;
+}
+
+/* ================= HERO ================= */
+
+.hero {
+    background:
+        radial-gradient(circle at 10% 20%, rgba(99,102,241,0.13), transparent 30%),
+        radial-gradient(circle at 90% 10%, rgba(14,165,233,0.12), transparent 30%),
+        #f8fafc;
+
+    padding: 70px 24px 55px;
+}
+
+.hero-container {
+    max-width: 1000px;
+    margin: auto;
+
+    text-align: center;
+}
+
+.hero-label {
+    display: inline-block;
+
+    padding: 8px 13px;
+
+    border-radius: 30px;
+
+    background: #eef2ff;
+    color: #4f46e5;
+
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 1px;
+
+    margin-bottom: 17px;
+}
+
+.hero h1 {
+    font-size: clamp(38px,5vw,55px);
+    line-height: 1.15;
+
+    margin-bottom: 15px;
+}
+
+.hero h1 span {
+    background: linear-gradient(135deg,#4f46e5,#0284c7);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.hero p {
+    max-width: 620px;
+    margin: auto;
+
+    color: #64748b;
+
+    font-size: 15px;
+    line-height: 1.7;
+}
+
+/* ================= SEARCH ================= */
+
+.search-section {
+    max-width: 900px;
+    margin: -5px auto 50px;
+
+    padding: 0 24px;
+}
+
+.search-box {
+    background: white;
+
+    border: 1px solid #e2e8f0;
+    border-radius: 17px;
+
+    padding: 8px;
+
+    display: flex;
+    align-items: center;
+
+    box-shadow: 0 12px 35px rgba(15,23,42,0.07);
+}
+
+.search-icon {
+    width: 48px;
+
+    text-align: center;
+
+    font-size: 20px;
+}
+
+#searchInput {
+    flex: 1;
+
+    border: none;
+    outline: none;
+
+    padding: 14px 10px;
+
+    font-size: 14px;
+
+    color: #172033;
+}
+
+#searchInput::placeholder {
+    color: #94a3b8;
+}
+
+/* ================= MAIN ================= */
+
+.main {
+    max-width: 1180px;
+
+    margin: auto;
+
+    padding: 0 24px 90px;
+}
+
+/* ================= TOOLBAR ================= */
+
+.toolbar {
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    margin-bottom: 25px;
+
+    gap: 20px;
+}
+
+.result-count {
+    color: #64748b;
+    font-size: 13px;
+}
+
+.result-count strong {
+    color: #172033;
+}
+
+.filter {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    color: #64748b;
+
+    font-size: 13px;
+}
+
+#subjectFilter {
+    padding: 9px 12px;
+
+    border: 1px solid #e2e8f0;
+    border-radius: 9px;
+
+    background: white;
+
+    color: #334155;
+
+    outline: none;
+}
+
+/* ================= BOOK GRID ================= */
+
+.book-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, minmax(0,1fr));
+
+    gap: 20px;
+}
+
+.book-card {
+    background: white;
+
+    border: 1px solid #e7ebf1;
+    border-radius: 18px;
+
+    overflow: hidden;
+
+    transition: 0.25s;
+
+    box-shadow: 0 6px 20px rgba(15,23,42,0.035);
+}
+
+.book-card:hover {
+    transform: translateY(-6px);
+
+    border-color: #c7d2fe;
+
+    box-shadow: 0 18px 40px rgba(15,23,42,0.08);
+}
+
+/* BOOK COVER */
+
+.book-cover {
+    height: 150px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: linear-gradient(145deg,#312e81,#4f46e5,#0284c7);
+
+    color: white;
+
+    font-size: 52px;
+
+    position: relative;
+}
+
+.book-id {
+    position: absolute;
+
+    top: 12px;
+    left: 12px;
+
+    padding: 5px 8px;
+
+    border-radius: 7px;
+
+    background: rgba(255,255,255,0.16);
+
+    color: white;
+
+    font-size: 10px;
+    font-weight: 700;
+}
+
+/* BOOK CONTENT */
+
+.book-content {
+    padding: 20px;
+}
+
+.book-title {
+    font-size: 17px;
+
+    line-height: 1.35;
+
+    margin-bottom: 7px;
+}
+
+.book-author {
+    color: #64748b;
+
+    font-size: 12px;
+
+    margin-bottom: 14px;
+}
+
+.subject-tag {
+    display: inline-block;
+
+    padding: 5px 9px;
+
+    border-radius: 7px;
+
+    background: #f1f5f9;
+
+    color: #475569;
+
+    font-size: 10px;
+    font-weight: 700;
+
+    margin-bottom: 17px;
+}
+
+.book-info {
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 10px;
+
+    padding-top: 14px;
+
+    border-top: 1px solid #eef2f6;
+}
+
+.info-item {
+    font-size: 11px;
+}
+
+.info-label {
+    color: #94a3b8;
+
+    display: block;
+
+    margin-bottom: 3px;
+}
+
+.info-value {
+    color: #334155;
+
+    font-weight: 700;
+}
+
+/* AVAILABILITY */
+
+.availability {
+    margin-top: 16px;
+
+    padding: 9px 10px;
+
+    border-radius: 9px;
+
+    text-align: center;
+
+    font-size: 11px;
+    font-weight: 800;
+}
+
+.available {
+    background: #dcfce7;
+    color: #15803d;
+}
+
+.limited {
+    background: #fef3c7;
+    color: #b45309;
+}
+
+.unavailable {
+    background: #fee2e2;
+    color: #b91c1c;
+}
+
+/* ================= EMPTY ================= */
+
+.empty {
+    grid-column: 1 / -1;
+
+    padding: 70px 20px;
+
+    text-align: center;
+
+    background: white;
+
+    border: 1px dashed #cbd5e1;
+    border-radius: 18px;
+}
+
+.empty-icon {
+    font-size: 45px;
+    margin-bottom: 12px;
+}
+
+.empty h3 {
+    margin-bottom: 6px;
+}
+
+.empty p {
+    color: #64748b;
+    font-size: 13px;
+}
+
+/* ================= LOADING ================= */
+
+.loading {
+    grid-column: 1 / -1;
+
+    padding: 60px;
+
+    text-align: center;
+
+    color: #64748b;
+}
+
+.spinner {
+    width: 35px;
+    height: 35px;
+
+    border: 3px solid #e2e8f0;
+    border-top-color: #4f46e5;
+
+    border-radius: 50%;
+
+    animation: spin 0.8s linear infinite;
+
+    margin: 0 auto 15px;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* ================= FOOTER ================= */
+
+footer {
+    background: #111827;
+    color: white;
+}
+
+.footer-container {
+    max-width: 1180px;
+
+    margin: auto;
+
+    padding: 45px 24px 25px;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    gap: 30px;
+}
+
+.footer-description {
+    color: #94a3b8;
+
+    font-size: 12px;
+
+    margin-top: 8px;
+}
+
+.footer-links {
+    display: flex;
+
+    gap: 22px;
+
+    align-items: center;
+}
+
+.footer-links a {
+    color: #94a3b8;
+
+    text-decoration: none;
+
+    font-size: 12px;
+}
+
+.footer-links a:hover {
+    color: white;
+}
+
+.footer-bottom {
+    max-width: 1180px;
+
+    margin: auto;
+
+    border-top: 1px solid #263244;
+
+    padding: 18px 24px;
+
+    text-align: center;
+
+    color: #64748b;
+
+    font-size: 11px;
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media (max-width: 1000px) {
+
+    .book-grid {
+        grid-template-columns:
+            repeat(3, minmax(0,1fr));
+    }
+}
+
+@media (max-width: 750px) {
+
+    .nav-links a:not(.nav-login) {
+        display: none;
+    }
+
+    .book-grid {
+        grid-template-columns:
+            repeat(2, minmax(0,1fr));
+    }
+
+    .toolbar {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 500px) {
+
+    .hero {
+        padding-top: 50px;
+    }
+
+    .book-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .search-section {
+        padding: 0 15px;
+    }
+
+    .main {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+
+    .footer-container {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .footer-links {
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+}
+</style>
+
+</head>
+
+<body>
+
+<!-- ================= NAVBAR ================= -->
+
+<nav class="navbar">
+
+```
+<div class="nav-container">
+
+    <a href="index.html" class="logo">
+        <div class="logo-icon">📚</div>
+        SmartLibrary
+    </a>
+
+    <div class="nav-links">
+
+        <a href="index.html">Home</a>
+
+        <a href="books.html" class="active">
+            Books
+        </a>
+
+        <a href="seats.html">
+            Seats
+        </a>
+
+        <a href="login.html" class="nav-login">
+            Sign In →
+        </a>
+
+    </div>
+
+</div>
+```
+
+</nav>
+
+<!-- ================= HERO ================= -->
+
+<section class="hero">
+
+```
+<div class="hero-container">
+
+    <div class="hero-label">
+        📚 SMART BOOK DISCOVERY
+    </div>
+
+    <h1>
+        Discover Your Next <span>Book.</span>
+    </h1>
+
+    <p>
+        Search through the SmartLibrary collection by
+        title, author, subject or book ID and instantly
+        check its availability.
+    </p>
+
+</div>
+```
+
+</section>
+
+<!-- ================= SEARCH ================= -->
+
+<section class="search-section">
+
+```
+<div class="search-box">
+
+    <div class="search-icon">
+        🔍
+    </div>
+
+    <input
+        type="text"
+        id="searchInput"
+        placeholder="Search by title, author, subject or book ID..."
+        autocomplete="off"
+    >
+
+</div>
+```
+
+</section>
+
+<!-- ================= MAIN ================= -->
+
+<main class="main">
+
+```
+<div class="toolbar">
+
+    <div class="result-count" id="resultCount">
+        Loading books...
+    </div>
+
+    <div class="filter">
+
+        <span>Subject:</span>
+
+        <select id="subjectFilter">
+            <option value="all">
+                All Subjects
+            </option>
+        </select>
+
+    </div>
+
+</div>
+
+
+<div class="book-grid" id="bookGrid">
+
+    <div class="loading">
+
+        <div class="spinner"></div>
+
+        Loading books...
+
+    </div>
+
+</div>
+```
+
+</main>
+
+<!-- ================= FOOTER ================= -->
+
+<footer>
+
+```
+<div class="footer-container">
+
+    <div>
+
+        <a href="index.html"
+           class="logo"
+           style="color:white;">
+
+            <div class="logo-icon">
+                📚
+            </div>
+
+            SmartLibrary
+
+        </a>
+
+        <p class="footer-description">
+            AI-powered library management system
+        </p>
+
+    </div>
+
+
+    <div class="footer-links">
+
+        <a href="index.html">
+            Home
+        </a>
+
+        <a href="books.html">
+            Books
+        </a>
+
+        <a href="seats.html">
+            Seats
+        </a>
+
+        <a href="login.html">
+            Login
+        </a>
+
+    </div>
+
+</div>
+
+
+<div class="footer-bottom">
+    © 2026 SmartLibrary. All rights reserved.
+</div>
+```
+
+</footer>
+
+<script>
+
+const API_URL = "http://127.0.0.1:8000";
+
+const bookGrid =
+    document.getElementById("bookGrid");
+
+const searchInput =
+    document.getElementById("searchInput");
+
+const subjectFilter =
+    document.getElementById("subjectFilter");
+
+const resultCount =
+    document.getElementById("resultCount");
+
+
+let books = {};
+
+
+/* ================= LOAD BOOKS ================= */
+
+async function loadBooks() {
+
+    try {
+
+        const response =
+            await fetch(`${API_URL}/books`);
+
+        if (!response.ok) {
+            throw new Error("Unable to load books");
+        }
+
+        books = await response.json();
+
+        populateSubjects();
+
+        displayBooks();
+
+    } catch (error) {
+
+        console.error(error);
+
+        bookGrid.innerHTML = `
+            <div class="empty">
+                <div class="empty-icon">⚠️</div>
+                <h3>Unable to load books</h3>
+                <p>
+                    Please make sure the SmartLibrary
+                    backend is running.
+                </p>
+            </div>
+        `;
+
+        resultCount.textContent =
+            "Unable to connect to library";
+
+    }
+
+}
+
+
+/* ================= SUBJECT FILTER ================= */
+
+function populateSubjects() {
+
+    const subjects =
+        new Set();
+
+    Object.values(books).forEach(book => {
+
+        if (book.subject) {
+            subjects.add(book.subject);
+        }
+
+    });
+
+    [...subjects]
+        .sort()
+        .forEach(subject => {
+
+            const option =
+                document.createElement("option");
+
+            option.value = subject;
+            option.textContent = subject;
+
+            subjectFilter.appendChild(option);
+
+        });
+
+}
+
+
+/* ================= DISPLAY ================= */
+
+function displayBooks() {
+
+    const search =
+        searchInput.value
+            .trim()
+            .toLowerCase();
+
+    const selectedSubject =
+        subjectFilter.value;
+
+
+    const filteredBooks =
+        Object.entries(books)
+        .filter(([bookId, book]) => {
+
+            const searchableText = [
+
+                bookId,
+
+                book.title,
+
+                book.author,
+
+                book.subject,
+
+                book.rack
+
+            ]
+            .join(" ")
+            .toLowerCase();
+
+
+            const matchesSearch =
+                searchableText.includes(search);
+
+
+            const matchesSubject =
+                selectedSubject === "all" ||
+                book.subject === selectedSubject;
+
+
+            return (
+                matchesSearch &&
+                matchesSubject
+            );
+
+        });
+
+
+    resultCount.innerHTML =
+        `<strong>${filteredBooks.length}</strong>
+         book${filteredBooks.length === 1 ? "" : "s"} found`;
+
+
+    if (filteredBooks.length === 0) {
+
+        bookGrid.innerHTML = `
+            <div class="empty">
+
+                <div class="empty-icon">
+                    🔎
+                </div>
+
+                <h3>
+                    No books found
+                </h3>
+
+                <p>
+                    Try another title, author,
+                    subject or book ID.
+                </p>
+
+            </div>
+        `;
+
+        return;
+    }
+
+
+    bookGrid.innerHTML =
+        filteredBooks
+        .map(([bookId, book]) =>
+            createBookCard(bookId, book)
+        )
+        .join("");
+
+}
+
+
+/* ================= BOOK CARD ================= */
+
+function createBookCard(bookId, book) {
+
+    const available =
+        Number(book.available_copies || 0);
+
+    const total =
+        Number(book.total_copies || 0);
+
+
+    let statusClass =
+        "unavailable";
+
+    let statusText =
+        "Unavailable";
+
+
+    if (available > 1) {
+
+        statusClass = "available";
+
+        statusText =
+            `${available} copies available`;
+
+    } else if (available === 1) {
+
+        statusClass = "limited";
+
+        statusText =
+            "1 copy available";
+
+    }
+
+
+    return `
+
+        <article class="book-card">
+
+            <div class="book-cover">
+
+                <span class="book-id">
+                    ${escapeHtml(bookId)}
+                </span>
+
+                📖
+
+            </div>
+
+
+            <div class="book-content">
+
+                <h3 class="book-title">
+                    ${escapeHtml(
+                        book.title || "Untitled Book"
+                    )}
+                </h3>
+
+
+                <p class="book-author">
+                    by ${escapeHtml(
+                        book.author || "Unknown Author"
+                    )}
+                </p>
+
+
+                <span class="subject-tag">
+                    ${escapeHtml(
+                        book.subject || "General"
+                    )}
+                </span>
+
+
+                <div class="book-info">
+
+                    <div class="info-item">
+
+                        <span class="info-label">
+                            Rack
+                        </span>
+
+                        <span class="info-value">
+                            ${escapeHtml(
+                                book.rack || "—"
+                            )}
+                        </span>
+
+                    </div>
+
+
+                    <div class="info-item">
+
+                        <span class="info-label">
+                            Copies
+                        </span>
+
+                        <span class="info-value">
+                            ${available}/${total}
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="availability ${statusClass}">
+                    ${statusText}
+                </div>
+
+            </div>
+
+        </article>
+
+    `;
+
+}
+
+
+/* ================= SECURITY ================= */
+
+function escapeHtml(value) {
+
+    return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
+}
+
+
+/* ================= EVENTS ================= */
+
+searchInput.addEventListener(
+    "input",
+    displayBooks
+);
+
+subjectFilter.addEventListener(
+    "change",
+    displayBooks
+);
+
+
+/* ================= START ================= */
+
+loadBooks();
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,25 @@
+SMART LIBRARY RULES
+
+Library Timings:
+The library is open from 8:00 AM to 8:00 PM from Monday to Saturday.
+
+Book Borrowing:
+Each student can borrow up to 3 books at a time.
+
+Borrowing Period:
+Books can be borrowed for 14 days.
+
+Renewal:
+A book can be renewed once if there is no reservation from another student.
+
+Late Return:
+Students may be charged a fine for returning books after the due date.
+
+Study Zones:
+The library has General Study, Silent Study, and Discussion zones.
+
+Silent Study Zone:
+Students should maintain silence in the Silent Study Zone.
+
+Library Membership:
+Students must carry their valid college ID card when borrowing books.
