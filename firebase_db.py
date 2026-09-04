@@ -1,4 +1,5 @@
 import os
+import json
 from pathlib import Path
 
 import pandas as pd
@@ -6,48 +7,57 @@ import firebase_admin
 from firebase_admin import credentials, db
 from dotenv import load_dotenv
 
-
-# -----------------------------------
-# LOAD ENVIRONMENT VARIABLES
-# -----------------------------------
-
 load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent
 
-credential_file = os.getenv(
-    "FIREBASE_CREDENTIALS",
-    "firebase-service-account.json"
-)
-
 database_url = os.getenv("FIREBASE_DATABASE_URL")
 
-credential_path = BASE_DIR / credential_file
+if not database_url:
+    raise ValueError(
+        "FIREBASE_DATABASE_URL is missing from environment variables."
+    )
 
+# ---------------------------------------------------------
+# Firebase credentials
+# ---------------------------------------------------------
 
-# -----------------------------------
-# FIREBASE INITIALIZATION
-# -----------------------------------
+firebase_credentials_json = os.getenv("FIREBASE_CREDENTIALS_JSON")
 
-try:
-    firebase_admin.get_app()
-
-except ValueError:
-
-    if not database_url:
+if firebase_credentials_json:
+    # Render / cloud deployment
+    try:
+        credential_data = json.loads(firebase_credentials_json)
+        cred = credentials.Certificate(credential_data)
+    except Exception as error:
         raise ValueError(
-            "FIREBASE_DATABASE_URL is missing from .env"
+            f"Invalid FIREBASE_CREDENTIALS_JSON: {error}"
         )
+
+else:
+    # Local development
+    credential_file = os.getenv(
+        "FIREBASE_CREDENTIALS",
+        "firebase-service-account.json"
+    )
+
+    credential_path = BASE_DIR / credential_file
 
     if not credential_path.exists():
         raise FileNotFoundError(
             f"Firebase credential file not found:\n{credential_path}"
         )
 
-    cred = credentials.Certificate(
-        str(credential_path)
-    )
+    cred = credentials.Certificate(str(credential_path))
 
+
+# ---------------------------------------------------------
+# Initialize Firebase
+# ---------------------------------------------------------
+
+try:
+    firebase_admin.get_app()
+except ValueError:
     firebase_admin.initialize_app(
         cred,
         {
@@ -56,23 +66,19 @@ except ValueError:
     )
 
 
-# -----------------------------------
-# SEAT FUNCTIONS
-# -----------------------------------
+# ---------------------------------------------------------
+# Seat / Zone functions
+# ---------------------------------------------------------
 
 def get_zones():
-    """Get all library seat zones from Firebase."""
     return db.reference("zones").get()
 
 
 def set_zones(zones):
-    """Save seat zones to Firebase."""
     db.reference("zones").set(zones)
 
 
 def initialize_zones():
-    """Create initial seat data only if it doesn't exist."""
-
     ref = db.reference("zones")
 
     if ref.get() is not None:
@@ -97,33 +103,24 @@ def initialize_zones():
     }
 
     ref.set(zones)
-
     print("✅ Seat data created in Firebase")
 
 
-# -----------------------------------
-# BOOK FUNCTIONS
-# -----------------------------------
+# ---------------------------------------------------------
+# Book functions
+# ---------------------------------------------------------
 
 def get_books():
-    """Get all books from Firebase."""
     return db.reference("books").get()
 
 
 def set_books(books):
-    """Save books to Firebase."""
     db.reference("books").set(books)
 
 
 def initialize_books():
-    """
-    Import books from books.csv into Firebase
-    only if books do not already exist.
-    """
-
     ref = db.reference("books")
 
-    # Don't overwrite existing Firebase books
     if ref.get() is not None:
         return
 
@@ -135,12 +132,12 @@ def initialize_books():
         )
 
     books_df = pd.read_csv(csv_path)
-
     books = {}
 
     for _, row in books_df.iterrows():
 
-        book_id = str(row["book_id"]).strip()
+        # CSV uses "id" as the book ID
+        book_id = str(row["id"]).strip()
 
         books[book_id] = {
             "title": str(row["title"]).strip(),
@@ -152,13 +149,12 @@ def initialize_books():
         }
 
     ref.set(books)
-
     print("✅ Book data created in Firebase")
 
 
-# -----------------------------------
-# INITIALIZE DATABASE
-# -----------------------------------
+# ---------------------------------------------------------
+# Initialize existing data
+# ---------------------------------------------------------
 
 initialize_zones()
 initialize_books()
