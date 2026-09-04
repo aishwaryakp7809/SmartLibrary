@@ -7,6 +7,7 @@
 
     <title>Admin Dashboard | SmartLibrary</title>
 
+    <!-- Firebase -->
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 
@@ -25,7 +26,7 @@
 
         .navbar {
             height: 72px;
-            background: rgba(255,255,255,0.95);
+            background: rgba(255,255,255,0.96);
             border-bottom: 1px solid #e2e8f0;
             display: flex;
             align-items: center;
@@ -55,7 +56,7 @@
             justify-content: center;
             border-radius: 11px;
             color: white;
-            background: linear-gradient(135deg,#4f46e5,#0ea5e9);
+            background: linear-gradient(135deg, #4f46e5, #0ea5e9);
         }
 
         .nav-right {
@@ -117,7 +118,7 @@
 
         .stats {
             display: grid;
-            grid-template-columns: repeat(4,1fr);
+            grid-template-columns: repeat(4, 1fr);
             gap: 18px;
             margin-bottom: 30px;
         }
@@ -175,7 +176,7 @@
 
         .form-grid {
             display: grid;
-            grid-template-columns: repeat(3,1fr);
+            grid-template-columns: repeat(3, 1fr);
             gap: 16px;
         }
 
@@ -202,6 +203,11 @@
             box-shadow: 0 0 0 3px rgba(99,102,241,0.08);
         }
 
+        .form-group input:disabled {
+            background: #f1f5f9;
+            cursor: not-allowed;
+        }
+
         .form-actions {
             margin-top: 18px;
             display: flex;
@@ -218,7 +224,7 @@
         }
 
         .primary-btn {
-            background: linear-gradient(135deg,#4f46e5,#2563eb);
+            background: linear-gradient(135deg, #4f46e5, #2563eb);
             color: white;
         }
 
@@ -228,11 +234,11 @@
         }
 
         .primary-btn:hover {
-            opacity: 0.92;
+            opacity: .92;
         }
 
         .primary-btn:disabled {
-            opacity: 0.6;
+            opacity: .6;
             cursor: not-allowed;
         }
 
@@ -243,7 +249,7 @@
         table {
             width: 100%;
             border-collapse: collapse;
-            min-width: 800px;
+            min-width: 850px;
         }
 
         th {
@@ -253,7 +259,7 @@
             color: #64748b;
             font-size: 11px;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: .5px;
         }
 
         td {
@@ -297,7 +303,7 @@
 
         .zone-grid {
             display: grid;
-            grid-template-columns: repeat(3,1fr);
+            grid-template-columns: repeat(3, 1fr);
             gap: 18px;
         }
 
@@ -305,7 +311,7 @@
             border: 1px solid #e2e8f0;
             border-radius: 16px;
             padding: 20px;
-            background: #fff;
+            background: white;
         }
 
         .zone-name {
@@ -350,7 +356,7 @@
         }
 
         .update-seat:hover {
-            opacity: 0.9;
+            opacity: .9;
         }
 
         #status {
@@ -382,13 +388,19 @@
             padding: 30px;
         }
 
-        @media(max-width:900px) {
+        .loading {
+            text-align: center;
+            color: #64748b;
+            padding: 30px;
+        }
+
+        @media (max-width: 900px) {
             .stats {
-                grid-template-columns: repeat(2,1fr);
+                grid-template-columns: repeat(2, 1fr);
             }
 
             .form-grid {
-                grid-template-columns: repeat(2,1fr);
+                grid-template-columns: repeat(2, 1fr);
             }
 
             .zone-grid {
@@ -396,7 +408,7 @@
             }
         }
 
-        @media(max-width:600px) {
+        @media (max-width: 600px) {
             .navbar {
                 padding: 0 18px;
             }
@@ -444,7 +456,6 @@
     </a>
 
     <div class="nav-right">
-
         <span id="adminEmail" class="admin-email">
             Checking account...
         </span>
@@ -452,10 +463,10 @@
         <button id="logoutBtn" class="logout-btn">
             Logout
         </button>
-
     </div>
 
 </nav>
+
 
 <main class="container">
 
@@ -465,7 +476,9 @@
             🛡️ ADMINISTRATOR PANEL
         </div>
 
-        <h1>Library Management</h1>
+        <h1>
+            Library Management
+        </h1>
 
         <p>
             Manage books and monitor live study-zone occupancy.
@@ -473,91 +486,225 @@
 
     </div>
 
+
     <div id="status"></div>
+
+
+    <!-- STATISTICS -->
 
     <section class="stats">
 
         <div class="stat-card">
-            <div class="stat-icon">📚</div>
-            <div id="bookCount" class="stat-number">0</div>
-            <div class="stat-label">Books</div>
+
+            <div class="stat-icon">
+                📚
+            </div>
+
+            <div id="bookCount" class="stat-number">
+                0
+            </div>
+
+            <div class="stat-label">
+                Books
+            </div>
+
         </div>
 
-        <div class="stat-card">
-            <div class="stat-icon">📖</div>
-            <div id="availableCopies" class="stat-number">0</div>
-            <div class="stat-label">Available Copies</div>
-        </div>
 
         <div class="stat-card">
-            <div class="stat-icon">🪑</div>
-            <div id="availableSeats" class="stat-number">0</div>
-            <div class="stat-label">Available Seats</div>
+
+            <div class="stat-icon">
+                📖
+            </div>
+
+            <div id="availableCopies" class="stat-number">
+                0
+            </div>
+
+            <div class="stat-label">
+                Available Copies
+            </div>
+
         </div>
 
+
         <div class="stat-card">
-            <div class="stat-icon">🟢</div>
-            <div class="stat-number">LIVE</div>
-            <div class="stat-label">System Status</div>
+
+            <div class="stat-icon">
+                🪑
+            </div>
+
+            <div id="availableSeats" class="stat-number">
+                0
+            </div>
+
+            <div class="stat-label">
+                Available Seats
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-icon">
+                🟢
+            </div>
+
+            <div class="stat-number">
+                LIVE
+            </div>
+
+            <div class="stat-label">
+                System Status
+            </div>
+
         </div>
 
     </section>
 
+
+    <!-- BOOK MANAGEMENT -->
+
     <section class="section">
 
         <div class="section-header">
+
             <div>
-                <h2>📚 Book Management</h2>
-                <p>Add new books or update existing library records.</p>
+
+                <h2>
+                    📚 Book Management
+                </h2>
+
+                <p>
+                    Add new books or update existing library records.
+                </p>
+
             </div>
+
         </div>
+
 
         <div class="form-grid">
 
             <div class="form-group">
-                <label>BOOK ID</label>
-                <input id="bookId" placeholder="Example: B010">
+
+                <label>
+                    BOOK ID
+                </label>
+
+                <input
+                    id="bookId"
+                    placeholder="Example: B010"
+                >
+
             </div>
 
-            <div class="form-group">
-                <label>TITLE</label>
-                <input id="title" placeholder="Book title">
-            </div>
 
             <div class="form-group">
-                <label>AUTHOR</label>
-                <input id="author" placeholder="Author name">
+
+                <label>
+                    TITLE
+                </label>
+
+                <input
+                    id="title"
+                    placeholder="Book title"
+                >
+
             </div>
 
-            <div class="form-group">
-                <label>SUBJECT</label>
-                <input id="subject" placeholder="Subject">
-            </div>
 
             <div class="form-group">
-                <label>AVAILABLE COPIES</label>
-                <input id="available" type="number" min="0" placeholder="0">
+
+                <label>
+                    AUTHOR
+                </label>
+
+                <input
+                    id="author"
+                    placeholder="Author name"
+                >
+
             </div>
 
-            <div class="form-group">
-                <label>TOTAL COPIES</label>
-                <input id="total" type="number" min="1" placeholder="1">
-            </div>
 
             <div class="form-group">
-                <label>RACK</label>
-                <input id="rack" placeholder="Example: Rack A1">
+
+                <label>
+                    SUBJECT
+                </label>
+
+                <input
+                    id="subject"
+                    placeholder="Subject"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    AVAILABLE COPIES
+                </label>
+
+                <input
+                    id="available"
+                    type="number"
+                    min="0"
+                    placeholder="0"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    TOTAL COPIES
+                </label>
+
+                <input
+                    id="total"
+                    type="number"
+                    min="1"
+                    placeholder="1"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    RACK
+                </label>
+
+                <input
+                    id="rack"
+                    placeholder="Example: Rack A1"
+                >
+
             </div>
 
         </div>
 
+
         <div class="form-actions">
 
-            <button id="saveBookBtn" class="primary-btn">
+            <button
+                id="saveBookBtn"
+                class="primary-btn"
+            >
                 ➕ Add Book
             </button>
 
-            <button id="cancelBtn" class="secondary-btn" style="display:none;">
+            <button
+                id="cancelBtn"
+                class="secondary-btn"
+                style="display:none;"
+            >
                 Cancel Edit
             </button>
 
@@ -565,23 +712,36 @@
 
     </section>
 
+
+    <!-- BOOK TABLE -->
+
     <section class="section">
 
         <div class="section-header">
 
             <div>
-                <h2>Current Books</h2>
-                <p>Books currently stored in Firebase.</p>
+
+                <h2>
+                    Current Books
+                </h2>
+
+                <p>
+                    Books currently stored in Firebase.
+                </p>
+
             </div>
 
         </div>
+
 
         <div class="table-wrap">
 
             <table>
 
                 <thead>
+
                     <tr>
+
                         <th>ID</th>
                         <th>Title</th>
                         <th>Author</th>
@@ -590,10 +750,26 @@
                         <th>Total</th>
                         <th>Rack</th>
                         <th>Actions</th>
+
                     </tr>
+
                 </thead>
 
-                <tbody id="booksTable"></tbody>
+
+                <tbody id="booksTable">
+
+                    <tr>
+
+                        <td
+                            colspan="8"
+                            class="loading"
+                        >
+                            Loading books...
+                        </td>
+
+                    </tr>
+
+                </tbody>
 
             </table>
 
@@ -601,67 +777,145 @@
 
     </section>
 
+
+    <!-- SEAT MANAGEMENT -->
+
     <section class="section">
 
         <div class="section-header">
 
             <div>
-                <h2>🪑 Study Zone Management</h2>
-                <p>Monitor and manually correct live seat occupancy.</p>
+
+                <h2>
+                    🪑 Study Zone Management
+                </h2>
+
+                <p>
+                    Monitor and manually correct live seat occupancy.
+                </p>
+
             </div>
 
         </div>
 
-        <div id="zones" class="zone-grid"></div>
+
+        <div
+            id="zones"
+            class="zone-grid"
+        >
+
+            <div class="loading">
+                Loading study zones...
+            </div>
+
+        </div>
 
     </section>
 
 </main>
 
+
 <script>
 
+/* =========================================================
+   FIREBASE CONFIGURATION
+========================================================= */
+
 const firebaseConfig = {
-    apiKey: "AIzaSyBROcADm9--NuxNOtVUAD5IYWaZghMtLKU",
-    authDomain: "smart-library-assistent.firebaseapp.com",
-    databaseURL: "https://smart-library-assistent-default-rtdb.firebaseio.com",
-    projectId: "smart-library-assistent",
-    storageBucket: "smart-library-assistent.firebasestorage.app",
-    messagingSenderId: "36138964774",
-    appId: "1:36138964774:web:45b338aef03cb7b0ffd3e7",
-    measurementId: "G-DQDPCFDNF2"
+  apiKey: "AIzaSyBROcAD9m--NuxNOtVUAD5IYWaZghMtLKU",
+  authDomain: "smart-library-assistent.firebaseapp.com",
+  databaseURL: "https://smart-library-assistent-default-rtdb.firebaseio.com",
+  projectId: "smart-library-assistent",
+  storageBucket: "smart-library-assistent.firebasestorage.app",
+  messagingSenderId: "36138964774",
+  appId: "1:36138964774:web:45b338aef03cb7b0ffd3e7",
+  measurementId: "G-DQDPCFDNF2"
 };
+
+
+
+/* =========================================================
+   INITIALIZE FIREBASE
+========================================================= */
 
 firebase.initializeApp(firebaseConfig);
 
 const auth = firebase.auth();
 
-const API_URL = "https://smartlibrary-api.onrender.com";
+
+/* =========================================================
+   IMPORTANT:
+   ONLY USE API_URL
+========================================================= */
+
+const API_URL =
+    "https://smartlibrary-api.onrender.com";
+
+
+/* =========================================================
+   GLOBAL VARIABLES
+========================================================= */
 
 let books = {};
+
 let editingBookId = null;
 
-const booksTable = document.getElementById("booksTable");
-const zonesContainer = document.getElementById("zones");
-const statusBox = document.getElementById("status");
-const saveBookBtn = document.getElementById("saveBookBtn");
-const cancelBtn = document.getElementById("cancelBtn");
 
-function showStatus(message, type = "success") {
+/* =========================================================
+   DOM ELEMENTS
+========================================================= */
 
-    statusBox.textContent = message;
+const booksTable =
+    document.getElementById("booksTable");
+
+const zonesContainer =
+    document.getElementById("zones");
+
+const statusBox =
+    document.getElementById("status");
+
+const saveBookBtn =
+    document.getElementById("saveBookBtn");
+
+const cancelBtn =
+    document.getElementById("cancelBtn");
+
+
+/* =========================================================
+   STATUS MESSAGE
+========================================================= */
+
+function showStatus(
+    message,
+    type = "success"
+) {
+
+    statusBox.textContent =
+        message;
 
     statusBox.className =
         type === "error"
             ? "status-error"
             : "status-success";
 
-    statusBox.style.display = "block";
+    statusBox.style.display =
+        "block";
 
     setTimeout(() => {
+
         statusBox.className = "";
-        statusBox.style.display = "none";
+
+        statusBox.style.display =
+            "none";
+
     }, 4000);
+
 }
+
+
+/* =========================================================
+   ESCAPE HTML
+========================================================= */
 
 function escapeHtml(value) {
 
@@ -671,73 +925,120 @@ function escapeHtml(value) {
         .replace(/>/g, "&gt;")
         .replace(/"/g, "&quot;")
         .replace(/'/g, "&#039;");
+
 }
 
-/* AUTHENTICATION */
 
-auth.onAuthStateChanged(async (user) => {
+/* =========================================================
+   AUTHENTICATION
+========================================================= */
 
-    if (!user) {
+auth.onAuthStateChanged(
+    async (user) => {
 
-        window.location.href = "login.html";
-        return;
-    }
+        if (!user) {
 
-    try {
-
-        const tokenResult =
-            await user.getIdTokenResult(true);
-
-        const isAdmin =
-            tokenResult.claims.admin === true;
-
-        if (!isAdmin) {
-
-            await auth.signOut();
-
-            alert("Administrator access is required.");
-
-            window.location.href = "login.html";
+            window.location.href =
+                "login.html";
 
             return;
+
         }
 
-        document.getElementById("adminEmail").textContent =
-            user.email || "Administrator";
 
-        await loadAll();
+        try {
 
-    } catch (error) {
+            const tokenResult =
+                await user.getIdTokenResult(true);
 
-        console.error("AUTH ERROR:", error);
 
-        showStatus(
-            "Unable to verify administrator account.",
-            "error"
-        );
+            const isAdmin =
+                tokenResult.claims.admin === true;
+
+
+            if (!isAdmin) {
+
+                await auth.signOut();
+
+                alert(
+                    "Administrator access is required."
+                );
+
+                window.location.href =
+                    "login.html";
+
+                return;
+
+            }
+
+
+            document.getElementById(
+                "adminEmail"
+            ).textContent =
+                user.email ||
+                "Administrator";
+
+
+            await loadAll();
+
+
+        } catch (error) {
+
+            console.error(
+                "AUTH ERROR:",
+                error
+            );
+
+            showStatus(
+                "Unable to verify administrator account.",
+                "error"
+            );
+
+        }
+
     }
-});
+);
 
-/* GET AUTH TOKEN */
+
+/* =========================================================
+   AUTH HEADERS
+========================================================= */
 
 async function getAuthHeaders() {
 
-    const user = auth.currentUser;
+    const user =
+        auth.currentUser;
+
 
     if (!user) {
-        throw new Error("You are not logged in.");
+
+        throw new Error(
+            "You are not logged in."
+        );
+
     }
+
 
     const token =
         await user.getIdToken(true);
 
+
     return {
-        "Content-Type": "application/json",
-        "Authorization": "Bearer " + token
+
+        "Content-Type":
+            "application/json",
+
+        "Authorization":
+            "Bearer " + token
+
     };
+
 }
 
-/* LOAD EVERYTHING */
+
+/* =========================================================
+   LOAD EVERYTHING
+========================================================= */
 
 async function loadAll() {
 
@@ -745,456 +1046,787 @@ async function loadAll() {
         loadBooks(),
         loadZones()
     ]);
+
 }
 
-/* LOAD BOOKS */
+
+/* =========================================================
+   LOAD BOOKS
+========================================================= */
 
 async function loadBooks() {
 
     try {
 
+        console.log(
+            "Loading books from:",
+            API_URL + "/books"
+        );
+
+
         const response =
-            await fetch(`${API_URL}/books`);
+            await fetch(
+                API_URL + "/books"
+            );
+
 
         if (!response.ok) {
 
             throw new Error(
-                `Books request failed: ${response.status}`
+                "Books request failed: " +
+                response.status
             );
+
         }
 
-        books = await response.json();
+
+        books =
+            await response.json();
+
+
+        console.log(
+            "Books received:",
+            books
+        );
+
 
         renderBooks();
 
         updateBookStats();
 
+
     } catch (error) {
 
-        console.error("BOOK ERROR:", error);
+        console.error(
+            "BOOK ERROR:",
+            error
+        );
+
+
+        booksTable.innerHTML = `
+            <tr>
+                <td
+                    colspan="8"
+                    class="empty"
+                >
+                    Unable to load books.
+                </td>
+            </tr>
+        `;
+
 
         showStatus(
             "Unable to fetch books from the backend.",
             "error"
         );
+
     }
+
 }
 
-/* RENDER BOOKS */
+
+/* =========================================================
+   RENDER BOOKS
+========================================================= */
 
 function renderBooks() {
 
     const entries =
-        Object.entries(books || {});
+        Object.entries(
+            books || {}
+        );
+
 
     if (entries.length === 0) {
 
         booksTable.innerHTML = `
             <tr>
-                <td colspan="8" class="empty">
+                <td
+                    colspan="8"
+                    class="empty"
+                >
                     No books found.
                 </td>
             </tr>
         `;
 
         return;
+
     }
 
+
     booksTable.innerHTML =
-        entries.map(([id, book]) => {
+        entries.map(
+            ([id, book]) => {
 
-            return `
-                <tr>
+                return `
 
-                    <td class="book-id">
-                        ${escapeHtml(id)}
-                    </td>
+                    <tr>
 
-                    <td>
-                        ${escapeHtml(book.title)}
-                    </td>
+                        <td class="book-id">
+                            ${escapeHtml(id)}
+                        </td>
 
-                    <td>
-                        ${escapeHtml(book.author)}
-                    </td>
+                        <td>
+                            ${escapeHtml(book.title)}
+                        </td>
 
-                    <td>
-                        ${escapeHtml(book.subject)}
-                    </td>
+                        <td>
+                            ${escapeHtml(book.author)}
+                        </td>
 
-                    <td class="availability">
-                        ${escapeHtml(book.available_copies)}
-                    </td>
+                        <td>
+                            ${escapeHtml(book.subject)}
+                        </td>
 
-                    <td>
-                        ${escapeHtml(book.total_copies)}
-                    </td>
+                        <td class="availability">
+                            ${escapeHtml(book.available_copies)}
+                        </td>
 
-                    <td>
-                        ${escapeHtml(book.rack)}
-                    </td>
+                        <td>
+                            ${escapeHtml(book.total_copies)}
+                        </td>
 
-                    <td>
+                        <td>
+                            ${escapeHtml(book.rack)}
+                        </td>
 
-                        <button
-                            class="action-btn edit-btn"
-                            onclick="editBook('${escapeHtml(id)}')"
-                        >
-                            Edit
-                        </button>
+                        <td>
 
-                        <button
-                            class="action-btn delete-btn"
-                            onclick="deleteBook('${escapeHtml(id)}')"
-                        >
-                            Delete
-                        </button>
+                            <button
+                                class="action-btn edit-btn"
+                                onclick="editBook('${escapeHtml(id)}')"
+                            >
+                                Edit
+                            </button>
 
-                    </td>
+                            <button
+                                class="action-btn delete-btn"
+                                onclick="deleteBook('${escapeHtml(id)}')"
+                            >
+                                Delete
+                            </button>
 
-                </tr>
-            `;
+                        </td>
 
-        }).join("");
+                    </tr>
+
+                `;
+
+            }
+        ).join("");
+
 }
 
-/* BOOK STATS */
+
+/* =========================================================
+   BOOK STATISTICS
+========================================================= */
 
 function updateBookStats() {
 
     const entries =
-        Object.values(books || {});
+        Object.values(
+            books || {}
+        );
 
-    document.getElementById("bookCount").textContent =
+
+    document.getElementById(
+        "bookCount"
+    ).textContent =
         entries.length;
+
 
     const available =
         entries.reduce(
             (sum, book) =>
-                sum + Number(book.available_copies || 0),
+                sum +
+                Number(
+                    book.available_copies || 0
+                ),
             0
         );
 
-    document.getElementById("availableCopies").textContent =
+
+    document.getElementById(
+        "availableCopies"
+    ).textContent =
         available;
+
 }
 
-/* ADD / UPDATE BOOK */
 
-saveBookBtn.addEventListener("click", async () => {
+/* =========================================================
+   ADD / UPDATE BOOK
+========================================================= */
 
-    const bookId =
-        document.getElementById("bookId").value.trim();
+saveBookBtn.addEventListener(
+    "click",
+    async () => {
 
-    const title =
-        document.getElementById("title").value.trim();
+        const bookId =
+            document.getElementById(
+                "bookId"
+            ).value.trim();
 
-    const author =
-        document.getElementById("author").value.trim();
 
-    const subject =
-        document.getElementById("subject").value.trim();
+        const title =
+            document.getElementById(
+                "title"
+            ).value.trim();
 
-    const available =
-        Number(document.getElementById("available").value);
 
-    const total =
-        Number(document.getElementById("total").value);
+        const author =
+            document.getElementById(
+                "author"
+            ).value.trim();
 
-    const rack =
-        document.getElementById("rack").value.trim();
 
-    if (
-        !bookId ||
-        !title ||
-        !author ||
-        !subject ||
-        !rack ||
-        Number.isNaN(available) ||
-        Number.isNaN(total)
-    ) {
+        const subject =
+            document.getElementById(
+                "subject"
+            ).value.trim();
 
-        showStatus(
-            "Please fill all book fields.",
-            "error"
-        );
 
-        return;
-    }
-
-    if (total < 1) {
-
-        showStatus(
-            "Total copies must be at least 1.",
-            "error"
-        );
-
-        return;
-    }
-
-    if (available < 0 || available > total) {
-
-        showStatus(
-            "Available copies must be between 0 and total copies.",
-            "error"
-        );
-
-        return;
-    }
-
-    const bookData = {
-        title,
-        author,
-        subject,
-        available_copies: available,
-        total_copies: total,
-        rack
-    };
-
-    saveBookBtn.disabled = true;
-    saveBookBtn.textContent = "Saving...";
-
-    try {
-
-        const headers =
-            await getAuthHeaders();
-
-        const method =
-            editingBookId ? "PUT" : "POST";
-
-        const targetId =
-            editingBookId || bookId;
-
-        const response =
-            await fetch(
-                `${API_URL}/books/${encodeURIComponent(targetId)}`,
-                {
-                    method,
-                    headers,
-                    body: JSON.stringify(bookData)
-                }
+        const available =
+            Number(
+                document.getElementById(
+                    "available"
+                ).value
             );
 
-        const result =
-            await response.json();
 
-        if (!response.ok) {
-
-            throw new Error(
-                result.detail ||
-                "Unable to save book."
+        const total =
+            Number(
+                document.getElementById(
+                    "total"
+                ).value
             );
+
+
+        const rack =
+            document.getElementById(
+                "rack"
+            ).value.trim();
+
+
+        if (
+            !bookId ||
+            !title ||
+            !author ||
+            !subject ||
+            !rack ||
+            Number.isNaN(available) ||
+            Number.isNaN(total)
+        ) {
+
+            showStatus(
+                "Please fill all book fields.",
+                "error"
+            );
+
+            return;
+
         }
 
-        showStatus(
-            editingBookId
-                ? "Book updated successfully."
-                : "Book added successfully."
-        );
 
-        clearForm();
+        if (total < 1) {
 
-        await loadBooks();
+            showStatus(
+                "Total copies must be at least 1.",
+                "error"
+            );
 
-    } catch (error) {
+            return;
 
-        console.error("SAVE BOOK ERROR:", error);
+        }
 
-        showStatus(
-            error.message ||
-            "Unable to save book.",
-            "error"
-        );
 
-    } finally {
+        if (
+            available < 0 ||
+            available > total
+        ) {
 
-        saveBookBtn.disabled = false;
+            showStatus(
+                "Available copies must be between 0 and total copies.",
+                "error"
+            );
+
+            return;
+
+        }
+
+
+        const bookData = {
+
+            title,
+
+            author,
+
+            subject,
+
+            available_copies:
+                available,
+
+            total_copies:
+                total,
+
+            rack
+
+        };
+
+
+        saveBookBtn.disabled =
+            true;
+
 
         saveBookBtn.textContent =
-            editingBookId
-                ? "💾 Update Book"
-                : "➕ Add Book";
+            "Saving...";
+
+
+        try {
+
+            const headers =
+                await getAuthHeaders();
+
+
+            const method =
+                editingBookId
+                    ? "PUT"
+                    : "POST";
+
+
+            const targetId =
+                editingBookId ||
+                bookId;
+
+
+            const response =
+                await fetch(
+
+                    API_URL +
+                    "/books/" +
+                    encodeURIComponent(
+                        targetId
+                    ),
+
+                    {
+
+                        method,
+
+                        headers,
+
+                        body:
+                            JSON.stringify(
+                                bookData
+                            )
+
+                    }
+
+                );
+
+
+            const result =
+                await response.json();
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    result.detail ||
+                    "Unable to save book."
+                );
+
+            }
+
+
+            showStatus(
+                editingBookId
+                    ? "Book updated successfully."
+                    : "Book added successfully."
+            );
+
+
+            clearForm();
+
+
+            await loadBooks();
+
+
+        } catch (error) {
+
+            console.error(
+                "SAVE BOOK ERROR:",
+                error
+            );
+
+
+            showStatus(
+                error.message ||
+                "Unable to save book.",
+                "error"
+            );
+
+        } finally {
+
+            saveBookBtn.disabled =
+                false;
+
+
+            saveBookBtn.textContent =
+                "➕ Add Book";
+
+        }
+
     }
-});
+);
 
-/* EDIT BOOK */
 
-window.editBook = function(id) {
+/* =========================================================
+   EDIT BOOK
+========================================================= */
 
-    const book = books[id];
+window.editBook =
+    function(id) {
 
-    if (!book) {
+        const book =
+            books[id];
 
-        showStatus(
-            "Book not found.",
-            "error"
-        );
 
-        return;
-    }
+        if (!book) {
 
-    editingBookId = id;
+            showStatus(
+                "Book not found.",
+                "error"
+            );
 
-    document.getElementById("bookId").value = id;
-    document.getElementById("bookId").disabled = true;
+            return;
 
-    document.getElementById("title").value =
-        book.title || "";
+        }
 
-    document.getElementById("author").value =
-        book.author || "";
 
-    document.getElementById("subject").value =
-        book.subject || "";
+        editingBookId =
+            id;
 
-    document.getElementById("available").value =
-        book.available_copies ?? 0;
 
-    document.getElementById("total").value =
-        book.total_copies ?? 1;
+        document.getElementById(
+            "bookId"
+        ).value =
+            id;
 
-    document.getElementById("rack").value =
-        book.rack || "";
 
-    saveBookBtn.textContent =
-        "💾 Update Book";
+        document.getElementById(
+            "bookId"
+        ).disabled =
+            true;
 
-    cancelBtn.style.display =
-        "inline-block";
 
-    window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-    });
-};
+        document.getElementById(
+            "title"
+        ).value =
+            book.title || "";
 
-/* CANCEL EDIT */
 
-cancelBtn.addEventListener("click", () => {
+        document.getElementById(
+            "author"
+        ).value =
+            book.author || "";
 
-    clearForm();
 
-});
+        document.getElementById(
+            "subject"
+        ).value =
+            book.subject || "";
+
+
+        document.getElementById(
+            "available"
+        ).value =
+            book.available_copies ?? 0;
+
+
+        document.getElementById(
+            "total"
+        ).value =
+            book.total_copies ?? 1;
+
+
+        document.getElementById(
+            "rack"
+        ).value =
+            book.rack || "";
+
+
+        saveBookBtn.textContent =
+            "💾 Update Book";
+
+
+        cancelBtn.style.display =
+            "inline-block";
+
+
+        window.scrollTo({
+
+            top: 0,
+
+            behavior: "smooth"
+
+        });
+
+    };
+
+
+/* =========================================================
+   CLEAR FORM
+========================================================= */
 
 function clearForm() {
 
-    editingBookId = null;
+    editingBookId =
+        null;
 
-    document.getElementById("bookId").disabled = false;
 
-    document.getElementById("bookId").value = "";
-    document.getElementById("title").value = "";
-    document.getElementById("author").value = "";
-    document.getElementById("subject").value = "";
-    document.getElementById("available").value = "";
-    document.getElementById("total").value = "";
-    document.getElementById("rack").value = "";
+    document.getElementById(
+        "bookId"
+    ).disabled =
+        false;
+
+
+    document.getElementById(
+        "bookId"
+    ).value =
+        "";
+
+
+    document.getElementById(
+        "title"
+    ).value =
+        "";
+
+
+    document.getElementById(
+        "author"
+    ).value =
+        "";
+
+
+    document.getElementById(
+        "subject"
+    ).value =
+        "";
+
+
+    document.getElementById(
+        "available"
+    ).value =
+        "";
+
+
+    document.getElementById(
+        "total"
+    ).value =
+        "";
+
+
+    document.getElementById(
+        "rack"
+    ).value =
+        "";
+
 
     saveBookBtn.textContent =
         "➕ Add Book";
 
+
     cancelBtn.style.display =
         "none";
+
 }
 
-/* DELETE BOOK */
 
-window.deleteBook = async function(id) {
+cancelBtn.addEventListener(
+    "click",
+    clearForm
+);
 
-    const book = books[id];
 
-    if (!book) return;
+/* =========================================================
+   DELETE BOOK
+========================================================= */
 
-    const confirmed =
-        confirm(
-            `Delete "${book.title}" (${id})?`
-        );
+window.deleteBook =
+    async function(id) {
 
-    if (!confirmed) return;
+        const book =
+            books[id];
 
-    try {
 
-        const headers =
-            await getAuthHeaders();
+        if (!book) {
 
-        const response =
-            await fetch(
-                `${API_URL}/books/${encodeURIComponent(id)}`,
-                {
-                    method: "DELETE",
-                    headers
-                }
-            );
+            return;
 
-        const result =
-            await response.json();
-
-        if (!response.ok) {
-
-            throw new Error(
-                result.detail ||
-                "Unable to delete book."
-            );
         }
 
-        showStatus(
-            "Book deleted successfully."
-        );
 
-        await loadBooks();
+        const confirmed =
+            confirm(
+                `Delete "${book.title}" (${id})?`
+            );
 
-    } catch (error) {
 
-        console.error("DELETE BOOK ERROR:", error);
+        if (!confirmed) {
 
-        showStatus(
-            error.message ||
-            "Unable to delete book.",
-            "error"
-        );
-    }
-};
+            return;
 
-/* LOAD SEATS */
+        }
+
+
+        try {
+
+            const headers =
+                await getAuthHeaders();
+
+
+            const response =
+                await fetch(
+
+                    API_URL +
+                    "/books/" +
+                    encodeURIComponent(id),
+
+                    {
+
+                        method: "DELETE",
+
+                        headers
+
+                    }
+
+                );
+
+
+            const result =
+                await response.json();
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    result.detail ||
+                    "Unable to delete book."
+                );
+
+            }
+
+
+            showStatus(
+                "Book deleted successfully."
+            );
+
+
+            await loadBooks();
+
+
+        } catch (error) {
+
+            console.error(
+                "DELETE BOOK ERROR:",
+                error
+            );
+
+
+            showStatus(
+                error.message ||
+                "Unable to delete book.",
+                "error"
+            );
+
+        }
+
+    };
+
+
+/* =========================================================
+   LOAD SEATS
+========================================================= */
 
 async function loadZones() {
 
     try {
 
+        console.log(
+            "Loading seats from:",
+            API_URL + "/seats"
+        );
+
+
         const response =
-            await fetch(`${API_URL}/seats`);
+            await fetch(
+                API_URL + "/seats"
+            );
+
 
         if (!response.ok) {
 
             throw new Error(
-                `Seats request failed: ${response.status}`
+                "Seats request failed: " +
+                response.status
             );
+
         }
+
 
         const zones =
             await response.json();
+
+
+        console.log(
+            "Seats received:",
+            zones
+        );
+
 
         renderZones(zones);
 
         updateSeatStats(zones);
 
+
     } catch (error) {
 
-        console.error("SEAT ERROR:", error);
+        console.error(
+            "SEAT ERROR:",
+            error
+        );
+
+
+        zonesContainer.innerHTML = `
+            <div class="empty">
+                Unable to load study zones.
+            </div>
+        `;
+
 
         showStatus(
             "Unable to fetch seat information.",
             "error"
         );
+
     }
+
 }
 
-/* RENDER SEATS */
+
+/* =========================================================
+   RENDER SEATS
+========================================================= */
 
 function renderZones(zones) {
 
     const entries =
-        Object.entries(zones || {});
+        Object.entries(
+            zones || {}
+        );
+
 
     if (entries.length === 0) {
 
@@ -1205,178 +1837,295 @@ function renderZones(zones) {
         `;
 
         return;
+
     }
 
+
     zonesContainer.innerHTML =
-        entries.map(([id, zone]) => {
+        entries.map(
+            ([id, zone]) => {
 
-            const occupied =
-                Number(zone.occupied || 0);
+                const occupied =
+                    Number(
+                        zone.occupied || 0
+                    );
 
-            const total =
-                Number(zone.total || 0);
 
-            const available =
-                Math.max(total - occupied, 0);
+                const total =
+                    Number(
+                        zone.total || 0
+                    );
 
-            return `
-                <div class="zone-card">
 
-                    <div class="zone-name">
-                        ${escapeHtml(zone.name || id)}
+                const available =
+                    Math.max(
+                        total - occupied,
+                        0
+                    );
+
+
+                return `
+
+                    <div class="zone-card">
+
+                        <div class="zone-name">
+
+                            ${escapeHtml(
+                                zone.name || id
+                            )}
+
+                        </div>
+
+
+                        <div class="zone-number">
+
+                            ${available}
+
+                            <span>
+                                / ${total} available
+                            </span>
+
+                        </div>
+
+
+                        <div class="zone-status">
+
+                            ${occupied}
+                            seats currently occupied
+
+                        </div>
+
+
+                        <input
+                            id="seat-${escapeHtml(id)}"
+                            class="seat-input"
+                            type="number"
+                            min="0"
+                            max="${total}"
+                            value="${occupied}"
+                        >
+
+
+                        <button
+                            class="update-seat"
+                            onclick="updateZone('${escapeHtml(id)}', ${total})"
+                        >
+
+                            Update Occupancy
+
+                        </button>
+
                     </div>
 
-                    <div class="zone-number">
-                        ${available}
-                        <span>/ ${total} available</span>
-                    </div>
+                `;
 
-                    <div class="zone-status">
-                        ${occupied} seats currently occupied
-                    </div>
+            }
+        ).join("");
 
-                    <input
-                        id="seat-${escapeHtml(id)}"
-                        class="seat-input"
-                        type="number"
-                        min="0"
-                        max="${total}"
-                        value="${occupied}"
-                    >
-
-                    <button
-                        class="update-seat"
-                        onclick="updateZone('${escapeHtml(id)}', ${total})"
-                    >
-                        Update Occupancy
-                    </button>
-
-                </div>
-            `;
-
-        }).join("");
 }
 
-/* SEAT STATS */
+
+/* =========================================================
+   SEAT STATISTICS
+========================================================= */
 
 function updateSeatStats(zones) {
 
-    let available = 0;
+    let available =
+        0;
 
-    Object.values(zones || {}).forEach(zone => {
 
-        const total =
-            Number(zone.total || 0);
+    Object.values(
+        zones || {}
+    ).forEach(
+        zone => {
 
-        const occupied =
-            Number(zone.occupied || 0);
+            const total =
+                Number(
+                    zone.total || 0
+                );
 
-        available +=
-            Math.max(total - occupied, 0);
-    });
 
-    document.getElementById("availableSeats").textContent =
+            const occupied =
+                Number(
+                    zone.occupied || 0
+                );
+
+
+            available +=
+                Math.max(
+                    total - occupied,
+                    0
+                );
+
+        }
+    );
+
+
+    document.getElementById(
+        "availableSeats"
+    ).textContent =
         available;
+
 }
 
-/* UPDATE SEAT OCCUPANCY */
 
-window.updateZone = async function(id, total) {
+/* =========================================================
+   UPDATE SEAT OCCUPANCY
+========================================================= */
 
-    const input =
-        document.getElementById(`seat-${id}`);
-
-    if (!input) {
-        showStatus(
-            "Seat input not found.",
-            "error"
-        );
-        return;
-    }
-
-    const occupied =
-        Number(input.value);
-
-    if (
-        Number.isNaN(occupied) ||
-        occupied < 0 ||
-        occupied > total
+window.updateZone =
+    async function(
+        id,
+        total
     ) {
 
-        showStatus(
-            `Occupied seats must be between 0 and ${total}.`,
-            "error"
-        );
-
-        return;
-    }
-
-    try {
-
-        const headers =
-            await getAuthHeaders();
-
-        const response =
-            await fetch(
-                `${API_URL}/seats/${encodeURIComponent(id)}`,
-                {
-                    method: "PUT",
-                    headers,
-                    body: JSON.stringify({
-                        occupied
-                    })
-                }
+        const input =
+            document.getElementById(
+                `seat-${id}`
             );
 
-        const result =
-            await response.json();
 
-        if (!response.ok) {
+        if (!input) {
 
-            throw new Error(
-                result.detail ||
-                "Unable to update seats."
+            showStatus(
+                "Seat input not found.",
+                "error"
             );
+
+            return;
+
         }
 
-        showStatus(
-            `${id} zone updated successfully.`
-        );
 
-        await loadZones();
+        const occupied =
+            Number(
+                input.value
+            );
 
-    } catch (error) {
 
-        console.error("UPDATE SEAT ERROR:", error);
+        if (
+            Number.isNaN(occupied) ||
+            occupied < 0 ||
+            occupied > total
+        ) {
 
-        showStatus(
-            error.message ||
-            "Unable to update seats.",
-            "error"
-        );
-    }
-};
+            showStatus(
+                `Occupied seats must be between 0 and ${total}.`,
+                "error"
+            );
 
-/* LOGOUT */
+            return;
 
-document.getElementById("logoutBtn")
-    .addEventListener("click", async () => {
+        }
+
+
+        try {
+
+            const headers =
+                await getAuthHeaders();
+
+
+            const response =
+                await fetch(
+
+                    API_URL +
+                    "/seats/" +
+                    encodeURIComponent(id),
+
+                    {
+
+                        method: "PUT",
+
+                        headers,
+
+                        body:
+                            JSON.stringify({
+                                occupied:
+                                    occupied
+                            })
+
+                    }
+
+                );
+
+
+            const result =
+                await response.json();
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    result.detail ||
+                    "Unable to update seats."
+                );
+
+            }
+
+
+            showStatus(
+                `${id} zone updated successfully.`
+            );
+
+
+            await loadZones();
+
+
+        } catch (error) {
+
+            console.error(
+                "UPDATE SEAT ERROR:",
+                error
+            );
+
+
+            showStatus(
+                error.message ||
+                "Unable to update seats.",
+                "error"
+            );
+
+        }
+
+    };
+
+
+/* =========================================================
+   LOGOUT
+========================================================= */
+
+document.getElementById(
+    "logoutBtn"
+).addEventListener(
+    "click",
+    async () => {
 
         await auth.signOut();
 
         window.location.href =
             "login.html";
-    });
 
-/* AUTO REFRESH */
-
-setInterval(() => {
-
-    if (auth.currentUser) {
-        loadAll();
     }
+);
 
-}, 10000);
+
+/* =========================================================
+   AUTO REFRESH
+========================================================= */
+
+setInterval(
+    () => {
+
+        if (auth.currentUser) {
+
+            loadAll();
+
+        }
+
+    },
+    10000
+);
 
 </script>
 
