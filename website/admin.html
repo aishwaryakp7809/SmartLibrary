@@ -23,8 +23,6 @@
             color: #0f172a;
         }
 
-        /* NAVBAR */
-
         .navbar {
             height: 72px;
             background: rgba(255,255,255,0.95);
@@ -85,8 +83,6 @@
             background: #e2e8f0;
         }
 
-        /* MAIN */
-
         .container {
             width: 92%;
             max-width: 1250px;
@@ -119,8 +115,6 @@
             font-size: 15px;
         }
 
-        /* STATS */
-
         .stats {
             display: grid;
             grid-template-columns: repeat(4,1fr);
@@ -152,8 +146,6 @@
             font-size: 13px;
         }
 
-        /* SECTIONS */
-
         .section {
             background: white;
             border: 1px solid #e2e8f0;
@@ -180,8 +172,6 @@
             font-size: 13px;
             margin-top: 4px;
         }
-
-        /* FORM */
 
         .form-grid {
             display: grid;
@@ -241,7 +231,10 @@
             opacity: 0.92;
         }
 
-        /* TABLE */
+        .primary-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
 
         .table-wrap {
             overflow-x: auto;
@@ -302,8 +295,6 @@
             color: #dc2626;
         }
 
-        /* SEATS */
-
         .zone-grid {
             display: grid;
             grid-template-columns: repeat(3,1fr);
@@ -358,7 +349,9 @@
             font-weight: 700;
         }
 
-        /* STATUS */
+        .update-seat:hover {
+            opacity: 0.9;
+        }
 
         #status {
             display: none;
@@ -389,10 +382,7 @@
             padding: 30px;
         }
 
-        /* RESPONSIVE */
-
         @media(max-width:900px) {
-
             .stats {
                 grid-template-columns: repeat(2,1fr);
             }
@@ -407,7 +397,6 @@
         }
 
         @media(max-width:600px) {
-
             .navbar {
                 padding: 0 18px;
             }
@@ -468,7 +457,6 @@
 
 </nav>
 
-
 <main class="container">
 
     <div class="hero">
@@ -485,11 +473,7 @@
 
     </div>
 
-
     <div id="status"></div>
-
-
-    <!-- STATS -->
 
     <section class="stats">
 
@@ -519,20 +503,14 @@
 
     </section>
 
-
-    <!-- BOOK MANAGEMENT -->
-
     <section class="section">
 
         <div class="section-header">
-
             <div>
                 <h2>📚 Book Management</h2>
                 <p>Add new books or update existing library records.</p>
             </div>
-
         </div>
-
 
         <div class="form-grid">
 
@@ -573,7 +551,6 @@
 
         </div>
 
-
         <div class="form-actions">
 
             <button id="saveBookBtn" class="primary-btn">
@@ -587,9 +564,6 @@
         </div>
 
     </section>
-
-
-    <!-- BOOK TABLE -->
 
     <section class="section">
 
@@ -607,7 +581,6 @@
             <table>
 
                 <thead>
-
                     <tr>
                         <th>ID</th>
                         <th>Title</th>
@@ -618,7 +591,6 @@
                         <th>Rack</th>
                         <th>Actions</th>
                     </tr>
-
                 </thead>
 
                 <tbody id="booksTable"></tbody>
@@ -628,9 +600,6 @@
         </div>
 
     </section>
-
-
-    <!-- SEAT MANAGEMENT -->
 
     <section class="section">
 
@@ -649,51 +618,33 @@
 
 </main>
 
-
 <script>
 
- const firebaseConfig = {
-  apiKey: "AIzaSyBROcAD9m--NuxNOtVUAD5IYWaZghMtLKU",
-  authDomain: "smart-library-assistent.firebaseapp.com",
-  databaseURL: "https://smart-library-assistent-default-rtdb.firebaseio.com",
-  projectId: "smart-library-assistent",
-  storageBucket: "smart-library-assistent.firebasestorage.app",
-  messagingSenderId: "36138964774",
-  appId: "1:36138964774:web:45b338aef03cb7b0ffd3e7",
-  measurementId: "G-DQDPCFDNF2"
+const firebaseConfig = {
+    apiKey: "AIzaSyBROcADm9--NuxNOtVUAD5IYWaZghMtLKU",
+    authDomain: "smart-library-assistent.firebaseapp.com",
+    databaseURL: "https://smart-library-assistent-default-rtdb.firebaseio.com",
+    projectId: "smart-library-assistent",
+    storageBucket: "smart-library-assistent.firebasestorage.app",
+    messagingSenderId: "36138964774",
+    appId: "1:36138964774:web:45b338aef03cb7b0ffd3e7",
+    measurementId: "G-DQDPCFDNF2"
 };
 
 firebase.initializeApp(firebaseConfig);
 
 const auth = firebase.auth();
 
-const API = "http://127.0.0.1:8000";
-
+const API_URL = "https://smartlibrary-api.onrender.com";
 
 let books = {};
-
 let editingBookId = null;
 
-
-/* ELEMENTS */
-
-const booksTable =
-    document.getElementById("booksTable");
-
-const zonesContainer =
-    document.getElementById("zones");
-
-const statusBox =
-    document.getElementById("status");
-
-const saveBookBtn =
-    document.getElementById("saveBookBtn");
-
-const cancelBtn =
-    document.getElementById("cancelBtn");
-
-
-/* STATUS */
+const booksTable = document.getElementById("booksTable");
+const zonesContainer = document.getElementById("zones");
+const statusBox = document.getElementById("status");
+const saveBookBtn = document.getElementById("saveBookBtn");
+const cancelBtn = document.getElementById("cancelBtn");
 
 function showStatus(message, type = "success") {
 
@@ -701,17 +652,16 @@ function showStatus(message, type = "success") {
 
     statusBox.className =
         type === "error"
-        ? "status-error"
-        : "status-success";
+            ? "status-error"
+            : "status-success";
+
+    statusBox.style.display = "block";
 
     setTimeout(() => {
         statusBox.className = "";
         statusBox.style.display = "none";
     }, 4000);
 }
-
-
-/* ESCAPE HTML */
 
 function escapeHtml(value) {
 
@@ -723,15 +673,13 @@ function escapeHtml(value) {
         .replace(/'/g, "&#039;");
 }
 
-
-/* AUTH */
+/* AUTHENTICATION */
 
 auth.onAuthStateChanged(async (user) => {
 
     if (!user) {
 
         window.location.href = "login.html";
-
         return;
     }
 
@@ -747,9 +695,7 @@ auth.onAuthStateChanged(async (user) => {
 
             await auth.signOut();
 
-            alert(
-                "Administrator access is required."
-            );
+            alert("Administrator access is required.");
 
             window.location.href = "login.html";
 
@@ -763,30 +709,23 @@ auth.onAuthStateChanged(async (user) => {
 
     } catch (error) {
 
-        console.error(error);
+        console.error("AUTH ERROR:", error);
 
         showStatus(
             "Unable to verify administrator account.",
             "error"
         );
-
     }
-
 });
 
-
-/* GET FRESH TOKEN */
+/* GET AUTH TOKEN */
 
 async function getAuthHeaders() {
 
     const user = auth.currentUser;
 
     if (!user) {
-
-        throw new Error(
-            "You are not logged in."
-        );
-
+        throw new Error("You are not logged in.");
     }
 
     const token =
@@ -796,9 +735,7 @@ async function getAuthHeaders() {
         "Content-Type": "application/json",
         "Authorization": "Bearer " + token
     };
-
 }
-
 
 /* LOAD EVERYTHING */
 
@@ -808,9 +745,7 @@ async function loadAll() {
         loadBooks(),
         loadZones()
     ]);
-
 }
-
 
 /* LOAD BOOKS */
 
@@ -819,18 +754,16 @@ async function loadBooks() {
     try {
 
         const response =
-            await fetch(`${API}/books`);
+            await fetch(`${API_URL}/books`);
 
         if (!response.ok) {
 
             throw new Error(
                 `Books request failed: ${response.status}`
             );
-
         }
 
-        books =
-            await response.json();
+        books = await response.json();
 
         renderBooks();
 
@@ -838,17 +771,14 @@ async function loadBooks() {
 
     } catch (error) {
 
-        console.error(error);
+        console.error("BOOK ERROR:", error);
 
         showStatus(
-            "Unable to fetch books. Make sure the backend is running.",
+            "Unable to fetch books from the backend.",
             "error"
         );
-
     }
-
 }
-
 
 /* RENDER BOOKS */
 
@@ -859,16 +789,16 @@ function renderBooks() {
 
     if (entries.length === 0) {
 
-        booksTable.innerHTML =
-            `<tr>
+        booksTable.innerHTML = `
+            <tr>
                 <td colspan="8" class="empty">
                     No books found.
                 </td>
-             </tr>`;
+            </tr>
+        `;
 
         return;
     }
-
 
     booksTable.innerHTML =
         entries.map(([id, book]) => {
@@ -926,11 +856,9 @@ function renderBooks() {
             `;
 
         }).join("");
-
 }
 
-
-/* STATS */
+/* BOOK STATS */
 
 function updateBookStats() {
 
@@ -949,44 +877,32 @@ function updateBookStats() {
 
     document.getElementById("availableCopies").textContent =
         available;
-
 }
-
 
 /* ADD / UPDATE BOOK */
 
 saveBookBtn.addEventListener("click", async () => {
 
     const bookId =
-        document.getElementById("bookId")
-            .value.trim();
+        document.getElementById("bookId").value.trim();
 
     const title =
-        document.getElementById("title")
-            .value.trim();
+        document.getElementById("title").value.trim();
 
     const author =
-        document.getElementById("author")
-            .value.trim();
+        document.getElementById("author").value.trim();
 
     const subject =
-        document.getElementById("subject")
-            .value.trim();
+        document.getElementById("subject").value.trim();
 
     const available =
-        Number(
-            document.getElementById("available").value
-        );
+        Number(document.getElementById("available").value);
 
     const total =
-        Number(
-            document.getElementById("total").value
-        );
+        Number(document.getElementById("total").value);
 
     const rack =
-        document.getElementById("rack")
-            .value.trim();
-
+        document.getElementById("rack").value.trim();
 
     if (
         !bookId ||
@@ -1006,7 +922,6 @@ saveBookBtn.addEventListener("click", async () => {
         return;
     }
 
-
     if (total < 1) {
 
         showStatus(
@@ -1016,7 +931,6 @@ saveBookBtn.addEventListener("click", async () => {
 
         return;
     }
-
 
     if (available < 0 || available > total) {
 
@@ -1028,42 +942,32 @@ saveBookBtn.addEventListener("click", async () => {
         return;
     }
 
-
     const bookData = {
-
         title,
         author,
         subject,
         available_copies: available,
         total_copies: total,
         rack
-
     };
-
 
     saveBookBtn.disabled = true;
     saveBookBtn.textContent = "Saving...";
-
 
     try {
 
         const headers =
             await getAuthHeaders();
 
-
         const method =
-            editingBookId
-            ? "PUT"
-            : "POST";
-
+            editingBookId ? "PUT" : "POST";
 
         const targetId =
             editingBookId || bookId;
 
-
         const response =
             await fetch(
-                `${API}/books/${encodeURIComponent(targetId)}`,
+                `${API_URL}/books/${encodeURIComponent(targetId)}`,
                 {
                     method,
                     headers,
@@ -1071,10 +975,8 @@ saveBookBtn.addEventListener("click", async () => {
                 }
             );
 
-
         const result =
             await response.json();
-
 
         if (!response.ok) {
 
@@ -1082,25 +984,21 @@ saveBookBtn.addEventListener("click", async () => {
                 result.detail ||
                 "Unable to save book."
             );
-
         }
-
 
         showStatus(
             editingBookId
-            ? "Book updated successfully."
-            : "Book added successfully."
+                ? "Book updated successfully."
+                : "Book added successfully."
         );
-
 
         clearForm();
 
         await loadBooks();
 
-
     } catch (error) {
 
-        console.error(error);
+        console.error("SAVE BOOK ERROR:", error);
 
         showStatus(
             error.message ||
@@ -1114,20 +1012,16 @@ saveBookBtn.addEventListener("click", async () => {
 
         saveBookBtn.textContent =
             editingBookId
-            ? "💾 Update Book"
-            : "➕ Add Book";
-
+                ? "💾 Update Book"
+                : "➕ Add Book";
     }
-
 });
-
 
 /* EDIT BOOK */
 
 window.editBook = function(id) {
 
-    const book =
-        books[id];
+    const book = books[id];
 
     if (!book) {
 
@@ -1139,15 +1033,10 @@ window.editBook = function(id) {
         return;
     }
 
-
     editingBookId = id;
 
-
-    document.getElementById("bookId").value =
-        id;
-
-    document.getElementById("bookId").disabled =
-        true;
+    document.getElementById("bookId").value = id;
+    document.getElementById("bookId").disabled = true;
 
     document.getElementById("title").value =
         book.title || "";
@@ -1167,21 +1056,17 @@ window.editBook = function(id) {
     document.getElementById("rack").value =
         book.rack || "";
 
-
     saveBookBtn.textContent =
         "💾 Update Book";
 
     cancelBtn.style.display =
         "inline-block";
 
-
     window.scrollTo({
         top: 0,
         behavior: "smooth"
     });
-
 };
-
 
 /* CANCEL EDIT */
 
@@ -1191,13 +1076,11 @@ cancelBtn.addEventListener("click", () => {
 
 });
 
-
 function clearForm() {
 
     editingBookId = null;
 
-    document.getElementById("bookId").disabled =
-        false;
+    document.getElementById("bookId").disabled = false;
 
     document.getElementById("bookId").value = "";
     document.getElementById("title").value = "";
@@ -1212,48 +1095,39 @@ function clearForm() {
 
     cancelBtn.style.display =
         "none";
-
 }
-
 
 /* DELETE BOOK */
 
 window.deleteBook = async function(id) {
 
-    const book =
-        books[id];
+    const book = books[id];
 
     if (!book) return;
-
 
     const confirmed =
         confirm(
             `Delete "${book.title}" (${id})?`
         );
 
-
     if (!confirmed) return;
-
 
     try {
 
         const headers =
             await getAuthHeaders();
 
-
         const response =
             await fetch(
-                `${API}/books/${encodeURIComponent(id)}`,
+                `${API_URL}/books/${encodeURIComponent(id)}`,
                 {
                     method: "DELETE",
                     headers
                 }
             );
 
-
         const result =
             await response.json();
-
 
         if (!response.ok) {
 
@@ -1261,48 +1135,40 @@ window.deleteBook = async function(id) {
                 result.detail ||
                 "Unable to delete book."
             );
-
         }
-
 
         showStatus(
             "Book deleted successfully."
         );
 
-
         await loadBooks();
-
 
     } catch (error) {
 
-        console.error(error);
+        console.error("DELETE BOOK ERROR:", error);
 
         showStatus(
             error.message ||
             "Unable to delete book.",
             "error"
         );
-
     }
-
 };
 
-
-/* LOAD ZONES */
+/* LOAD SEATS */
 
 async function loadZones() {
 
     try {
 
         const response =
-            await fetch(`${API}/seats`);
+            await fetch(`${API_URL}/seats`);
 
         if (!response.ok) {
 
             throw new Error(
                 `Seats request failed: ${response.status}`
             );
-
         }
 
         const zones =
@@ -1314,36 +1180,32 @@ async function loadZones() {
 
     } catch (error) {
 
-        console.error(error);
+        console.error("SEAT ERROR:", error);
 
         showStatus(
             "Unable to fetch seat information.",
             "error"
         );
-
     }
-
 }
 
-
-/* RENDER ZONES */
+/* RENDER SEATS */
 
 function renderZones(zones) {
 
     const entries =
         Object.entries(zones || {});
 
-
     if (entries.length === 0) {
 
-        zonesContainer.innerHTML =
-            `<div class="empty">
+        zonesContainer.innerHTML = `
+            <div class="empty">
                 No study zones found.
-             </div>`;
+            </div>
+        `;
 
         return;
     }
-
 
     zonesContainer.innerHTML =
         entries.map(([id, zone]) => {
@@ -1357,9 +1219,7 @@ function renderZones(zones) {
             const available =
                 Math.max(total - occupied, 0);
 
-
             return `
-
                 <div class="zone-card">
 
                     <div class="zone-name">
@@ -1392,13 +1252,10 @@ function renderZones(zones) {
                     </button>
 
                 </div>
-
             `;
 
         }).join("");
-
 }
-
 
 /* SEAT STATS */
 
@@ -1416,29 +1273,29 @@ function updateSeatStats(zones) {
 
         available +=
             Math.max(total - occupied, 0);
-
     });
 
-
-    document.getElementById("availableSeats")
-        .textContent = available;
-
+    document.getElementById("availableSeats").textContent =
+        available;
 }
 
-
-/* UPDATE ZONE */
+/* UPDATE SEAT OCCUPANCY */
 
 window.updateZone = async function(id, total) {
 
     const input =
-        document.getElementById(
-            `seat-${id}`
-        );
+        document.getElementById(`seat-${id}`);
 
+    if (!input) {
+        showStatus(
+            "Seat input not found.",
+            "error"
+        );
+        return;
+    }
 
     const occupied =
         Number(input.value);
-
 
     if (
         Number.isNaN(occupied) ||
@@ -1454,16 +1311,14 @@ window.updateZone = async function(id, total) {
         return;
     }
 
-
     try {
 
         const headers =
             await getAuthHeaders();
 
-
         const response =
             await fetch(
-                `${API}/seats/${encodeURIComponent(id)}`,
+                `${API_URL}/seats/${encodeURIComponent(id)}`,
                 {
                     method: "PUT",
                     headers,
@@ -1473,10 +1328,8 @@ window.updateZone = async function(id, total) {
                 }
             );
 
-
         const result =
             await response.json();
-
 
         if (!response.ok) {
 
@@ -1484,32 +1337,25 @@ window.updateZone = async function(id, total) {
                 result.detail ||
                 "Unable to update seats."
             );
-
         }
-
 
         showStatus(
             `${id} zone updated successfully.`
         );
 
-
         await loadZones();
-
 
     } catch (error) {
 
-        console.error(error);
+        console.error("UPDATE SEAT ERROR:", error);
 
         showStatus(
             error.message ||
             "Unable to update seats.",
             "error"
         );
-
     }
-
 };
-
 
 /* LOGOUT */
 
@@ -1520,9 +1366,7 @@ document.getElementById("logoutBtn")
 
         window.location.href =
             "login.html";
-
     });
-
 
 /* AUTO REFRESH */
 
