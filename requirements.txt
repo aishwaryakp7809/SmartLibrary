@@ -1,0 +1,11 @@
+fastapi
+uvicorn
+firebase-admin
+python-dotenv
+pandas
+faiss-cpu
+sentence-transformers
+openai
+torch
+numpy
+pydantic
