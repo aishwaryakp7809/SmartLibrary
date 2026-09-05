@@ -42,7 +42,7 @@ class BookData(BaseModel):
     author: str
     subject: str
     available_copies: int = Field(ge=0)
-    total_copies: int = Field(ge=0)
+    total_copies: int = Field(ge=1)
     rack: str
 
 
@@ -59,9 +59,7 @@ class AIQuestion(BaseModel):
 # AUTHENTICATION
 # ============================================================
 
-def get_bearer_token(
-    authorization: Optional[str]
-):
+def get_bearer_token(authorization: Optional[str]):
     if not authorization:
         raise HTTPException(
             status_code=401,
@@ -85,14 +83,11 @@ def get_bearer_token(
     return token
 
 
-def verify_user(
-    authorization: Optional[str] = Header(None)
-):
+def verify_user(authorization: Optional[str] = Header(None)):
     token = get_bearer_token(authorization)
 
     try:
-        decoded_token = auth.verify_id_token(token)
-        return decoded_token
+        return auth.verify_id_token(token)
 
     except Exception as error:
         print("USER AUTH ERROR:", error)
@@ -103,9 +98,7 @@ def verify_user(
         )
 
 
-def verify_admin(
-    authorization: Optional[str] = Header(None)
-):
+def verify_admin(authorization: Optional[str] = Header(None)):
     user = verify_user(authorization)
 
     if user.get("admin", False) is not True:
@@ -163,12 +156,6 @@ def add_book(
             detail="Book already exists"
         )
 
-    if book.total_copies < 1:
-        raise HTTPException(
-            status_code=400,
-            detail="Total copies must be at least 1"
-        )
-
     if book.available_copies > book.total_copies:
         raise HTTPException(
             status_code=400,
@@ -203,12 +190,6 @@ def update_book(
         raise HTTPException(
             status_code=404,
             detail="Book not found"
-        )
-
-    if book.total_copies < 1:
-        raise HTTPException(
-            status_code=400,
-            detail="Total copies must be at least 1"
         )
 
     if book.available_copies > book.total_copies:
@@ -290,7 +271,7 @@ def update_seat(
             detail="Zone not found"
         )
 
-    total = int(zones[zone_id]["total"])
+    total = int(zones[zone_id].get("total", 0))
 
     if seat.occupied > total:
         raise HTTPException(
@@ -325,7 +306,7 @@ def student_entry(
     uid = user["uid"]
 
     # --------------------------------------------------------
-    # VERIFY QR BELONGS TO LOGGED-IN STUDENT
+    # VERIFY QR
     # --------------------------------------------------------
 
     expected_qr = "SMARTLIBRARY-STUDENT-" + uid
@@ -334,6 +315,25 @@ def student_entry(
         raise HTTPException(
             status_code=403,
             detail="Invalid student QR code"
+        )
+
+    # --------------------------------------------------------
+    # GET STUDENT
+    # --------------------------------------------------------
+
+    student_ref = db.reference(f"students/{uid}")
+    student = student_ref.get()
+
+    # --------------------------------------------------------
+    # CHECK CURRENT STATUS
+    # --------------------------------------------------------
+
+    if student and student.get("inside") is True:
+        current_zone = student.get("zone", "unknown")
+
+        raise HTTPException(
+            status_code=400,
+            detail=f"Student is already inside the library in {current_zone} zone"
         )
 
     # --------------------------------------------------------
@@ -349,39 +349,20 @@ def student_entry(
         )
 
     # --------------------------------------------------------
-    # GET STUDENT RECORD
+    # GET CAPACITY
     # --------------------------------------------------------
 
-    student_ref = db.reference(
-        f"students/{uid}"
+    total = int(
+        zones[zone_id].get("total", 0)
     )
 
-    student = student_ref.get()
-
-    # --------------------------------------------------------
-    # PREVENT DUPLICATE ENTRY
-    # --------------------------------------------------------
-
-    if student and student.get("inside") is True:
-        raise HTTPException(
-            status_code=400,
-            detail="Student is already inside the library"
-        )
+    occupied = int(
+        zones[zone_id].get("occupied", 0)
+    )
 
     # --------------------------------------------------------
     # CHECK CAPACITY
     # --------------------------------------------------------
-
-    total = int(
-        zones[zone_id]["total"]
-    )
-
-    occupied = int(
-        zones[zone_id].get(
-            "occupied",
-            0
-        )
-    )
 
     if occupied >= total:
         raise HTTPException(
@@ -390,17 +371,19 @@ def student_entry(
         )
 
     # --------------------------------------------------------
-    # INCREMENT OCCUPANCY
+    # UPDATE ZONE
     # --------------------------------------------------------
 
     new_occupied = occupied + 1
 
     zones[zone_id]["occupied"] = new_occupied
 
-    db.reference("zones").set(zones)
+    db.reference(
+        f"zones/{zone_id}/occupied"
+    ).set(new_occupied)
 
     # --------------------------------------------------------
-    # SAVE STUDENT ENTRY
+    # UPDATE STUDENT
     # --------------------------------------------------------
 
     student_ref.set({
@@ -444,7 +427,7 @@ def student_exit(
         )
 
     # --------------------------------------------------------
-    # GET STUDENT RECORD
+    # GET STUDENT
     # --------------------------------------------------------
 
     student_ref = db.reference(
@@ -460,7 +443,7 @@ def student_exit(
         )
 
     # --------------------------------------------------------
-    # PREVENT DUPLICATE EXIT
+    # CHECK INSIDE STATUS
     # --------------------------------------------------------
 
     if student.get("inside") is not True:
@@ -469,7 +452,17 @@ def student_exit(
             detail="Student is not currently inside the library"
         )
 
+    # --------------------------------------------------------
+    # GET STUDENT ZONE
+    # --------------------------------------------------------
+
     zone_id = student.get("zone")
+
+    if not zone_id:
+        raise HTTPException(
+            status_code=400,
+            detail="Student zone information is missing"
+        )
 
     # --------------------------------------------------------
     # GET ZONES
@@ -484,27 +477,51 @@ def student_exit(
         )
 
     # --------------------------------------------------------
-    # DECREASE OCCUPANCY
+    # GET OCCUPANCY
     # --------------------------------------------------------
 
     occupied = int(
-        zones[zone_id].get(
-            "occupied",
-            0
-        )
+        zones[zone_id].get("occupied", 0)
     )
 
+    # --------------------------------------------------------
+    # HANDLE DATA MISMATCH
+    # --------------------------------------------------------
+    #
+    # If student says they are inside but Firebase occupancy
+    # is already zero, do NOT block the student forever.
+    #
+    # Reset the student status and allow exit to complete.
+    # --------------------------------------------------------
+
     if occupied <= 0:
-        raise HTTPException(
-            status_code=400,
-            detail="Zone occupancy is already zero"
-        )
+
+        student_ref.update({
+            "inside": False,
+            "zone": None
+        })
+
+        return {
+            "message": (
+                "Student exit recorded. "
+                "Zone occupancy was already zero, "
+                "so no further decrement was required."
+            ),
+            "student": user.get("email", ""),
+            "zone": zone_id,
+            "occupied": 0,
+            "available": int(zones[zone_id].get("total", 0))
+        }
+
+    # --------------------------------------------------------
+    # DECREASE OCCUPANCY
+    # --------------------------------------------------------
 
     new_occupied = occupied - 1
 
-    zones[zone_id]["occupied"] = new_occupied
-
-    db.reference("zones").set(zones)
+    db.reference(
+        f"zones/{zone_id}/occupied"
+    ).set(new_occupied)
 
     # --------------------------------------------------------
     # UPDATE STUDENT STATUS
@@ -516,7 +533,7 @@ def student_exit(
     })
 
     total = int(
-        zones[zone_id]["total"]
+        zones[zone_id].get("total", 0)
     )
 
     return {
